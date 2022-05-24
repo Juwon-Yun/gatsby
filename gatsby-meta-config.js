@@ -26,7 +26,7 @@ const metaConfig = {
   links: {
     github: "https://github.com/Juwon-Yun",
   },
-  favicon: "src/images/apple.png",
+  favicon: "src/images/icon.png",
 }
 
 // eslint-disable-next-line no-undef
