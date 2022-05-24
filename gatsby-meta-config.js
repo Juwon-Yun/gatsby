@@ -17,16 +17,16 @@
 
 /** @type {MetaConfig} */
 const metaConfig = {
-  title: "Dev Ed",
-  description: `Ed's Blog`,
-  author: "Ed",
-  siteUrl: "https://gatsby-starter-apple.netlify.app",
+  title: "Dev Juwon",
+  description: `Juwon's Tech Blog`,
+  author: "Juwon",
+  siteUrl: "https://dev-juwon.netlify.app/",
   lang: "en",
-  utterances: "sungik-choi/gatsby-starter-apple-comment",
+  utterances: "https://github.com/Juwon-Yun",
   links: {
-    github: "https://github.com/sungik-choi/gatsby-starter-apple",
+    github: "https://github.com/Juwon-Yun",
   },
-  favicon: "src/images/icon.png",
+  favicon: "src/images/apple.png",
 }
 
 // eslint-disable-next-line no-undef

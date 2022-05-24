@@ -1,6 +1,9 @@
-# Hello
+# 안녕하세요.
 
-Welcome to my blog. My name is Ed.<br>
-I'm very interested in the web front-end development.
+블로그 방문 감사합니다.<br>
 
-Visit my [Github repository](https://github.com/sungik-choi/gatsby-starter-apple).
+개발하는 윤주원입니다.<br>
+
+✉️  eooll4@naver.com
+
+🚀 [Github](https://github.com/Juwon-Yun).
