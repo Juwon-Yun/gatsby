@@ -9,7 +9,8 @@ import styledTheme from "Styles/styledTheme"
 import GlobalStyle from "Styles/globalStyle"
 import packageJSON from "../../package.json"
 
-const { name, homepage } = packageJSON
+const { homepage } = packageJSON
+// const { name, homepage } = packageJSON
 
 const Layout: React.FC = ({ children }) => {
   const { theme, themeToggler } = useTheme()
@@ -28,7 +29,7 @@ const Layout: React.FC = ({ children }) => {
           <Copyright aria-label="Copyright">
             {copyrightStr}
             <RepoLink href={homepage} target="__blank">
-              {name}
+              {"Github"}
             </RepoLink>
           </Copyright>
         </Footer>
