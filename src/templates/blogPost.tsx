@@ -24,7 +24,7 @@ const BlogPost: React.FC<BlogPostProps> = ({ data }) => {
 
   return (
     <Layout>
-      <SEO title={title} desc={desc} image={ogImagePath!} />
+      <SEO title={title} desc={desc} image={ogImagePath} />
       <main>
         <article>
           <OuterWrapper>
