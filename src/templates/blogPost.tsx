@@ -20,7 +20,7 @@ const BlogPost: React.FC<BlogPostProps> = ({ data }) => {
   const { frontmatter, html } = markdownRemark!
   const { title, desc, thumbnail, date, category } = frontmatter!
 
-  const ogImagePath = thumbnail && thumbnail?.childImageSharp?.gatsbyImageData?.src
+  const ogImagePath = thumbnail && thumbnail?.childImageSharp?.gatsbyImageData?.src 
 
   return (
     <Layout>
