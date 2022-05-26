@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import React from "react"
 import { graphql } from "gatsby"
 import styled from "styled-components"
