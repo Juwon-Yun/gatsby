@@ -3,7 +3,7 @@ title: "[Clean Code] 1장"
 category: "Clean Code"
 date: "2021-04-02 13:40:00 +09:00"
 desc: "깨끗한 코드란?"
-thumbnail: "./images/1장_깨끗한코드/thumbnail.jpg"
+thumbnail: "./images/clean_code/thumbnail.jpg"
 alt: "깨끗한 코드란"
 ---
 

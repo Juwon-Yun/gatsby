@@ -48,7 +48,7 @@ const PostGrid: React.FC<PostGridProps> = ({ posts }) => {
 const Grid = styled.ul`
   display: grid;
   grid-gap: var(--grid-gap-xl);
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   list-style: none;
 
   & > li {
@@ -80,7 +80,7 @@ const List = styled.li`
   a:hover,
   a:focus {
     .gatsby-image-wrapper {
-      transform: scale(1.03);
+      transform: scale(1.33);
     }
   }
 

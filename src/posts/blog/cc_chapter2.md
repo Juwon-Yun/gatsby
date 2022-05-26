@@ -3,7 +3,7 @@ title: "[Clean Code] 2장"
 category: "Clean Code"
 date: "2022-04-02 15:19:00 +09:00"
 desc: "의미있는 이름"
-thumbnail: "./images/2장_의미있는이름/thumbnail2.jpg"
+thumbnail: "./images/clean_code/thumbnail.jpg"
 alt: "의미있는 이름"
 ---
 

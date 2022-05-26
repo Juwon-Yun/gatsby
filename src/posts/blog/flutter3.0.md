@@ -20,13 +20,13 @@ alt: "flutter"
 
 ---
 
-1\. Apple Silicon의 Fully Native 지원
+### 1\. Apple Silicon의 Fully Native 지원
 
 기존 Flutter에서는 Rosetta등을 통해 간접적으로 Fully 지원하였습니다.
 #
 Flutter 3.0버전에서 부터는 빌드 할 때 ARM칩을 지원하는 빌드를 별도로 추가 지원하며 Flutter 프레임워크가 애플 실리콘에서 작동되기 때문에 속도도 이전 버전보다 빨라지게 되었습니다.
 #
-2\. Yaru
+### 2\. Yaru
 
 Ubuntu를 만드는 회사 Canonial에서 Yaru Design Language를 Pub.dev를 통하여 지원합니다.
 #
@@ -34,16 +34,17 @@ Ubuntu를 만드는 회사 Canonial에서 Yaru Design Language를 Pub.dev를 통
 
 ( Android : Material Design, iOS : Cupertino Design ) 
 #
-3\. Image Processing 성능 향상
+#
+### 3\. Image Processing 성능 향상
 
 기존에 있던 Image Encoding, Decoding의 성능이 향상되어 기존보다 더 자연스러운 이미지 파일을 렌더링 할 수 있게되었습니다.
 #
-4\. Material Design Language 3
+### 4\. Material Design Language 3
 
 파스텔 톤과 같은 디자인으로 구성된 새로운 버전의 Material Design을 지원합니다.
 ([https://m3.material.io/](https://m3.material.io/))
 #
-5\. Firebase
+### 5\. Firebase
 
 기존의 FireBase는 Andriod, iOS, Web, Desktop을 따로 설정해 Flutter를 개발해야 했습니다.
 #
@@ -69,11 +70,11 @@ $flutterfire configure --project=projectName-code
 #
 또한 Firebase 에러 디버깅을 Flutter 3.0 버전에서 정의된 에러로 빠르게 디버깅 할 수 있게 되었습니다.
 #
-6\. Game Tools
+### 6\. Game Tools
 
-([https://flutter.dev/games](https://flutter.dev/games))
-#
 Flutter 3.0 버전에서 Game 개발에 도움되는 도구들이 추가되었습니다.
+#
+([https://flutter.dev/games](https://flutter.dev/games))
 #
 ### Dart 변경점
 
@@ -89,7 +90,7 @@ Enumerate이 업그레이드 되었습니다.
 #
 argument 순서에 자유도가 생겼습니다.
 
-```dart
+```java
 final factoriable = List<int>.generate(
 10,
 (int i){
@@ -109,7 +110,7 @@ growable : true,
 
 growable과 같은 namedParameter의 순서가 강제되었던 것들이 바뀌었습니다.
 
-```dart
+```java
 final factoriable = List<int>.generate(
 10,
 growable : true,
@@ -132,5 +133,4 @@ growable : true,
 Flutter의 기존의 장점인 6개의 플랫폼에 이번 3.0 버전 릴리즈를 통해 더 빠른 속도로 다양한 기능들을 구현할 수 있게 되었습니다.
 #
 다른 변경사항들은 Flutter 공식 홈페이지를 통해 볼 수 있습니다.
-#
 ( [https://docs.flutter.dev/development/tools/sdk/release-notes/release-notes-3.0.0](https://docs.flutter.dev/development/tools/sdk/release-notes/release-notes-3.0.0) )
