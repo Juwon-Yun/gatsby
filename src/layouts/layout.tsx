@@ -29,7 +29,7 @@ const Layout: React.FC = ({ children }) => {
           <Copyright aria-label="Copyright">
             {copyrightStr}
             <RepoLink href={homepage} target="__blank">
-              {"Github"}
+              {"Gatsby"}
             </RepoLink>
           </Copyright>
         </Footer>

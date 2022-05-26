@@ -15,7 +15,7 @@ const ThemeToggleButton: React.FC<ThemeToggleButtonProps> = ({
   themeToggler,
 }) => {
   const theme = useContext(ThemeContext)
-  const LABEL_TEXT = theme === DARK ? "Light theme" : "Dark theme"
+  const LABEL_TEXT = theme === DARK ? "Light" : "Dark"
 
   return (
     <Button onClick={themeToggler}>
