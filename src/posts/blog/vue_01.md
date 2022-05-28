@@ -1,6 +1,6 @@
 ---
 title: "[Vue] Vue.Js란? "
-category: "Flutter"
+category: "Vue"
 date: "2022-01-07 18:44:00 +09:00"
 desc: "Vue의 특징은 무엇일까"
 thumbnail: "./images/vue/vue_thumbnail.jpg"
@@ -30,7 +30,7 @@ SPA는 하나의 페이지 혹은 화면에서만 동작하는 방식을 의미�
 사용자의 입력을 기준으로 하나의 페이지에서 다른 출력을 보여주는 기법입니다.
 
 #
-### Component는
+### Component
 
 Component는 개별적인 레고 블록 혹은 HTML Element라고 쉽게 설명할 수 있습니다.
 #

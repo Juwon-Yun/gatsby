@@ -9,7 +9,7 @@ const siteMetadata = {
   utterances: {
     repo: meta.utterances,
   },
-  postTitle: "All",
+  postTitle: "",
   menuLinks: [
     {
       link: "/",

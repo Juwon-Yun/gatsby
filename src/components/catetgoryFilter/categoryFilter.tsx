@@ -61,7 +61,7 @@ const Nav = styled.nav`
 
   a#active {
     color: var(--color-white);
-    background-color: var(--color-blue);
+    background-color: var(--color-gray-6);
   }
 
   @media (max-width: ${({ theme }) => theme.device.sm}) {
@@ -107,12 +107,12 @@ const CategoryButton = styled(Link)`
 
   &:hover {
     color: var(--color-white);
-    background-color: var(--color-blue);
+    background-color: var(--color-gray-6);
   }
 
   &:focus-visible {
     color: var(--color-white);
-    background-color: var(--color-blue);
+    background-color: var(--color-gray-6);
   }
 `
 
