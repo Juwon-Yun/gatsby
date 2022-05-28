@@ -50,13 +50,14 @@ const Grid = styled.ul`
   grid-gap: var(--grid-gap-xl);
   grid-template-columns: repeat(2, 1fr);
   list-style: none;
-
+  
   & > li {
     margin-bottom: 0;
   }
-
+  
   @media (max-width: ${({ theme }) => theme.device.sm}) {
     grid-gap: var(--grid-gap-lg);
+    grid-template-columns: repeat(3, 1fr);
   }
 `
 
