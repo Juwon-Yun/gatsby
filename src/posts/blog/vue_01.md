@@ -7,7 +7,7 @@ thumbnail: "./images/vue/vue_thumbnail.jpg"
 alt: "vue"
 ---
 
-![vue](https://user-images.githubusercontent.com/85836879/170811393-40a939ab-2a4d-4e26-891e-e6ab13e5de6b.png)
+![vue'](https://user-images.githubusercontent.com/85836879/170812108-41de980d-4454-401f-8929-60521b13bf58.png)
 #
     Vue 3 version 기준으로 작성된 포스트입니다.
 #
@@ -19,7 +19,7 @@ React, Anguler, Vue등 수 많은 자바스크립트 기반 프레임워크 또�
 #
 Entry 파일 기준으로 여러개의 모듈을 하나로 묶어주는 Webpack
 #
-SPA 안에는 개발자를 위한 도구들이 많이 구성되어 있습니다.
+SPA 안에는 개발자를 위한 많은 도구들이 구성되어 있습니다.
 #
 ### Single Page Application (SPA)
 #
@@ -30,7 +30,7 @@ SPA는 하나의 페이지 혹은 화면에서만 동작하는 방식을 의미�
 사용자의 입력을 기준으로 하나의 페이지에서 다른 출력을 보여주는 기법입니다.
 
 #
-### Compunent
+### Component는
 
 Component는 개별적인 레고 블록 혹은 HTML Element라고 쉽게 설명할 수 있습니다.
 #
@@ -44,9 +44,10 @@ Vue.Js에는 프레임워크라는 강력한 타이틀에 알맞게 두줄 혹�
 기존 Javascript의 다양한 기능을 표현할 수 있습니다.
 #
 Vue 공식 문서를 통해 다양한 구문, 문법들을 알 수 있습니다.
+
 [https://v3.vuejs-korea.org/](https://v3.vuejs-korea.org/)
 #
-### 선언적 렌더링?
+### 선언적 렌더링
 
 Vue.js의 핵심은 간단한 마크업으로 DOM에서 데이터를 선언적으로 렌더링 할 수 있는 시스템입니다.
 #
@@ -82,9 +83,9 @@ Vue.Js는 렌더링을 지원하는 동적 웹사이트를 구현하기에 최�
 #
 Vue-Cli가 아닌 Nuxt.Js를 이용해 동적 렌더링을 부분 정적 렌더링으로 커스텀할 수 있습니다.
 #
-### 사용자 입력 핸들링?
+### 사용자 입력 핸들링
 
-사용자 입력 핸들링으로 **디렉티브**라는 Vue 특유의 속성이 있습니다.
+사용자 입력 핸들링으로 **디렉티브**라는 Vue.Js만의 문법이 있습니다.
 #
 디렉티브는 특수 속성임을 나타내는 **v-** 접두어가 붙어 있으며 렌더링 된 DOM에 유니크한 반응형 동작을 합니다.
 #
