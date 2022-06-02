@@ -178,7 +178,7 @@ select 마크업의 option:selected의 value 값을 가져올 수 있습니다.
 ```
 v-slot은 props 혹은 emit을 사용하여 컴포넌트간의 데이터를 전송할 때 사용하는 디렉티브 입니다.
 
-제약조건으로 <template> 태그 혹은 components 명이 필요합니다.
+제약조건으로 template태그 혹은 컴포넌트가 필요합니다.
 
 ### 특수한 속성의 디렉티브
 
