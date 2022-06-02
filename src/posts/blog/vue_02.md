@@ -25,7 +25,6 @@ v- 접두어를 가지고 있는 문법을 말합니다.
   
 text의 일부만 업데이트해야 하는 경우엔 mustache interpolation(머스태시 보관법)을 사용합니다.
     
-    
 #### v-show
 ```html
 <span v-show="flag">Flag가 참일 경우 보입니다.<span>
