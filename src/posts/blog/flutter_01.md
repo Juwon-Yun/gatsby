@@ -1,5 +1,5 @@
 ---
-title: "[Flutter] Flutter & Dart"
+title: "Flutter & Dart"
 category: "Flutter"
 date: "2022-04-27 21:00:00 +09:00"
 desc: "다트와 플러터"

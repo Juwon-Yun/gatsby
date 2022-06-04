@@ -1,5 +1,5 @@
 ---
-title: "[Clean Code] 1장"
+title: "1장"
 category: "Clean Code"
 date: "2021-04-02 13:40:00 +09:00"
 desc: "깨끗한 코드란?"

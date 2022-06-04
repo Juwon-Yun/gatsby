@@ -1,5 +1,5 @@
 ---
-title: "[Vue] Vue.Js란? "
+title: "Vue.Js란? "
 category: "Vue"
 date: "2022-01-07 18:44:00 +09:00"
 desc: "Vue의 특징은 무엇일까"

@@ -1,8 +1,8 @@
 ---
-title: "[Flutter] Flutter 개발을 위한 MVVM 아키텍처"
+title: "Flutter 개발을 위한 MVVM 아키텍처"
 category: "Flutter"
 date: "2022-06-04 13:32:00 +09:00"
-desc: "MVVM 패턴 1부"
+desc: "MVVM 패턴이란"
 thumbnail: "./images/flutter/flutter_thumbnail.jpg"
 alt: "flutter"
 ---
