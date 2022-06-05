@@ -3,7 +3,7 @@ title: "Flutter 버전 3.0"
 category: "Flutter"
 date: "2022-05-14 00:55:00 +09:00"
 desc: "업그레이드 변경사항"
-thumbnail: "./images/flutter/flutterVersion3.jpg"
+thumbnail: "./images/flutter/flutter_logo.jpg"
 alt: "flutter"
 ---
 

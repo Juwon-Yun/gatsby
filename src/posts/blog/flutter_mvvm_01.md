@@ -1,19 +1,13 @@
 ---
-title: "Flutter 개발을 위한 MVVM 아키텍처"
+title: "Flutter 개발을 위한 아키텍처"
 category: "Flutter"
 date: "2022-06-04 13:32:00 +09:00"
 desc: "MVVM 패턴이란"
-thumbnail: "./images/flutter/flutter_thumbnail.jpg"
+thumbnail: "./images/flutter/flutter_logo.jpg"
 alt: "flutter"
 ---
 
-![flutter_logo](https://user-images.githubusercontent.com/85836879/171982891-d73af907-3370-4127-a4a2-f16656a55dc9.png)
-
----
-
 모바일 앱 개발을 하게되면 필요한 구조와 패턴이 있습니다.
-
-Andriod, iOS, Flutter 모두 최종 기능은 같습니다.
 
 앱을 개발한다면 앱의 확장성과 유지보수의 편의성을 고려해 적용하는 아키텍처는 다양하지만 많이 쓰이는 아키텍처 MVVM을 소개하려합니다.
 
@@ -26,7 +20,7 @@ Flutter 특성에 맞는 MVVM 디자인 패턴을 적용하여 사용하는 것�
 3가지 레이어로 구성된 패턴입니다.
 #
 각 레이어별 역활을 파악하고 Data와 Action의 흐름을 일관되게 구현한다면 확장성있고 이해하기 쉬워지며 유지보수의 편의성이 좋은 앱을 만들 수 있게 됩니다.
-
+#
 ### View Layer
 UI/UX요소로 구성된 다양한 위젯으로 화면을 구성하는 레이어입니다.
 (시각적인 요소 레이어)
@@ -36,9 +30,7 @@ Flutter에서는 Widget이라는 선언형 UI를 사용합니다.
 MVVM패턴을 적용해 ViewModel에서 상태를 관리하는 경우 Stateless Widget으로 View를 만드는 것이 바람직합니다.
 #
 ### ViewModel Layer
-View Layer에 필요한 데이터(model)을 유지하고 View와 연관된 비즈니스 로직을 처리합니다.
-
-(View 레이어의 데이터를 위한 레이어)
+View 레어에 필요한 데이터(model)을 유지하고 View와 연관된 비즈니스 로직을 처리합니다.
 #
 비스니스 로직 처리 중 필요한 데이터는 Data Layer를 통해 받아오거나 저장하는 레이어입니다.
 #
