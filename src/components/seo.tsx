@@ -22,6 +22,7 @@ const SEO: React.FC<SEOProps> = ({ title, desc = "", image }) => {
   const description = desc || site.description
   const ogImageUrl =
     site.siteUrl ?? "" + (image || (defaultOpenGraphImage as string))
+  const googleContent = ["google-site-verification","b_TVIvamvnRinc4ExC5PfbMcjvAZiW6byJPFdTYDdj4"]
 
   return (
     <Helmet
@@ -73,6 +74,10 @@ const SEO: React.FC<SEOProps> = ({ title, desc = "", image }) => {
           {
             property: "twitter:image",
             content: ogImageUrl,
+          },
+          {
+            property: googleContent[0],
+            content: googleContent[1],
           },
         ] as Meta
       }
