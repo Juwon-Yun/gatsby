@@ -18,11 +18,11 @@
 /** @type {MetaConfig} */
 const metaConfig = {
   title: "Dev Juwon",
-  description: `Juwon's Tech Blog`,
+  description: `Juwon's Blog`,
   author: "Juwon",
   siteUrl: "https://dev-juwon.netlify.app/",
   lang: "en",
-  utterances: "https://github.com/Juwon-Yun",
+  utterances: "Juwon-Yun/gatsby",
   links: {
     github: "https://github.com/Juwon-Yun",
   },
