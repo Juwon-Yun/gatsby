@@ -76,7 +76,7 @@ const SEO: React.FC<SEOProps> = ({ title, desc = "", image }) => {
             content: ogImageUrl,
           },
           {
-            property: googleContent[0],
+            name: googleContent[0],
             content: googleContent[1],
           },
         ] as Meta
