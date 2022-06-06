@@ -1,6 +1,6 @@
 ---
-title: "2장"
-category: "Clean Code"
+title: "Clean Code 2장"
+category: "Etc"
 date: "2022-04-02 15:19:00 +09:00"
 desc: "의미있는 이름"
 thumbnail: "./images/clean_code/thumbnail.jpg"

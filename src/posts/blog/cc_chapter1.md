@@ -1,6 +1,6 @@
 ---
-title: "1장"
-category: "Clean Code"
+title: "Clean Code 1장"
+category: "Etc"
 date: "2021-04-02 13:40:00 +09:00"
 desc: "깨끗한 코드란?"
 thumbnail: "./images/clean_code/thumbnail.jpg"
