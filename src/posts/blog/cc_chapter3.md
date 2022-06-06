@@ -3,7 +3,7 @@ title: "Clean Code 3장"
 category: "Etc"
 date: "2022-04-02 16:18:00 +09:00"
 desc: "함수"
-thumbnail: "./images/clean_code/thumbnail.jpg"
+thumbnail: "./images/clean_code/ccc.jpg"
 alt: "함수"
 ---
 

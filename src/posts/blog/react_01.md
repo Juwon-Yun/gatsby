@@ -3,7 +3,7 @@ title: "React란? "
 category: "React"
 date: "2022-03-12 18:34:00 +09:00"
 desc: "React의 탄생과 React-Native"
-thumbnail: "./images/react/react_thumbnail.jpg"
+thumbnail: "./images/react/react_logo.jpg"
 alt: "react"
 ---
 
