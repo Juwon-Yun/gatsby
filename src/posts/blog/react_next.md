@@ -9,8 +9,6 @@ alt: "react"
 
 ![next](https://user-images.githubusercontent.com/85836879/172306985-7e18e122-77a0-4944-8693-4c9daddc5abb.png)
 
----
-
 ### NextJs는 왜 사용할까?
 
 NextJs는 React로 만드는 SSR(Server Side Rendering) 프레임워크 입니다.
@@ -21,15 +19,15 @@ NextJs는 React로 만드는 SSR(Server Side Rendering) 프레임워크 입니�
 
 클라이언트 사이드 렌더링이 특징인 SPA를 서버 사이드 렌더링을 함으로 다음과 같은 이점이 있습니다.
 
-1\. 클라이언트 사이드 렌더링의 경우에는 모든 javascript 코드를 로드하고 난 이후에 사용자는 웹을 보게됩니다.
+#### 1\. 클라이언트 사이드 렌더링의 경우에는 모든 javascript 코드를 로드하고 난 이후에 사용자는 웹을 보게됩니다.
 
 모든 javascript 코드를 읽을 때 까지 사용자는 많은 시간을 대기해야합니다.
 
-2\. SEO(Search Engine Optimization) 문제 해결
+#### 2\. SEO(Search Engine Optimization) 문제 해결
 
 SEO는 검색 엔진 최적화를 말합니다.
 
-2-1. 검색 엔진을 최적화해야하는 이유
+#### 2-1. 검색 엔진을 최적화해야하는 이유
 
 검색을 통해 사용자의 유입을 증가시켜야하는 필요가 있는 어떠한 웹사이트를 만들었을 때
 
@@ -111,13 +109,19 @@ dynamic import를 이용하여 코드 스플리팅이 가능합니다.
 
 NextJs 개발을 시작했다면 SSR LifeCycle을 이해할 수 있습니다.
 
-1.  NextJs 서버가 요청을 받습니다
-2.  Get 요청에 알맞는 pages 폴더 내부의 컴포넌트를 찾습니다.
-3.  \_app.tsx에 설정한 initialProps가 존재한다면 실행합니다.
-4.  route 요청에 알맞는 페이지의 컴포넌트에 initialProps가 있다면 실행한 후에 pageProps 데이터를 받아옵니다.
-5.  \_document.tsx에 설정한 initialProps가 존재한다면 실행합니다. 실행 후에 pageProps 데이터를 받아옵니다.
-6.  모든 Props를 구성하고난 이후에 \_app.tsx에서 pages/component.tsx 순서로 렌더링됩니다.
-7.  모든 Content를 구성하고난 이후에 \_document.tsx를 실행하여 HTML형태로 응답합니다.
+> NextJs 서버가 요청을 받습니다
+> 
+> Get 요청에 알맞는 pages 폴더 내부의 컴포넌트를 찾습니다.
+> 
+> \_app.tsx에 설정한 initialProps가 존재한다면 실행합니다.
+> 
+> route 요청에 알맞는 페이지의 컴포넌트에 initialProps가 있다면 실행한 후에 pageProps 데이터를 받아옵니다.
+> 
+> \_document.tsx에 설정한 initialProps가 존재한다면 실행합니다. 실행 후에 pageProps 데이터를 받아옵니다.
+> 
+> 모든 Props를 구성하고난 이후에 \_app.tsx에서 pages/component.tsx 순서로 렌더링됩니다.
+> 
+> 모든 Content를 구성하고난 이후에 \_document.tsx를 실행하여 HTML형태로 응답합니다.
 
 React의 프레임워크인 Next.Js에 대해 알아보았습니다.
 

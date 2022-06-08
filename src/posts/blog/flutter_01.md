@@ -10,12 +10,8 @@ alt: "flutter"
 
 ![flutter dart](https://user-images.githubusercontent.com/85836879/170853141-e5a9ce19-3c5b-4888-baf6-9a2e1a2e27b3.png)
 
-이번 포스팅에서 다룰 내용은 Flutter와 Dart입니다.
-
----
-
 # 🎯
-## Dart?
+## Dart
 
 다트는 2011년 10월 GOTO 콘퍼런스에서 구글이 공개한 객체지향 프로그래밍 언어입니다.
 
@@ -89,7 +85,7 @@ Var로 선언된 변수는 type을 지정하지 않아도 dart에서 알아서 v
 private인 \_(언더바)은 class안에서만 접근 가능한 것이 아닌 dart page 단위에서 정의합니다.
 #
 
-## 그러면 Flutter??
+## Flutter
 ---
 
 Flutter는 구글에서 2017년 5월에 출시한 모바일, 웹, 데스크톱 크로스 플랫폼 GUI SDK입니다.
@@ -114,5 +110,5 @@ Hot Restart 기능까지 사용하면 프로젝트 프로그램을 종료하기 
 
 Flutter와 Dart의 역사와 특징에 대해 알아보았습니다.
 
-![dartworld](https://user-images.githubusercontent.com/85836879/170853303-4efb2d27-2abe-4aa7-aebb-870d4083815c.png)
 ![printdart](https://user-images.githubusercontent.com/85836879/170853304-2525e733-7cc2-4992-ad37-f9c000f37fc7.png)
+![dartworld](https://user-images.githubusercontent.com/85836879/170853303-4efb2d27-2abe-4aa7-aebb-870d4083815c.png)

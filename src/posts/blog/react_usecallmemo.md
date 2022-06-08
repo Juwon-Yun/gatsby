@@ -7,12 +7,12 @@ thumbnail: "./images/react/react_logo.jpg"
 alt: "react"
 ---
 
-useMemo Hook과 useCallback Hook은 메모이제이션( memoization )을 활용하는 React Hook입니다.
+useMemo Hook과 useCallback Hook은 메모이제이션( memoization )기법을 활용하는 React Hook입니다.
 
-### memoization
+### Memoization
 어떠한 연산의 수행한 결과값을 메모리 내에 저장하여 동일한 입력이 들어오는 경우 기존에 메모리에 저장된 연산 결과를 그대로 반환해주는 프로그래밍 기법입니다.
 
-memoization은 중복된 연산을 피하기 때문에 메모리를 조금 더 사용하더라도 애플리케이션의 성능을 최적화 할 수 있습니다.
+Memoization은 중복된 연산을 피하기 때문에 메모리를 조금 더 사용하더라도 애플리케이션의 성능을 최적화 할 수 있습니다.
 
 이러한 특성을 이용해 React의 Component가 동일한 입력에 대해 재렌더링 되는 상황을 막을 수 있는 유용한 Hook입니다.
 
@@ -229,4 +229,4 @@ onChangeAge의 함수만 변경되는 결과를 확인할 수 있습니다.
 
 useMemo와 useCallback은 React 성능 최적화에 필수인 hook인 만큼 사용하기에는 많은 코드 경험을 요구하는 것 같습니다. 
 
-이번 포스팅으로 React 공부에 도움이 되셨으면 좋겠네요.
+이 포스팅으로 React 공부에 도움이 되셨으면 좋겠네요.

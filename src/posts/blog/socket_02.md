@@ -43,34 +43,40 @@ STOMP Frame의 구성은 아래 예시와 같은 형식입니다.
 
 STOMP가 정의한 맨 첫줄에 올 수 있는 명령어들과 해당 명령어의 표준 Header들입니다.
 
--   CONNECT or STOMP  
-    -   REQUIRED : accept-version, host
-    -   OPTIONAL : login, passcode, heart-beat
--   SEND 
-    -   REQUIRED : destination
-    -   OPTIONAL : transaction
--   SUBSCRIBE
-    -   REQUIRED : destination, id
-    -   OPTIONAL : ack
--   UNSUBSCRIBE
-    -   REQUIRED : id
-    -   OPTIONAL : none
--   BEGIN or COMMIT or ABORT
-    -   REQUIRED : transaction
-    -   OPTIONAL : none
--   DISCONNECT
-    -   REQUIRED : none
-    -   OPTIONAL : receipt
+    CONNECT or STOMP  
+     - REQUIRED : accept-version, host
+     - OPTIONAL : login, passcode, heart-beat
+
+    SEND 
+     - REQUIRED : destination
+     - OPTIONAL : transaction
+
+    SUBSCRIBE
+     - REQUIRED : destination, id
+     - OPTIONAL : ack
+
+    UNSUBSCRIBE
+     - REQUIRED : id
+     - OPTIONAL : none
+
+    BEGIN or COMMIT or ABORT
+     - REQUIRED : transaction
+     -OPTIONAL : none
+
+    DISCONNECT
+     - REQUIRED : none
+     - OPTIONAL : receipt
 
 등의 규칙이 있습니다.
 
 --- 
+### STOMP의 구현체
 
 STOMP로 구현된 구현체들입니다.
 
 ### Client
 
-| 구현체 | 언어 |
+| **구현체** | **언어** |
 | --- | --- |
 | Apache CMS | C++ |
 | Gozirra | Java |
@@ -83,7 +89,7 @@ STOMP로 구현된 구현체들입니다.
 
 ### Server
 
-| 구현체 | 언어 |
+| **구현체** | **언어** |
 | --- | --- |
 | Gozirra | Java |
 | StompServer | Ruby |
@@ -91,6 +97,8 @@ STOMP로 구현된 구현체들입니다.
 | Sprinkle | Python |
 | CoilMQ | Python |
 
-링크를 통해 STOMP의 자세한 정보를 얻을 수 있습니다.
+#
 
-[STOMP 공식문서](https://stomp.github.io/stomp-specification-1.2.html#STOMP_Frames)
+아래 링크를 통해 STOMP의 자세한 정보를 얻을 수 있습니다.
+
+[STOMP 공식 깃허브](https://stomp.github.io/stomp-specification-1.2.html#STOMP_Frames)

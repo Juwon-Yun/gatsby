@@ -101,10 +101,10 @@ React의 Hook은 다양합니다.
 #
 성능 최적화를 위한 훅인 useMemo와 useCallback은 필수로 사용하는 대표적인 훅입니다.
 #
-#### JSX ( JavaScript Syntax Extension )
+### JSX ( JavaScript Syntax Extension )
 
-```js
-{ console.log('Hello React World!!!') }
+```jsx
+{ console.log('Hello React') }
 ```
 
 React에서 HTML를 표현할 때 JSX를 사용합니다. 
@@ -122,7 +122,7 @@ HTML요소에 class값을 정의할 때 class라는 단어가 ECMAScript6의 클
 
 HTML요소에서 이벤트를 핸들링하는 onclick 등의 단어들을 카멜 표기법으로 onClick으로 표기해야 합니다.
 #
-HTML에서의 주석은 <!-- comment -->로 표현했지만 JSX에서는 {/\* comment \*/}으로 표현합니다.
+HTML에서의 주석은 \<!-- comment -->로 표현했지만 JSX에서는 {/\* comment \*/}으로 표현합니다.
 #
 HTML Custom-Element는 <juwon-element>로 표기했지만 React의 Custom Element는 <JuwonElement>처럼 Pascal Case로 표기하고 태그를 닫을 때는 꼭 />를 표기합니다.
 #
