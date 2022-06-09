@@ -10,7 +10,7 @@ alt: "vue"
 ![vue'](https://user-images.githubusercontent.com/85836879/170812108-41de980d-4454-401f-8929-60521b13bf58.png)
 #
 
-이번 포스팅 주제는 Vue만이 가지고 있는 문법 디렉티브입니다.
+Vue만이 가지고 있는 문법 디렉티브입니다.
 
 ### Directive란
 v- 접두어를 가지고 있는 문법을 말합니다.
