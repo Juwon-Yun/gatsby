@@ -140,6 +140,9 @@ const GlobalStyle = createGlobalStyle`
     * {
       color: var(--color-text);
     }
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   :lang(ko) {
