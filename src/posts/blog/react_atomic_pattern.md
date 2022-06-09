@@ -9,8 +9,6 @@ alt: "react"
 
 ![banner](https://user-images.githubusercontent.com/85836879/172308015-214ae4d2-fe50-4a37-a8a1-94536540d5f1.png)
 
-Design Pattern 중 Atomic Design Pattern을 알아보겠습니다.
-
 ### Atomic Design Pattern
 
 다섯 단계로 구성된  Atomic Design Pattern은 개발 개념의 방식뿐만 아니라 디자인에도 적용되는 설계 패턴입니다.
