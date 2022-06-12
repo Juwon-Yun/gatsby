@@ -13,8 +13,6 @@ alt: "flutter"
 mixin은 여러 클래스 계층에서 클래스의 코드를 재사용하는 방법입니다.
 
 ### mixin을 써야할 때
-믹스인은 여러 클래스에서 동작을 공유할 때 매우 유용합니다.
-
 mixin은 동일한 클래스 게층 구조를 공유하지 않는 여러 클래스에서 동작을 공유하려는 경우와 
 super class에서 이러한 동작을 구현하는 것이 타당하지 않을 경우 유용합니다.
 
@@ -55,7 +53,6 @@ abstract class Walker{
     }
 }
 
-// The Superclass 'Walker' doesn't have a zero argument constructor
 class A extends Walker{}
 ```
 
@@ -269,8 +266,6 @@ abstract class Bird extends Animal {}
 abstract class Fish extends Animal {}
 
 abstract class Walker {
-  // This class is intended to be used as a mixin, and should not be
-  // extended directly.
   factory Walker._() => null;
 
   void walk() {
@@ -279,8 +274,6 @@ abstract class Walker {
 }
 
 abstract class Swimmer {
-  // This class is intended to be used as a mixin, and should not be
-  // extended directly.
   factory Swimmer._() => null;
 
   void swim() {
@@ -289,8 +282,6 @@ abstract class Swimmer {
 }
 
 abstract class Flyer {
-  // This class is intended to be used as a mixin, and should not be
-  // extended directly.
   factory Flyer._() => null;
 
   void fly() {
