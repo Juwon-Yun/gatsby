@@ -146,6 +146,10 @@ const Markdown = styled.article<{ rhythm: typeof typography["rhythm"] }>`
 
   pre.grvsc-container {
     margin: var(--sizing-md) 0;
+    
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   .grvsc-line-highlighted::before {
