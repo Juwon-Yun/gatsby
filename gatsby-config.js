@@ -188,7 +188,7 @@ const pwaPlugins = [
       },
     },
   },
-  "gatsby-plugin-offline",
+  // "gatsby-plugin-offline",
 ]
 
 module.exports = {

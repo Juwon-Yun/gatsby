@@ -10,6 +10,10 @@ const Markdown = styled.article<{ rhythm: typeof typography["rhythm"] }>`
   h6 {
     font-weight: var(--font-weight-bold);
   }
+  
+  td,th{
+    padding: 2% 0 2% 0;
+  }
 
   td,
   th {
