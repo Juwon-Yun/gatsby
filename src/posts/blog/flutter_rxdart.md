@@ -185,16 +185,19 @@ Stream<int> getNumberStream() async* {
 다시보는 Rx의 정의
 
 > An API for asynchronous programming with observable streams
+> 
 > 관층가능한 스트림을 통해 비동기 프로그래밍을 하기 위한 API
 
 ![images_teo_post_5e9e8cf5-5706-4ccc-b4ba-ae1cb2389822_image](https://user-images.githubusercontent.com/85836879/173501322-a7a73f1e-9309-4624-8598-419c53d1082d.png)
 
 > 스트림(Stream) + 선언형 프로그래밍 = 반응형 프로그래밍
+> 
 > 반응형 프로그래밍이란 스트림을 선언적으로 작성하는 프로그래밍 패러다임
 
 결국 반응형 프로그래밍의 최종적인 정리는 이것입니다.
 
 > 데이터의 흐름과 변경사항의 전파에 중점을 둔 선언적 프로그래밍 패러다임.
+> 
 > 즉, 모든 것을 스트림으로 간주하고 선언적으로 개발하는 것
 
 ![images_teo_post_1ec0239c-4abb-4de5-bbc6-4fefc9f0aee2_image](https://user-images.githubusercontent.com/85836879/173501650-1d3275bd-4f95-4653-8599-e670709e5811.png)
