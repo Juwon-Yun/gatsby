@@ -13,7 +13,7 @@ alt: "flutter"
 
 하지만 구체적인 예시가 없는 설명은 이해를 어렵게 만들 뿐입니다.
 
-이 글에서는 JavaScript와 Dart를 통해 반응형 프로그래밍을 설명하고 RxDart의 테스트코드를 어떻게 쓰는지에 대해서 설명하겠습니다.
+이 글에서는 JavaScript와 Dart를 통해 반응형 프로그래밍을 설명하겠습니다.
 
 ( 객체지향을 Java를 통해 설명하듯 )
 
@@ -131,3 +131,89 @@ Rx에서는 이러한 이벤트의 종류를 Next, Error, Complete의 3가지 Ty
     }
 
 ```
+
+우리는 for가 아니라 .map, .reduce를 사용하게 되면 Array를 선언적으로 다룰 수 있다는 사실을 알고 있습니다.
+
+이러한 방식처럼 Stream도 선언적으로 다룰 수 있지 않을까요? 
+
+### 스트림을 선언적으로 작성한다는 것!
+#### Stream을 Array Method처럼 만들어서 사용해보자
+
+일단 배열을 선언형으로 랜덤한 숫자에서 짝수만 골라 출력하는 프로그램입니다.
+
+```js
+void main() {
+  final random = Random();
+  final ran = [1, 2, 3, 4, 5].map(
+          (e) => random.nextInt(e * 10)).where((element) => element %  2 == 0);
+  print(ran);
+}
+```
+
+잘은 모르겠지만 Array의 값 대신 Stream 객체를 통해 1초마다 랜덤한 숫자를 받아서 짝수를 출력하기는 어떻까요.
+
+그렇다면 다음과 같은 코드의 형태로 작성할 수 있을 것 같습니다.
+
+```js
+void main() {
+  final random = Random();
+  getNumberStream().listen((event) {
+    var ranEvent = random.nextInt(event * 10);
+    if(ranEvent % 2 == 0){
+      print(ranEvent);
+    }
+  });
+}
+
+Stream<int> getNumberStream() async* {
+  for (int i = 1; i < 11; i++) {
+    await Future.delayed(Duration(seconds: 1));
+    yield i;
+  }
+}
+```
+
+> 축하합니다! 이제 우리는 비동기 프로그래밍을 스트림을 통해 선언적으로 프로그래밍을 할 수 있게 되었습니다!
+
+이렇듯 이벤트를 하나의 값으로 생각하고 이를 Array Method를 다루듯이 작성한다면 훨씬 더 직관적이고 간결하게 프로그래밍을 할 수 있을 것 같습니다.
+
+( 실제로 1초마다 숫자를 받아서 짝수를 축력하기를 그냥 구현하면 어떻게 코딩을 할지 상상해보세요. )
+
+### Rx는 무엇인가요?
+![images_teo_post_2e9989a7-4280-4d72-9e1f-fbf0361d754a_image](https://user-images.githubusercontent.com/85836879/173501135-5f538d00-8c6b-41e9-b9f9-aecef34b45b4.png)
+
+다시보는 Rx의 정의
+
+> An API for asynchronous programming with observable streams
+> 관층가능한 스트림을 통해 비동기 프로그래밍을 하기 위한 API
+
+![images_teo_post_5e9e8cf5-5706-4ccc-b4ba-ae1cb2389822_image](https://user-images.githubusercontent.com/85836879/173501322-a7a73f1e-9309-4624-8598-419c53d1082d.png)
+
+> 스트림(Stream) + 선언형 프로그래밍 = 반응형 프로그래밍
+> 반응형 프로그래밍이란 스트림을 선언적으로 작성하는 프로그래밍 패러다임
+
+결국 반응형 프로그래밍의 최종적인 정리는 이것입니다.
+
+> 데이터의 흐름과 변경사항의 전파에 중점을 둔 선언적 프로그래밍 패러다임.
+> 즉, 모든 것을 스트림으로 간주하고 선언적으로 개발하는 것
+
+![images_teo_post_1ec0239c-4abb-4de5-bbc6-4fefc9f0aee2_image](https://user-images.githubusercontent.com/85836879/173501650-1d3275bd-4f95-4653-8599-e670709e5811.png)
+
+Array, Iterator, Promise, Callback, Event를 모두 스트림이라고 하는 하나의 관점으로 간주하고 개발을 하는 패러다임이 바로 반응형 프로그래밍입니다.
+
+### 끝으로... 
+객체지향 프로그래밍, 함수형 프로그래밍 같이 프로그래밍에는 여러가지 패러다임이 존재합니다. 이러한 패러다임을 이해하면 프ㅗ그램을 작성할 때 일관성있고 좋은 관점을 가질 수 있고 설계와 결정에 도움을 줍니다.
+
+반응형 프로그래밍은 스프레드 시트와 같이 미리 선언된 방식에 데이터의 변경을 전파하여 프로그램이 동작하게 만드는 방식의 패러다임을 말합니다.
+
+이러한 반응형 프로그래밍은 비동기 프로그래밍을 조금 더 간결하게 바라볼 수 있는 관점을 제공해줍니다.
+
+프론트엔드는 비동기 프로그래밍 덩어리이므로 반응형 프로그래밍 패러다임은 프론트엔드에서 중요한 패러다임이 되었습니다.
+
+상태관리 역시 그러합니다.
+
+아직 RxDart를 이용한 내장 메소드로 테스트 코드 예시를 못 보여드렸는데요.
+
+보여줄게 많은 것 같습니다.
+
+감사합니다!
