@@ -6,17 +6,18 @@ desc: "RxDart와 반응형 프로그래밍"
 thumbnail: "./images/flutter/flutter_logo.jpg"
 alt: "flutter"
 ---
+![reactive_x](https://user-images.githubusercontent.com/85836879/173492814-3412c81e-2a19-4c74-8a68-20fcd4fc8bca.png)
 
 ### 들어가며
 반응형 프로그래밍은 어떠한 라이브러리나 구현체가 아닌 하나의 관점 또는 패러다임입니다.
 
 하지만 구체적인 예시가 없는 설명은 이해를 어렵게 만들 뿐입니다.
 
-이 글에서는 Dart를 통해 반응형 프로그래밍을 설명하고 RxDart의 테스트코드를 어떻게 쓰는지에 대해서 설명하겠습니다.
+이 글에서는 JavaScript와 Dart를 통해 반응형 프로그래밍을 설명하고 RxDart의 테스트코드를 어떻게 쓰는지에 대해서 설명하겠습니다.
 
 ( 객체지향을 Java를 통해 설명하듯 )
 
-### 반응형 프로그래밍
+### 실제 문제를 상상해보자!
 당신은 아래와 같은 자동완성을 구현해달라는 요청을 받았습니다.
 
 어떻게 코딩할지 상상해 봅시다!
@@ -48,4 +49,85 @@ JavsScript의 Promise, async/await가 이 문제를 해결 할 수 있을까요?
 
 Rx와 반응형 패러다임은 어떠한 방식으로 이 비동기 문제를 접근하는지 한번 살펴보도록 하겠습니다.
 
+### 반응형 프로그래밍 
+반응형 프로그래밍은 변경을 감지하고 전파하고 선언적으로 프로그래밍을 작성한다는 패러다임을 구현하기 위해서 아래와 같은 구조를 가지고 있습니다.
 
+![images_teo_post_d7e1d6ef-5867-4566-a11f-e816fed8a3fd_image](https://user-images.githubusercontent.com/85836879/173492139-9e3084b2-b450-41df-81f7-223af455ca1c.png)
+
+> JavaScript의 addEventlistener?
+
+네, DOM에서 쓰는 이벤트 리스너를 등록하고 전달하는 방식 역시 반응형 프로그래밍입니다.
+
+이러한 방식으로 웹은 자연스레 반응형 프로그래밍의 구조를 따르게 되었죠.
+
+우리가 구현하고자 하는 방향은 이러한 Event Listener의 관점으로 프로그래밍을 하는 것입니다.
+
+### ReactiveX
+#### Stream을 이용한 개발!
+우리는 Rx와 같은 반응형 프로그래밍 라이브러리를 이용해서 이러한 구조를 만들게되면 보다 프로그래밍을 단순한 관점으로 개발할 수 있게 됩니다.
+
+### Rx는 무엇인가요?
+> ReactiveX
+> 
+> An API for asynchronous programming with observable streams
+> 
+> 관측가능한 스트림을 통한 비동기 프로그래밍을 하기 위한 API
+
+Rx를 알고나면 이 정의가 너무나 당현하지만 이해하는 과정이 길고 복잡합니다.
+비동기(asynchronous), 옵저버블(observable), 스트림(streams)이라는 키워드만 일단 기억합시다!
+
+비동기 프로그래밍은 실행 순서와 데이터를 제어하기가 어렵습니다.
+
+하지만 프론트엔드는 비동기 프로그래밍 덩어리입니다.
+
+그렇기에 조금 더 간결하고 쉬운 개발을 하기 위한 관점과 체계가 필요했고 그것이 바로 반응형 프로그래밍입니다.
+
+반응형 프로그래밍은 변경사항의 전파와 데이터 흐름을 중심으로 선언적으로 작성하여 어려움을 해결합니다.
+
+그러기 위해서는 Pull -> Push의 패러다임 전환이 필요하고 이를 구현하기 위해서는 Event와 같은 방식을 통해 제어의 역전을 만들어야 합니다.
+
+( SOLID의 I, IOC가 맞습니다! )
+
+여기서 우리는 다음과 같은 사실을 하나 얻을 수 있습니다.
+
+> 변경사항의 전파 + 데이터의 흐름 = Event 이구나!
+
+그래서 우리는 반응형 프로그래밍을 다음과 같이 확장을 할 수 있게 됩니다.
+
+> Event + 선언형 프로그래밍 = 반응형 프로그래밍
+>
+> 즉, 반응형 프로그래밍이란 이벤트를 선언적으로 작성하는 프로그래밍 패러다임
+
+### Event를 Stream으로 대체
+Rx에서는 이러한 이벤트의 종류를 Next, Error, Complete의 3가지 Type을 정의해 조금 더 보편적인 상황을 처리할 수 있도록 정의하였습니다.
+
+![images_teo_post_5300b104-dad8-4fa0-8253-c70760d670bd_image](https://user-images.githubusercontent.com/85836879/173493925-eb7cfa5b-1d26-435a-ac7a-01581e01e536.png)
+
+
+(try, catch, finally와 같은 맥락으로 이해하시면 도움될 것 같아요.)
+
+> 스트림 + 선언형 프로그래밍 = 반응형 프로그래밍
+> 
+> 반응형 프로그래밍이란 스트림을 선언적으로 작성하는 프로그래밍 패러다임!
+
+### 선언형 프로그래밍이라는 것! 
+반응형 프로그래밍을 이해하기 위해 살짝 돌아가겠지만 선언적 프로그래밍을 예시코드 하나로 생각해봅시다!
+
+잘 알고 계시는 것으로 for 반복문과 Array Method의 차이입니다.
+
+```js
+    // 명령형 프로그래밍
+    function total(numbers: int[]): int{
+        let sum = 0;
+        for(let i = 0; i < numbers.length; i++){
+            sum += numbers[i];
+        }
+        return sum;
+    }
+    
+    // 선언형 프로그래밍
+    function total(numbers){
+        return numbers.reduce((pre, cur)=> pre + cur);
+    }
+
+```
