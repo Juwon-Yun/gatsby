@@ -7,19 +7,18 @@ thumbnail: "./images/flutter/flutter_logo.jpg"
 alt: "flutter"
 ---
 
-
-
 Flutter에서 Stateless Widget과 Stateful Widget은 서로 다른 생명주기를 가지고 있습니다.
 
 예시 코드를 보면서 알아보겠습니다.
 
-### Stateless Widget LifeCycle
+![statelesswidget-vs-statefulwidget-diagram-1536x1231](https://user-images.githubusercontent.com/85836879/174423154-ea713c48-10c0-468d-9b69-44c628a68e87.png)
 
----
+
+### Stateless Widget LifeCycle
 
 Stateless Widget은 단순히 화면을 구성하는 위젯이므로 단순한 생명주기를 가지고 있습니다.
 
-#### Stateless Widget의 Constructor
+### Stateless Widget의 Constructor
 
 flutter에서 위젯은 기본적으로 클래스를 사용하여 생성합니다.
 
@@ -27,7 +26,7 @@ flutter에서 위젯은 기본적으로 클래스를 사용하여 생성합니�
 
 위젯의 생성자와 클래스의 생성자는 동일한 역할을 가지며 마찬가지로 해당 위젯 안에서 사용될 변수들을 초기화할 때 사용합니다.
 
-```
+```js
 import 'package:flutter/material.dart';
 
 class Stless extends StatelessWidget {
@@ -39,13 +38,13 @@ class Stless extends StatelessWidget {
 }
 ```
 
-#### Stateless Widget의 build
+### Stateless Widget의 build
 
 Widget의 builde 메서드는 화면에 렌더링 할 내용을 가지고 있습니다.
 
 React의 render 함수와 동일한 역할을 하며 화면에 표시될 Widget들을 반환합니다.
 
-```
+```js
 import 'package:flutter/material.dart';
 
 class Stless extends StatelessWidget {
@@ -67,19 +66,19 @@ Stateless Widget은 자체적인 State(상태값)를 갖지 않습니다.
 
 이때 Constructor와 build 메서드가 다시 실행됩니다.
 
-### Stateful Widget
+--- 
 
----
+### Stateful Widget LifeCycle
 
 Stateful Widget은 Stateless Widget과는 다르게 자체적인 State(상태값)를 가지고 있기 때문에 Widget의 생명주기 단계가 비교적 더 많습니다.
 
-#### Stateful Widget의 Constructor
+### Stateful Widget의 Constructor
 
 Stateful Widget의 생성자도 Stateless Widget의 생성자와 동일한 역할을 합니다.
 
 위젯 클래스로 인스턴스를 생성할 때, 생성자가 제일 먼저 호출하게 되며, 부모 위젯으로부터 매개변수를 전달받을 때 사용됩니다.
 
-```
+```js
 class CounterStful extends StatefulWidget {
   final int count;
 
@@ -100,13 +99,13 @@ class _CounterStfulrState extends State<CounterStful> {
 }
 ```
 
-#### InitState
+### initState
 
 Stateful Widget이 생성될 때 한번만 호출되는 함수로 State값을 초기화할 때 사용합니다.
 
 상속받은 클래스인 State에 initState 메서드를 Override하여 사용할 수 있습니다.
 
-```
+```js
 class _CounterStfulState extends State<CounterStful> {
   late int count;
 
@@ -127,7 +126,7 @@ initState함수가 호출된 바로 이후 한번만 호출합니다. 
 
 하지만 InferitedWidget이나 Provider를 사용하는 경우 InferitedWidget이나 Provider의 상태가 변경될 때 마다 호출합니다.
 
-```
+```js
 @override
 void didChangeDependencies() {
   super.didChangeDependencies();
@@ -140,13 +139,13 @@ void didChangeDependencies() {
 
 해당 위젯이 참조 혹은 의존하는 위젯이 변경된다면 didChangeDependencies 메서드가 작동합니다.
 
-#### didUpdateWidget
+### didUpdateWidget
 
 didUpdateWidget 메서드는 상위 위젯에 의해 rebuild가 필요한 경우 build 메서드의 호출 직전에 호출됩니다.
 
 보통은 상위 위젯의 변화나 애니메이션을 다시 실행할 필요가 있을때 작동하며 자주 사용됩니다.
 
-```
+```js
 @override
 void didUpdateWidget(MyWidget oldWidget) {
   super.didUpdateWidget(oldWidget);
@@ -158,7 +157,7 @@ void didUpdateWidget(MyWidget oldWidget) {
 
 상위 위젯의 변화에 따라 현재 위젯의 상태값을 초기화할 필요가 있다면 didUpdateWidget 메서드 안에서 setState를 통해 상태값을 다시 초기화 할 수 있습니다.
 
-#### Stateful Widget의 build
+### Stateful Widget의 build
 
 Stateless Widget의 build와 동일한 역할을 합니다.
 
@@ -166,7 +165,7 @@ Stateless Widget의 build와 동일한 역할을 합니다.
 
 setState를 사용하여 Stateful 위젯의 상태가 변경될 때 다시 호출되여 화면을 다시 렌더링합니다.
 
-#### deactivate
+### deactivate
 
 Stateful Widget은 Stateless Widget과는 다르게 State(상태) 객체를 가지고 있습니다.
 
@@ -176,9 +175,9 @@ deactivate 메서드는 상태 객체가 Widget Tree에서 제거될 때 호출�
 
 flutter에서는 떄로 상태 객체만 제거된 후 다시 추가되는 경우가 있는데 GlobalKey를 사용하여 현재 위젯을 특정 위젯 트리 위치로 이동시키면 해당 위젯 상태 객체가 변경되므로 deactive가 실행되게 됩니다.
 
-[(https://api.flutter.dev/flutter/widgets/State/deactivate.html](https://api.flutter.dev/flutter/widgets/State/deactivate.html))
+[(deactivate method)](https://api.flutter.dev/flutter/widgets/State/deactivate.html))
 
-#### dispose
+### dispose
 
 Widget 객체가 Widget Tree에서 영구적으로 제거 될때 호출됩니다.
 
@@ -186,30 +185,30 @@ Widget 객체가 Widget Tree에서 영구적으로 제거 될때 호출됩니다
 
 dispose 호출은 Widget 객체가 영구적으로 제거되었음을 의미하므로 setState를 사용하여 해당 위젯을 rebuild할 수 없습니다.
 
-### 결론
+### 마무리...
 
 ---
 
-#### Statefule Widget 생성
+### Statefule Widget 생성
 
 Constructor -> initState -> didChangeDependencies -> build
 
-#### setState 호출
+### setState 호출
 
 build
 
-#### InferitedWidget 또는 Provider의 값 변경
+### InferitedWidget 또는 Provider의 값 변경
 
 didChangeDependencies -> build
 
-#### 상위 위젯으로부터 전달받는 인자가 변경되었을 때
+### 상위 위젯으로부터 전달받는 인자가 변경되었을 때
 
 didUpdateWidget -> build
 
-#### 상태 객체가 제거되었을 때
+### 상태 객체가 제거되었을 때
 
 deactivate -> build
 
-#### 위젯 객체가 제거될 때
+### 위젯 객체가 제거될 때
 
 deactivate -> dispose
