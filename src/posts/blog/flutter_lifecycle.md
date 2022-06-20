@@ -118,7 +118,7 @@ class _CounterStfulState extends State<CounterStful> {
 }
 ```
 
-#### didChangeDependencies
+### didChangeDependencies
 
 didChangeDependencies 메서드는 Widget이 생성될 때 
 
