@@ -39,9 +39,9 @@ Stream과 Observable은 같은 방식으로 구현하지만 표준 Rx에 익숙�
 ## Factory(생성 함수)
 
 ### CombineLatest
-스트림 중 하나가 아이템을 방출할 때마다 결합하여 스트림을 하나의 스트림 시퀀스로 병합하는 메소드
+Stream 중 하나가 아이템을 방출할 때마다 결합하여 Stream을 하나의 Stream 시퀀스로 병합하는 메소드
 
-모든 스트림이 하나 이상의 아이템을 방출할 때까지 스트림이 방출되지 않습니다.
+모든 Stream이 하나 이상의 아이템을 방출할 때까지 Stream이 방출되지 않습니다.
 
 ![image](https://user-images.githubusercontent.com/85836879/175301530-0124e7ce-ba7c-4f60-891a-8ad9c461806f.png)
 
@@ -95,9 +95,9 @@ void main() {
 <a href="https://pub.dev/documentation/rxdart/latest/rx/Rx/combineLatest.html" target="_blank">combineLatest 보러가기</a>
 
 ### Concat
-이전 스트림 순서가 성공적으로 종료되는 한 지정된 모든 스트림 순서를 연결합니다.
+이전 Stream 순서가 성공적으로 종료되는 한 지정된 모든 Stream 순서를 연결합니다.
 
-각 스트림을 하나씩 구독하여 모든 항목을 방출하고 다음 스트림을 구독하기 전에 완료하여 이를 수행합니다.
+각 Stream을 하나씩 구독하여 모든 항목을 방출하고 다음 Stream을 구독하기 전에 완료하여 이를 수행합니다.
 
 ![image](https://user-images.githubusercontent.com/85836879/175303129-c5ea9e16-504d-4d80-9296-2d3bb52c11db.png)
 
@@ -115,3 +115,86 @@ void main() {
 ```
 
 ### ConcatEager
+이전 Stream 순서가 성공적으로 종료되는 한 지정된 모든 Stream 순서로 연결합니다.
+
+다음 스크림 이후에 하나의 Stream을 구독하지 않고 모든 Stream이 구독됩니다.
+
+그런 다음 이전 Stream이 아이템을 방출한 이후에 이벤트가 생성됩니다.
+
+![ismage](https://user-images.githubusercontent.com/85836879/175467063-872b046d-3c99-4055-9276-6519782f0d14.png)
+
+```js
+test('test 4 : 0, 1, 2, 3, 4, 5가 순차적으로 발행되어야 한다.', () {
+    //given
+    var a = Stream.fromIterable([0, 1, 2]), b = Stream.fromIterable([3, 4, 5]);
+
+    // when
+    final stream = Rx.concatEager([a, b]);
+
+    // then
+    expect(stream, emitsInOrder([0, 1, 2, 3, 4, 5]));
+  }, timeout: const Timeout(Duration(seconds: 10)));
+```
+
+### Defer 
+Defer는 Stream이 구독할 때까지 기다린 다음 지정된 팩토리 기능으로 스트림을 만듭니다.
+
+경우에 따라 Stream을 생성하기 위해 마지막 구독 시간까지 대기하며 Stream에 최신 데이터가 포함됩니다.
+
+기본적으로 DeferStreams는 단일 구독이지만 재사용할 수 있습니다.
+
+![ismage](https://user-images.githubusercontent.com/85836879/175467865-5d932893-be0f-4f90-85ad-d339e9ba5b68.png)
+
+```js
+test('defer 기본', () {
+    // given
+    var a = Stream.value(1);
+
+    // when
+    final stream = Rx.defer(() => a);
+
+    // then
+    stream.listen(expectAsync1(
+      (event) {
+        expect(event, 1);
+      },
+      count: 1,
+    ));
+  }, timeout: const Timeout(Duration(seconds: 10)));
+
+  test('defer는 단일 구독이 기본이므로 여러번 구독했을때 실패해야한다.', () {
+    // given
+    var a = Stream.value(1);
+
+    // when
+    final stream = Rx.defer(() => a);
+
+    // then
+    try {
+      stream.listen(null);
+      stream.listen(null);
+    } catch (error) {
+      print(error); // Bad state: Stream has already been listened to.
+      expect(error, isStateError);
+    }
+  }, timeout: const Timeout(Duration(seconds: 10)));
+
+  test('reusable이 true일때 defer는 재구독이 가능해야 한다.', () {
+    // given
+    var a = Stream.value(1);
+
+    // when
+    final stream = Rx.defer(
+        () => Stream.fromFuture(
+              Future.delayed(
+                const Duration(seconds: 1),
+                () => a,
+              ),
+            ),
+        reusable: true);
+
+    // then
+    stream.listen(expectAsync1((actual) => expect(actual, a), count: 1));
+    stream.listen(expectAsync1((actual) => expect(actual, a), count: 1));
+  }, timeout: const Timeout(Duration(seconds: 10)));
+```
