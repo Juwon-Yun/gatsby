@@ -36,7 +36,9 @@ Stream과 Observable은 같은 방식으로 구현하지만 표준 Rx에 익숙�
 
 <a href="https://pub.dev/documentation/rxdart/latest/rx/Rx-class.html" target="_blank">Rx Dart 보러가기</a>
 
-### CombineLatest 함수
+## Factory(생성 함수)
+
+### CombineLatest
 스트림 중 하나가 아이템을 방출할 때마다 결합하여 스트림을 하나의 스트림 시퀀스로 병합하는 메소드
 
 모든 스트림이 하나 이상의 아이템을 방출할 때까지 스트림이 방출되지 않습니다.
@@ -92,9 +94,24 @@ void main() {
 
 <a href="https://pub.dev/documentation/rxdart/latest/rx/Rx/combineLatest.html" target="_blank">combineLatest 보러가기</a>
 
-### Concat 함수
+### Concat
 이전 스트림 순서가 성공적으로 종료되는 한 지정된 모든 스트림 순서를 연결합니다.
 
 각 스트림을 하나씩 구독하여 모든 항목을 방출하고 다음 스트림을 구독하기 전에 완료하여 이를 수행합니다.
 
 ![image](https://user-images.githubusercontent.com/85836879/175303129-c5ea9e16-504d-4d80-9296-2d3bb52c11db.png)
+
+```js
+  test('test 3 : 0, 1, 2, 3, 4, 5가 순차적으로 발행되어야 한다.', () {
+    //given
+    var a = Stream.fromIterable([0, 1, 2]), b = Stream.fromIterable([3, 4, 5]);
+
+    // when
+    final stream = Rx.concat([a, b]);
+
+    // then
+    expect(stream, emitsInOrder([0, 1, 2, 3, 4, 5]));
+  }, timeout: const Timeout(Duration(seconds: 10)));
+```
+
+### ConcatEager
