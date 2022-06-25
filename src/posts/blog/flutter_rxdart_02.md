@@ -275,3 +275,40 @@ test('각 스트림의 가장 최근 값을 합쳐 List로 반환합니다.', ()
   }, timeout: const Timeout(Duration(seconds: 10)));
   
 ```
+
+### Merge
+지정된 List에서 방출될 값을 병합하여 반환합니다.
+
+![ismage](https://user-images.githubusercontent.com/85836879/175764017-ee2895ce-5a06-41e2-877a-02feef7566c2.png)
+
+```js
+test('각 리스트에서 방출된 값을 리스트로 병합한다.', () async {
+    // given
+    var a = Stream.periodic(const Duration(milliseconds: 500), (count) => count)
+            .take(3),
+        b = Stream.fromIterable([1, 2, 3, 4]);
+
+    // when
+    final stream = Rx.merge([a, b]);
+
+    await expectLater(stream, emitsInOrder([1, 2, 3, 4, 0, 1, 2]));
+  }, timeout: const Timeout(Duration(seconds: 10)));
+
+test('병합 도중 에러 발생시, 에러가 발생하기 이전 값들까지만 병합해 리스트로 반환하고 에러를 나타낸다.', () async {
+    // given
+    var a = Stream.periodic(const Duration(milliseconds: 500), (count) => count)
+            .take(3),
+        b = Stream.fromIterable([1, 2, 3, 4]),
+        c = Stream<String>.error(Exception('merge error'));
+
+    // when
+    final stream = Rx.merge([a, b, c]);
+
+    // then
+    // Exception: merge error
+    // await expectLater(stream, emitsInOrder([1, 2, 3, 4, 0, 1, 2]));
+
+    stream.listen(null,
+        onError: expectAsync2((p0, p1) => expect(p0, isException)));
+  }, timeout: const Timeout(Duration(seconds: 10)));
+```
