@@ -50,7 +50,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:rxdart/rxdart.dart';
 
 void main() {
-    test('test 1 : 각 스트림에서 모든 값이 한 개 이상 방출되었을 때 가장 최근 값들을 합쳐 방출해야 한다.', () async {
+  test('test 1 : 각 스트림에서 모든 값이 한 개 이상 방출되었을 때 가장 최근 값들을 합쳐 방출해야 한다.', () async {
     // given
     var a = Stream.fromIterable(['a']),
         b = Stream.fromIterable(['b']),
@@ -69,7 +69,7 @@ void main() {
         ]));
   }, timeout: const Timeout(Duration(seconds: 10)));
 
-    test('test 2 : 각 스트림에서 모든 값이 한 개 이상 방출되었을 때, 가장 최근값들의 가장 마지막 값을 합쳐 방출해야 한다.',  () async {
+  test('test 2 : 각 스트림에서 모든 값이 한 개 이상 방출되었을 때, 가장 최근값들의 가장 마지막 값을 합쳐 방출해야 한다.',  () async {
     // given
     var a = Stream.fromIterable(['a']),
         b = Stream.fromIterable(['b']),
@@ -162,7 +162,7 @@ test('defer 기본', () {
     ));
   }, timeout: const Timeout(Duration(seconds: 10)));
 
-  test('defer는 단일 구독이 기본이므로 여러번 구독했을때 실패해야한다.', () {
+test('defer는 단일 구독이 기본이므로 여러번 구독했을때 실패해야한다.', () {
     // given
     var a = Stream.value(1);
 
@@ -179,7 +179,7 @@ test('defer 기본', () {
     }
   }, timeout: const Timeout(Duration(seconds: 10)));
 
-  test('reusable이 true일때 defer는 재구독이 가능해야 한다.', () {
+test('reusable이 true일때 defer는 재구독이 가능해야 한다.', () {
     // given
     var a = Stream.value(1);
 
@@ -197,4 +197,81 @@ test('defer 기본', () {
     stream.listen(expectAsync1((actual) => expect(actual, a), count: 1));
     stream.listen(expectAsync1((actual) => expect(actual, a), count: 1));
   }, timeout: const Timeout(Duration(seconds: 10)));
+```
+
+### ForkJoin
+forkJoin은 Stream List가 있고 각각의 최종 결과값에만 관심이 있는 경우에 사용하기 적합합니다.
+
+이에 대한 적용 사례는 페이지 로드에서 여러 요청이 발행하고 모두에 대한 응답이 수신된 경우에만 조치를 수행하려는 경우입니다.
+
+forkJoin 오류에 공급된 내부 Stream 중 하나라도 오류를 잡지 않으면 이미 완료되었거나 완료된 다른 스트림의 값을 잃게 됩니다.
+
+모든 내부 Stream만 성공적으로 완됴뇌는 데 관심이 있는 경우 외부에서 오류를 잡을 수 있습니다.
+
+forkJoin은 Future.wait를 사용하는 방법과 비슷합니다.
+
+하지만 하나 이상의 항목을 방출하는 Stream이 있고 이전 결과값의 반환을 고려하는 경우 올바른 선택이 아닙니다. 
+
+(이 경우 combineLatest 또는 zip 연산자를 사용하는 것이 좋습니다.)
+
+![image](https://user-images.githubusercontent.com/85836879/175762033-419b9618-5223-442a-a5f1-d04b49c1141d.png)
+
+```js
+test('각 스트림의 가장 최근 값을 합쳐 List로 반환합니다.', () async {
+    // given
+    var a = Stream.fromIterable(['a']),
+        b = Stream.fromIterable(['b']),
+        c = Stream.fromIterable(['c', 'd']);
+
+    //when
+    final stream = Rx.forkJoinList([a, b, c]);
+
+    await expectLater(
+        stream,
+        emitsInOrder([
+          ['a', 'b', 'd'],
+          emitsDone
+        ]));
+  }, timeout: const Timeout(Duration(seconds: 10)));
+  
+
+  test('각 스트림의 가장 최근 값을 합쳐 List로 방출하고 마지막 값만 반환합니다.', () async {
+    // given
+    var a = Stream.fromIterable(['a']),
+        b = Stream.fromIterable(['b']),
+        c = Stream.fromIterable(['c', 'd']);
+
+    // when
+    final stream =
+        Rx.forkJoin([a, b, c], (List<String> returnList) => returnList.last);
+
+    // then
+    await expectLater(stream, emitsInOrder(['d', emitsDone]));
+  }, timeout: const Timeout(Duration(seconds: 10)));
+
+  test('ForkJoin N개의 (임의의 개수) 스트림이 존재하는 경우', () async {
+    // given
+    var a = Stream.fromIterable(['a']), b = Stream.fromIterable(['b', 'c']);
+
+    // when
+    final stream = Rx.forkJoin2(a, b, (String a, String b) => a + b);
+
+    // then
+    await expectLater(stream, emitsInOrder(['ac', emitsDone]));
+  }, timeout: const Timeout(Duration(seconds: 10)));
+
+  test('ForkJoin 스트림 중 에러가 포함되어 있는 경우 결합하지 않는다.', () async {
+    // given
+    var a = Stream.value('a'),
+        b = Stream.value('b'),
+        c = Stream<String>.error(Exception('it was error message'));
+
+    // when
+    final stream =
+        Rx.forkJoin3(a, b, c, (String a, String b, String c) => a + b + c);
+
+    // then
+    await expectLater(stream, emitsError(const TypeMatcher<Exception>()));
+  }, timeout: const Timeout(Duration(seconds: 10)));
+  
 ```
