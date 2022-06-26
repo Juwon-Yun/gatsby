@@ -355,7 +355,7 @@ test('어떤 에러나 데이터등을 리턴하지 않아야 한다.', () async
 
 ```js
  test('race default', () {
-    // given
+   // given
     var a = Rx.timer(1, const Duration(seconds: 3)),
         b = Rx.timer(2, const Duration(seconds: 2)),
         c = Rx.timer(3, const Duration(seconds: 1));
@@ -380,4 +380,43 @@ test('어떤 에러나 데이터등을 리턴하지 않아야 한다.', () async
         onError: expectAsync2((Exception exception, StackTrace stackTrace) =>
             expect(exception, isException)));
   }, timeout: const Timeout(Duration(seconds: 5)));
+```
+
+### Range
+지정된 범위 내에서 정수를 방출하는 Stream을 반환합니다.
+
+> Stream<int> range(
+>   int startInclusive,
+>   int endInclusive
+> )
+
+![image](https://user-images.githubusercontent.com/85836879/175802777-02497441-40f2-4439-b202-771757c2caf2.png)
+
+```js
+test('Range 1 ~ 3 범위 안의 값을 방출해야 한다.', () async {
+    // given
+    // when
+    final stream = Rx.range(1, 3);
+    // then
+    await expectLater(stream, emitsInOrder([1, 2, 3, emitsDone]));
+  }, timeout: const Timeout(Duration(seconds: 3)));
+
+test('Range의 시작과 끝이 같으면 1개의 항목만 방출해야 한다.', () {
+    // given
+    // when
+    final stream = Rx.range(1, 1);
+    // then
+    stream.listen(expectAsync1((int actual) {
+      expect(actual, 1);
+    }, count: 1));
+  }, timeout: const Timeout(Duration(seconds: 3)));
+
+test('역순으로 방출해야 한다.', () async {
+    // given
+    // when
+    final stream = Rx.range(3, 1);
+    // then
+    await expectLater(stream, emitsInOrder([3, 2, 1, emitsDone]));
+  }, timeout: const Timeout(Duration(seconds: 3)));
+
 ```
