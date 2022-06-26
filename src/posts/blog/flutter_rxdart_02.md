@@ -34,7 +34,7 @@ Stream과 Observable은 같은 방식으로 구현하지만 표준 Rx에 익숙�
 
 
 
-<a href="https://pub.dev/documentation/rxdart/latest/rx/Rx-class.html" target="_blank">Rx Dart 보러가기</a>
+<a href="https://pub.dev/documentation/rxdart/latest/rx/Rx-class.html" target="_blank">Rx Dart docs</a>
 
 ## Factory(생성 함수)
 
@@ -89,10 +89,6 @@ void main() {
 
 > test 1의 emitsInOrder 매개변수를 다르게 작성한 경우 가장 최근 값들을 방출하는 것을 알 수 있다.
 ![스크린샷 2022-06-23 오후 9 37 05](https://user-images.githubusercontent.com/85836879/175300264-251caf3a-5aa3-4dae-b664-48c4eb05ac9f.png)
-
-
-
-<a href="https://pub.dev/documentation/rxdart/latest/rx/Rx/combineLatest.html" target="_blank">combineLatest 보러가기</a>
 
 ### Concat
 이전 Stream 순서가 성공적으로 종료되는 한 지정된 모든 Stream 순서를 연결합니다.
@@ -311,4 +307,77 @@ test('병합 도중 에러 발생시, 에러가 발생하기 이전 값들까지
     stream.listen(null,
         onError: expectAsync2((p0, p1) => expect(p0, isException)));
   }, timeout: const Timeout(Duration(seconds: 10)));
+```
+
+### Never
+무한 지속 시간을 나타내는 데 사용할 수 있는 종료되지 않는 Stream 시퀸스를 반환합니다.
+
+never 연산자는 매우 구체적이고 제한된 동작을 가진 연산자입니다.
+
+never 연산자는 테스트 목적으로 유용하며 때로는 다른 Stream과 함께 또는 다른 Stream을 매개 변수로 기대하는 Stream에 매개 변수로 결합하는 데 유용합니다.
+
+```js
+test('어떤 에러나 데이터등을 리턴하지 않아야 한다.', () async {
+    // given
+    var onDataCalled = false, onDoneCalled = false, onErrorCalled = false;
+
+    // when
+    final stream = Rx.never<void>();
+
+    final subscription = stream.listen(
+        expectAsync1((_) {
+          onDataCalled = true;
+        }, count: 0),
+        onError: expectAsync2((Exception exception, StackTrace stackTrace) {
+          onErrorCalled = true;
+        }, count: 0),
+        onDone: expectAsync0(() {
+          onDataCalled = true;
+        }, count: 0));
+
+    await Future<void>.delayed(const Duration(seconds: 5));
+
+    await subscription.cancel();
+
+    // then
+    // 어떠한 에러나 데이터등을 리턴하는 콜백함수가 호출되지 않아 모두 false값을 가지고 있음.
+    await expectLater(onDataCalled, isFalse);
+    await expectLater(onDoneCalled, isFalse);
+    await expectLater(onErrorCalled, isFalse);
+
+  }, timeout: const Timeout(Duration(seconds: 10)));
+```
+
+### Race
+두 개 이상의 Stream이 주어지면 Stream List의 처음 항목에서만 모든 항목 Stream을 내보내 항목이나 알림을 방출합니다.
+
+![image](https://user-images.githubusercontent.com/85836879/175802028-2dfc4fc7-6c2b-42f6-b2a1-9a2e0a9a7b8d.png)
+
+```js
+ test('race default', () {
+    // given
+    var a = Rx.timer(1, const Duration(seconds: 3)),
+        b = Rx.timer(2, const Duration(seconds: 2)),
+        c = Rx.timer(3, const Duration(seconds: 1));
+
+    // when
+    final stream = Rx.race([a, b, c]);
+
+    // then
+    stream.listen(expectAsync1((value) => expect(value, 3), count: 1));
+  }, timeout: const Timeout(Duration(seconds: 5)));
+
+  test('race 수행 중 에러가 발생하였을 경우', () {
+    // given
+    var a = Rx.timer(1, const Duration(seconds: 1)),
+        b = Stream<void>.error(Exception('is was error on race'));
+
+    // when
+    final stream = Rx.race([a, b]);
+
+    // then
+    stream.listen(null,
+        onError: expectAsync2((Exception exception, StackTrace stackTrace) =>
+            expect(exception, isException)));
+  }, timeout: const Timeout(Duration(seconds: 5)));
 ```
