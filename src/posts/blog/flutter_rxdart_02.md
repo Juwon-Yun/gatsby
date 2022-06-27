@@ -394,7 +394,7 @@ test('어떤 에러나 데이터등을 리턴하지 않아야 한다.', () async
 
 ```js
 test('Range 1 ~ 3 범위 안의 값을 방출해야 한다.', () async {
-    // given
+  // given
     // when
     final stream = Rx.range(1, 3);
     // then
@@ -402,7 +402,7 @@ test('Range 1 ~ 3 범위 안의 값을 방출해야 한다.', () async {
   }, timeout: const Timeout(Duration(seconds: 3)));
 
 test('Range의 시작과 끝이 같으면 1개의 항목만 방출해야 한다.', () {
-    // given
+  // given
     // when
     final stream = Rx.range(1, 1);
     // then
@@ -412,11 +412,76 @@ test('Range의 시작과 끝이 같으면 1개의 항목만 방출해야 한다.
   }, timeout: const Timeout(Duration(seconds: 3)));
 
 test('역순으로 방출해야 한다.', () async {
-    // given
+  // given
     // when
     final stream = Rx.range(3, 1);
     // then
     await expectLater(stream, emitsInOrder([3, 2, 1, emitsDone]));
   }, timeout: const Timeout(Duration(seconds: 3)));
-
 ```
+
+### Repeat
+Stream이 성공적으로 종료될 때까지 지정한 횟수만큼 Stream을 재생성 및 재구독합니다.
+
+![image](https://user-images.githubusercontent.com/85836879/175852565-b33ca941-7586-4922-a341-82244d6063eb.png)
+
+>Stream<T> repeat<T>(
+>Stream<T> streamFactory(
+>int repeatIndex
+>),
+>[int? count]
+>)
+
+---
+
+```js
+import 'package:rxdart/rxdart.dart';
+
+class StreamUtil {
+  static Stream<String> Function(int count) getRepeatStream(String element) =>
+      (int count) async* {
+        yield await Future.delayed(
+          const Duration(milliseconds: 100),
+          () => '$element$count',
+        );
+      };
+
+  static Stream<String> Function(int count) getErrorRepeatStream(
+          String element) =>
+      (int repeatIndex) =>
+          Stream.value(element).concatWith([Stream<String>.error(Error())]);
+}
+
+
+test('repeat 반복 횟수가 3일때 3번 반복해야 한다.', () async {
+  // given
+  var a = StreamUtil.getRepeatStream('A');
+
+  // when
+  final stream = Rx.repeat(a, 3);
+
+  // then
+  await expectLater(
+      stream, emitsInOrder(<dynamic>['A0', 'A1', 'A2', emitsDone]));
+}, timeout: const Timeout(Duration(seconds: 10)));
+
+test('반복 도중에 에러가 발생하더라도 정해진 횟수를 반복해야 한다.', () async {
+  // given
+  var a = StreamUtil.getErrorRepeatStream('A');
+
+  // when
+  final stream = Rx.repeat(a, 2);
+
+  // then
+  await expectLater(
+      stream,
+      emitsInOrder(<dynamic>[
+        'A',
+        emitsError(const TypeMatcher<Error>()),
+        'A',
+        emitsError(const TypeMatcher<Error>())
+      ]));
+}, timeout: const Timeout(Duration(seconds: 10)));
+```
+
+
