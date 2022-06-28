@@ -435,8 +435,6 @@ Stream이 성공적으로 종료될 때까지 지정한 횟수만큼 Stream을 �
 ---
 
 ```js
-import 'package:rxdart/rxdart.dart';
-
 class StreamUtil {
   static Stream<String> Function(int count) getRepeatStream(String element) =>
       (int count) async* {
@@ -484,4 +482,48 @@ test('반복 도중에 에러가 발생하더라도 정해진 횟수를 반복�
 }, timeout: const Timeout(Duration(seconds: 10)));
 ```
 
+### Retry
+Stream이 성공적으로 종료될 때까지 지정한 횟수만큼 소스 Stream을 재생성하고 다시 수신, 구독할 Stream을 만듭니다.
 
+재시도 횟수를 지정하지 않으면 무한정 재시도합니다. 
+
+재시도 횟수에 도달했지만 스트림이 성공적으로 종료되지 않은 경우 RetryError가 발생합니다.
+
+RetryError에는 오류를 일으킨 모든 오류 및 StackTrace가 포함됩니다.
+
+![image](https://user-images.githubusercontent.com/85836879/176113915-ea1d1bc3-9352-4042-bbe6-4f0eaedeea77.png)
+
+```js
+class StreamUtil {
+  static Stream<int> Function() getRetryStream(int failCount) {
+      var count = 0;
+
+      return () {
+        if (count < failCount) {
+          count++;
+          return Stream<int>.error(
+            Error(),
+            StackTrace.fromString('retry stackTrace'),
+          );
+        }
+        return Stream.value(1);
+      };
+    }
+}
+
+test('지정한 횟수만큼 재시도 해야한다.', () async {
+    // given
+    const retries = 3;
+    var a = StreamUtil.getRetryStream(retries);
+
+    // when
+    final stream = Rx.retry(a, retries);
+
+    // then
+    await expectLater(
+      stream,
+      emitsInOrder(<dynamic>[1, emitsDone]),
+    );
+  }, timeout: const Timeout(Duration(seconds: 10)));
+
+```
