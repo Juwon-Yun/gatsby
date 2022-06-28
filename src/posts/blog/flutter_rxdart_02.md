@@ -394,7 +394,6 @@ test('어떤 에러나 데이터등을 리턴하지 않아야 한다.', () async
 
 ```js
 test('Range 1 ~ 3 범위 안의 값을 방출해야 한다.', () async {
-  // given
     // when
     final stream = Rx.range(1, 3);
     // then
@@ -402,7 +401,6 @@ test('Range 1 ~ 3 범위 안의 값을 방출해야 한다.', () async {
   }, timeout: const Timeout(Duration(seconds: 3)));
 
 test('Range의 시작과 끝이 같으면 1개의 항목만 방출해야 한다.', () {
-  // given
     // when
     final stream = Rx.range(1, 1);
     // then
@@ -423,8 +421,6 @@ test('역순으로 방출해야 한다.', () async {
 ### Repeat
 Stream이 성공적으로 종료될 때까지 지정한 횟수만큼 Stream을 재생성 및 재구독합니다.
 
-![image](https://user-images.githubusercontent.com/85836879/175852565-b33ca941-7586-4922-a341-82244d6063eb.png)
-
 >Stream<T> repeat<T>(
 >Stream<T> streamFactory(
 >int repeatIndex
@@ -432,7 +428,7 @@ Stream이 성공적으로 종료될 때까지 지정한 횟수만큼 Stream을 �
 >[int? count]
 >)
 
----
+![image](https://user-images.githubusercontent.com/85836879/175852565-b33ca941-7586-4922-a341-82244d6063eb.png)
 
 ```js
 class StreamUtil {
@@ -551,6 +547,14 @@ test('무한정 재시도해야 한다.', () async {
 retryWhenFactory 오류를 방출하는 RetryError가 발생합니다.
 
 RetryError는 실패를 일으킨 모든 Error 및 StackTrace를 포함합니다.
+
+>Stream<T> retryWhen<T>(
+>Stream<T> streamFactory(),
+>Stream<void> retryWhenFactory(
+>Object error,
+>StackTrace stackTrace
+>)
+>)
 
 ![image](https://user-images.githubusercontent.com/85836879/176116583-14f53b11-804e-40bc-99b6-a3e9ccee3c3a.png)
 
