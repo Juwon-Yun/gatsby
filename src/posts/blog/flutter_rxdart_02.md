@@ -496,7 +496,7 @@ RetryError에는 오류를 일으킨 모든 오류 및 StackTrace가 포함됩�
 ```js
 class StreamUtil {
   static Stream<int> Function() getRetryStream(int failCount) {
-      var count = 0;
+    var count = 0;
 
       return () {
         if (count < failCount) {
@@ -512,7 +512,7 @@ class StreamUtil {
 }
 
 test('지정한 횟수만큼 재시도 해야한다.', () async {
-    // given
+  // given
     const retries = 3;
     var a = StreamUtil.getRetryStream(retries);
 
@@ -525,5 +525,100 @@ test('지정한 횟수만큼 재시도 해야한다.', () async {
       emitsInOrder(<dynamic>[1, emitsDone]),
     );
   }, timeout: const Timeout(Duration(seconds: 10)));
+
+test('무한정 재시도해야 한다.', () async {
+  // given
+    const retries = 1000;
+    var a = StreamUtil.getRetryStream(retries);
+
+    // when
+    final stream = Rx.retry(a);
+
+    // then
+    await expectLater(
+      stream,
+      emitsInOrder(<dynamic>[1, emitsDone]),
+    );
+  }, timeout: const Timeout(Duration(seconds: 5)));
+
+```
+
+### RetryWhen
+에러가 발생하였을 때 Stream을 재생성하고 다시 구독할 Stream을 생성합니다.
+
+소스 Stream에 오류가 발생하거나 완료되면 Stream이 종료됩니다.
+
+retryWhenFactory 오류를 방출하는 RetryError가 발생합니다.
+
+RetryError는 실패를 일으킨 모든 Error 및 StackTrace를 포함합니다.
+
+![image](https://user-images.githubusercontent.com/85836879/176116583-14f53b11-804e-40bc-99b6-a3e9ccee3c3a.png)
+
+```js
+class StreamUtil{
+  static Iterable<int> range(int startOrStop, [int? stop, int? step]) sync* {
+    final start = stop == null ? 0 : startOrStop;
+
+    stop ??= startOrStop;
+    step ??= 1;
+
+    if (step == 0) throw ArgumentError('step con not be 0 value');
+    if (step > 0 && stop < start) {
+      throw ArgumentError(
+          'if stop is positive, stop must be greater than start');
+    }
+
+    if (step < 0 && stop > start) {
+      throw ArgumentError('if step is negative, stop must be less than start');
+    }
+
+    for (var value = start;
+        step < 0 ? value > stop : value < stop;
+        value += step) {
+      yield value;
+    }
+  }
+
+  static Stream<int> alwaysThrow(dynamic e, StackTrace stackTrace) =>
+      Stream<int>.error(Error(),
+          StackTrace.fromString('stackTrace ${stackTrace.toString()}'));
+
+  static Stream<void> neverThrow(dynamic e, StackTrace stackTrace) =>
+      Stream.value(null);
+
+  static Stream<int> Function() sourceStream(int i, [int? throwAt]) {
+    return throwAt == null
+        ? () => Stream.fromIterable(range(i))
+        : () => Stream.fromIterable(range(i))
+            .map((el) => el == throwAt ? throw i : i);
+  }
+}
+
+test('retryWhen 에러가 발생하지 않았을 때', () {
+    // given
+    var a = StreamUtil.sourceStream(3);
+    var whenFactory = StreamUtil.alwaysThrow;
+
+    // when
+    final stream = Rx.retryWhen(a, whenFactory);
+
+    // then
+    expect(stream, emitsInOrder(<dynamic>[0, 1, 2, emitsDone]));
+  }, timeout: const Timeout(Duration(seconds: 5)));
+
+test('retryWhen 에러 발생시에 whenFactory에서 다시 스트림으로 변환하여 무한으로 재시도한다.', () {
+    // given
+    var a = StreamUtil.sourceStream(1000, 2);
+    var whenFactory = StreamUtil.neverThrow;
+
+    // when
+    final stream = Rx.retryWhen(a, whenFactory).take(5);
+
+    // then
+    expect(
+      stream,
+      emitsInOrder(<dynamic>[1000, 1000, 1000, 1000, 1000, emitsDone]),
+    );
+  }, timeout: const Timeout(Duration(seconds: 5)));
 
 ```
