@@ -647,5 +647,67 @@ test('sequenceEqual default 두개의 스트림이 같아야 한다.', () {
     expect(stream, emitsInOrder([true]));
   }, timeout: const Timeout(Duration(seconds: 10)));
 
+  test('시간차가 있어도 두개의 스트림이 같은지 비교한다.', () {
+    // given
+    var a = Stream.periodic(
+            const Duration(milliseconds: 500), (index) => index + 1).take(5),
+        b = Stream.fromIterable([1, 2, 3, 4, 5]);
+
+    // when
+    final stream = Rx.sequenceEqual(a, b);
+
+    // then
+    expect(stream, emitsInOrder([true]));
+  }, timeout: const Timeout(Duration(seconds: 10)));
+
+test('비교 조건을 임의로 항상 true일 때 비교값은 true이다.', () {
+    // given
+    var a = Stream.fromIterable([1, 1, 1, 1, 1]),
+        b = Stream.fromIterable([2, 2, 2, 2, 2]);
+
+    // when
+    final stream = Rx.sequenceEqual(a, b, equals: (int a, int b) => true);
+
+    // then
+    expect(stream, emitsInOrder([true]));
+  }, timeout: const Timeout(Duration(seconds: 10))); 
+
+test('비교 조건이 없으니 비교했을 때 false를 반환한다.', () {
+    // given
+    var a = Stream.fromIterable([1, 1, 1, 1, 1]),
+        b = Stream.fromIterable([2, 2, 2, 2, 2]);
+
+    // when
+    final stream = Rx.sequenceEqual(a, b);
+
+    // then
+    expect(stream, emitsInOrder([false]));
+  }, timeout: const Timeout(Duration(seconds: 10)));
+
+test('에러 역시 같은지 비교해야 한다.', () {
+    // given
+    var a = Stream<void>.error(ArgumentError('error')),
+        b = Stream<void>.error(ArgumentError('error'));
+
+    // when
+    final stream = Rx.sequenceEqual(a, b,
+        errorEquals: (ErrorAndStackTrace a, ErrorAndStackTrace b) =>
+            a.stackTrace == b.stackTrace ? true : false);
+
+    // then
+    expect(stream, emitsInOrder([true]));
+  }, timeout: const Timeout(Duration(seconds: 10)));
+
+test('에러를 비교한값이 다를 경우 false를 방출한다.', () {
+    // given
+    var a = Stream<void>.error(ArgumentError('error')),
+        b = Stream<void>.error(ArgumentError('exception'));
+
+    // when
+    final stream = Rx.sequenceEqual(a, b);
+
+    // then
+    expect(stream, emitsInOrder([false]));
+  }, timeout: const Timeout(Duration(seconds: 10)));
   
 ```
