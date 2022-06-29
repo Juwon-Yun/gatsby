@@ -594,7 +594,7 @@ class StreamUtil{
     return throwAt == null
         ? () => Stream.fromIterable(range(i))
         : () => Stream.fromIterable(range(i))
-            .map((el) => el == throwAt ? throw i : i);
+            .map((el) => el == throwAt ? throw el : el);
   }
 }
 
@@ -621,8 +621,31 @@ test('retryWhen 에러 발생시에 whenFactory에서 다시 스트림으로 변
     // then
     expect(
       stream,
-      emitsInOrder(<dynamic>[1000, 1000, 1000, 1000, 1000, emitsDone]),
+      emitsInOrder(<dynamic>[0, 1, 0, 1, 0, emitsDone]),
+
     );
   }, timeout: const Timeout(Duration(seconds: 5)));
 
+```
+### SequenceEqual
+두개의 Stream이 동일한 순서의 항목을 방출하는지 확인합니다.
+
+연산 과정을 결정하기 위해 부등호를 제공할 수 있습니다.
+
+![image](https://user-images.githubusercontent.com/85836879/176472928-1239f7bc-fb23-43a0-9c01-324ff7c34d1e.png)
+
+```js
+test('sequenceEqual default 두개의 스트림이 같아야 한다.', () {
+    // given
+    var a = Stream.fromIterable([0, 1, 2, 3, 4]),
+        b = Stream.fromIterable([0, 1, 2, 3, 4]);
+
+    // when
+    final stream = Rx.sequenceEqual(a, b);
+
+    // then
+    expect(stream, emitsInOrder([true]));
+  }, timeout: const Timeout(Duration(seconds: 10)));
+
+  
 ```
