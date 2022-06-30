@@ -3,7 +3,7 @@ title: "RxDart"
 category: "Flutter"
 date: "2022-06-14 12:56:00 +09:00"
 desc: "RxDart와 반응형 프로그래밍"
-thumbnail: "./images/flutter/flutter_logo.jpg"
+thumbnail: "./images/flutter/reactivex_logo.jpg"
 alt: "flutter"
 ---
 ![reactive_x](https://user-images.githubusercontent.com/85836879/173492814-3412c81e-2a19-4c74-8a68-20fcd4fc8bca.png)

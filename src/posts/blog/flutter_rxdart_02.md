@@ -3,7 +3,7 @@ title: "RxDart 생성 함수"
 category: "Flutter"
 date: "2022-06-23 19:07:00 +09:00"
 desc: "RxDart 테스트코드 작성기"
-thumbnail: "./images/flutter/flutter_logo.jpg"
+thumbnail: "./images/flutter/reactivex_logo.jpg"
 alt: "flutter"
 ---
 
