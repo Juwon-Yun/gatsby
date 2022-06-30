@@ -36,7 +36,9 @@ Stream과 Observable은 같은 방식으로 구현하지만 표준 Rx에 익숙�
 
 <a href="https://pub.dev/documentation/rxdart/latest/rx/Rx-class.html" target="_blank">Rx Dart docs</a>
 
-## Factory(생성 함수)
+## 생성 함수 (Factory)
+
+생성 함수는 하나의 Stream 혹은 다수의 Stream을 병합하거나 특정 값을 방출하여 새로운 Stream을 생성합니다.
 
 ### CombineLatest
 Stream 중 하나가 아이템을 방출할 때마다 결합하여 Stream을 하나의 Stream 시퀀스로 병합하는 메소드

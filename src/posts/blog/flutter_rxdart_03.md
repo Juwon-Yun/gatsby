@@ -33,5 +33,6 @@ Stream과 Observable은 같은 방식으로 구현하지만 표준 Rx에 익숙�
 | 구독을 일시중지, 다시시작 할 수 있는지? | 불가능 | 가능 |
 
 
-
 <a href="https://pub.dev/documentation/rxdart/latest/rx/Rx-class.html" target="_blank">Rx Dart docs</a>
+
+## 변형 함수 (Transformer)
