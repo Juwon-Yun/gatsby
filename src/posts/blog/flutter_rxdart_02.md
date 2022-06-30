@@ -45,6 +45,10 @@ Stream 중 하나가 아이템을 방출할 때마다 결합하여 Stream을 하
 
 ![image](https://user-images.githubusercontent.com/85836879/175301530-0124e7ce-ba7c-4f60-891a-8ad9c461806f.png)
 
+<details>
+
+<summary>> CombineLatestList </summary>
+
 ```js
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rxdart/rxdart.dart';
@@ -90,12 +94,18 @@ void main() {
 > test 1의 emitsInOrder 매개변수를 다르게 작성한 경우 가장 최근 값들을 방출하는 것을 알 수 있다.
 ![스크린샷 2022-06-23 오후 9 37 05](https://user-images.githubusercontent.com/85836879/175300264-251caf3a-5aa3-4dae-b664-48c4eb05ac9f.png)
 
+</details>
+
 ### Concat
 이전 Stream 순서가 성공적으로 종료되는 한 지정된 모든 Stream 순서를 연결합니다.
 
 각 Stream을 하나씩 구독하여 모든 항목을 방출하고 다음 Stream을 구독하기 전에 완료하여 이를 수행합니다.
 
 ![image](https://user-images.githubusercontent.com/85836879/175303129-c5ea9e16-504d-4d80-9296-2d3bb52c11db.png)
+
+<details>
+
+<summary>> Concat </summary>
 
 ```js
   test('test 3 : 0, 1, 2, 3, 4, 5가 순차적으로 발행되어야 한다.', () {
@@ -110,6 +120,8 @@ void main() {
   }, timeout: const Timeout(Duration(seconds: 10)));
 ```
 
+</details>
+
 ### ConcatEager
 이전 Stream 순서가 성공적으로 종료되는 한 지정된 모든 Stream 순서로 연결합니다.
 
@@ -118,6 +130,11 @@ void main() {
 그런 다음 이전 Stream이 아이템을 방출한 이후에 이벤트가 생성됩니다.
 
 ![ismage](https://user-images.githubusercontent.com/85836879/175467063-872b046d-3c99-4055-9276-6519782f0d14.png)
+
+<details>
+
+<summary>> ConcatEager </summary>
+
 
 ```js
 test('test 4 : 0, 1, 2, 3, 4, 5가 순차적으로 발행되어야 한다.', () {
@@ -132,6 +149,8 @@ test('test 4 : 0, 1, 2, 3, 4, 5가 순차적으로 발행되어야 한다.', () 
   }, timeout: const Timeout(Duration(seconds: 10)));
 ```
 
+</details>
+
 ### Defer 
 Defer는 Stream이 구독할 때까지 기다린 다음 지정된 팩토리 기능으로 스트림을 만듭니다.
 
@@ -140,6 +159,11 @@ Defer는 Stream이 구독할 때까지 기다린 다음 지정된 팩토리 기�
 기본적으로 DeferStreams는 단일 구독이지만 재사용할 수 있습니다.
 
 ![ismage](https://user-images.githubusercontent.com/85836879/175467865-5d932893-be0f-4f90-85ad-d339e9ba5b68.png)
+
+<details>
+
+<summary>> Defer </summary>
+
 
 ```js
 test('defer 기본', () {
@@ -195,6 +219,8 @@ test('reusable이 true일때 defer는 재구독이 가능해야 한다.', () {
   }, timeout: const Timeout(Duration(seconds: 10)));
 ```
 
+</details>
+
 ### ForkJoin
 forkJoin은 Stream List가 있고 각각의 최종 결과값에만 관심이 있는 경우에 사용하기 적합합니다.
 
@@ -211,6 +237,11 @@ forkJoin은 Future.wait를 사용하는 방법과 비슷합니다.
 (이 경우 combineLatest 또는 zip 연산자를 사용하는 것이 좋습니다.)
 
 ![image](https://user-images.githubusercontent.com/85836879/175762033-419b9618-5223-442a-a5f1-d04b49c1141d.png)
+
+<details>
+
+<summary>> ForkJoin </summary>
+
 
 ```js
 test('각 스트림의 가장 최근 값을 합쳐 List로 반환합니다.', () async {
@@ -308,6 +339,8 @@ test('병합 도중 에러 발생시, 에러가 발생하기 이전 값들까지
         onError: expectAsync2((p0, p1) => expect(p0, isException)));
   }, timeout: const Timeout(Duration(seconds: 10)));
 ```
+
+</details>
 
 ### Never
 무한 지속 시간을 나타내는 데 사용할 수 있는 종료되지 않는 Stream 시퀸스를 반환합니다.
@@ -701,7 +734,7 @@ test('에러 역시 같은지 비교해야 한다.', () {
 test('에러를 비교한값이 다를 경우 false를 방출한다.', () {
     // given
     var a = Stream<void>.error(ArgumentError('error')),
-        b = Stream<void>.error(ArgumentError('exception'));
+        b = Stream<void>.error(ArgumentError('is not same error'));
 
     // when
     final stream = Rx.sequenceEqual(a, b);
@@ -709,5 +742,59 @@ test('에러를 비교한값이 다를 경우 false를 방출한다.', () {
     // then
     expect(stream, emitsInOrder([false]));
   }, timeout: const Timeout(Duration(seconds: 10)));
-  
+
 ```
+
+### SwitchLatest
+상위 Stream에서 가장 최근 방출된 Stream의 항목만 방출하는 용도로 쓰입니다.
+
+switchLatest Stream은 새로운 Stream이 방출될 때 이전에 방출된 Stream 구독을 취소합니다.
+
+> 상위 Stream 
+> Stream.value(Stream.value())
+
+```js
+  test('상위 Stream에서 가장 최근 방출된 데이터를 방출한다.', () {
+    // given
+    var a = Stream.value(Stream.fromIterable(const ['A', 'B', 'C']));
+
+    // when
+    final stream = Rx.switchLatest(a);
+
+    // then
+    expect(stream, emitsInOrder(['A', 'B', 'C', emitsDone]));
+  }, timeout: const Timeout(Duration(seconds: 10)));
+
+  test('상위 Stream의 가장 최근 방출된 값이 먼저 방출되어야 한다.', () {
+    // given
+    var a = Stream.fromIterable([
+      Rx.timer('A', const Duration(seconds: 5)),
+      Rx.timer('B', const Duration(seconds: 1)),
+    ]);
+
+    // when
+    final stream = Rx.switchLatest(a);
+
+    // then
+    expect(stream, emits('B'));
+  }, timeout: const Timeout(Duration(seconds: 10)));
+
+  test('상위 Stream에서 방출된 오류를 방출해야 한다.', () {
+    // given
+    var a = Stream.fromIterable([
+      Stream<Stream<void>>.error(Exception()),
+      Rx.timer('A', const Duration(seconds: 3)),
+      Rx.timer('B', const Duration(seconds: 5)),
+    ]);
+
+    // when
+    final stream = Rx.switchLatest(a);
+
+    // then
+    expect(stream, emitsError(isException));
+  }, timeout: const Timeout(Duration(seconds: 10)));
+
+```
+
+
+

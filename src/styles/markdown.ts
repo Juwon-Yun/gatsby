@@ -18,6 +18,8 @@ const Markdown = styled.article<{ rhythm: typeof typography["rhythm"] }>`
   td,
   th {
     border-bottom: 1px solid var(--color-gray-3);
+    text-align: center;
+    word-break: keep-all;
   }
 
   strong {
@@ -167,6 +169,17 @@ const Markdown = styled.article<{ rhythm: typeof typography["rhythm"] }>`
     margin: 0;
     font-size: 85%;
     border-radius: 3px;
+  }
+
+  details > summary{
+    color: var(--color-blue) !important;
+    cursor: pointer;
+
+    font-size: 1.31951rem;
+
+    @media (max-width: ${({ theme }) => theme.device.sm}) {
+      font-size: 1.1875rem;
+    }
   }
 `
 
