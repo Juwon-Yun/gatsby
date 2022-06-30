@@ -1,5 +1,5 @@
 ---
-title: "RxDart 맛보기"
+title: "RxDart 생성 함수"
 category: "Flutter"
 date: "2022-06-23 19:07:00 +09:00"
 desc: "RxDart 테스트코드 작성기"
@@ -303,10 +303,16 @@ test('각 스트림의 가장 최근 값을 합쳐 List로 반환합니다.', ()
   
 ```
 
+</details>
+
 ### Merge
 지정된 List에서 방출될 값을 병합하여 반환합니다.
 
 ![ismage](https://user-images.githubusercontent.com/85836879/175764017-ee2895ce-5a06-41e2-877a-02feef7566c2.png)
+
+<details>
+
+<summary>> Merge </summary>
 
 ```js
 test('각 리스트에서 방출된 값을 리스트로 병합한다.', () async {
@@ -349,6 +355,10 @@ never 연산자는 매우 구체적이고 제한된 동작을 가진 연산자�
 
 never 연산자는 테스트 목적으로 유용하며 때로는 다른 Stream과 함께 또는 다른 Stream을 매개 변수로 기대하는 Stream에 매개 변수로 결합하는 데 유용합니다.
 
+<details>
+
+<summary>> Never </summary>
+
 ```js
 test('어떤 에러나 데이터등을 리턴하지 않아야 한다.', () async {
     // given
@@ -381,10 +391,16 @@ test('어떤 에러나 데이터등을 리턴하지 않아야 한다.', () async
   }, timeout: const Timeout(Duration(seconds: 10)));
 ```
 
+</details>
+
 ### Race
 두 개 이상의 Stream이 주어지면 Stream List의 처음 항목에서만 모든 항목 Stream을 내보내 항목이나 알림을 방출합니다.
 
 ![image](https://user-images.githubusercontent.com/85836879/175802028-2dfc4fc7-6c2b-42f6-b2a1-9a2e0a9a7b8d.png)
+
+<details>
+
+<summary>> Race </summary>
 
 ```js
  test('race default', () {
@@ -415,6 +431,8 @@ test('어떤 에러나 데이터등을 리턴하지 않아야 한다.', () async
   }, timeout: const Timeout(Duration(seconds: 5)));
 ```
 
+</details>
+
 ### Range
 지정된 범위 내에서 정수를 방출하는 Stream을 반환합니다.
 
@@ -424,6 +442,10 @@ test('어떤 에러나 데이터등을 리턴하지 않아야 한다.', () async
 > )
 
 ![image](https://user-images.githubusercontent.com/85836879/175802777-02497441-40f2-4439-b202-771757c2caf2.png)
+
+<details>
+
+<summary>> Range </summary>
 
 ```js
 test('Range 1 ~ 3 범위 안의 값을 방출해야 한다.', () async {
@@ -451,6 +473,8 @@ test('역순으로 방출해야 한다.', () async {
   }, timeout: const Timeout(Duration(seconds: 3)));
 ```
 
+</details>
+
 ### Repeat
 Stream이 성공적으로 종료될 때까지 지정한 횟수만큼 Stream을 재생성 및 재구독합니다.
 
@@ -462,6 +486,10 @@ Stream이 성공적으로 종료될 때까지 지정한 횟수만큼 Stream을 �
 >)
 
 ![image](https://user-images.githubusercontent.com/85836879/175852565-b33ca941-7586-4922-a341-82244d6063eb.png)
+
+<details>
+
+<summary>> Repeat </summary>
 
 ```js
 class StreamUtil {
@@ -511,6 +539,8 @@ test('반복 도중에 에러가 발생하더라도 정해진 횟수를 반복�
 }, timeout: const Timeout(Duration(seconds: 10)));
 ```
 
+</details>
+
 ### Retry
 Stream이 성공적으로 종료될 때까지 지정한 횟수만큼 소스 Stream을 재생성하고 다시 수신, 구독할 Stream을 만듭니다.
 
@@ -521,6 +551,10 @@ Stream이 성공적으로 종료될 때까지 지정한 횟수만큼 소스 Stre
 RetryError에는 오류를 일으킨 모든 오류 및 StackTrace가 포함됩니다.
 
 ![image](https://user-images.githubusercontent.com/85836879/176113915-ea1d1bc3-9352-4042-bbe6-4f0eaedeea77.png)
+
+<details>
+
+<summary>> Retry </summary>
 
 ```js
 class StreamUtil {
@@ -572,6 +606,8 @@ test('무한정 재시도해야 한다.', () async {
 
 ```
 
+</details>
+
 ### RetryWhen
 에러가 발생하였을 때 Stream을 재생성하고 다시 구독할 Stream을 생성합니다.
 
@@ -590,6 +626,10 @@ RetryError는 실패를 일으킨 모든 Error 및 StackTrace를 포함합니다
 >)
 
 ![image](https://user-images.githubusercontent.com/85836879/176116583-14f53b11-804e-40bc-99b6-a3e9ccee3c3a.png)
+
+<details>
+
+<summary>> RetryWhen </summary>
 
 ```js
 class StreamUtil{
@@ -660,12 +700,19 @@ test('retryWhen 에러 발생시에 whenFactory에서 다시 스트림으로 변
   }, timeout: const Timeout(Duration(seconds: 5)));
 
 ```
+
+</details>
+
 ### SequenceEqual
 두개의 Stream이 동일한 순서의 항목을 방출하는지 확인합니다.
 
 연산 과정을 결정하기 위해 부등호를 제공할 수 있습니다.
 
 ![image](https://user-images.githubusercontent.com/85836879/176472928-1239f7bc-fb23-43a0-9c01-324ff7c34d1e.png)
+
+<details>
+
+<summary>> SequenceEqual </summary>
 
 ```js
 test('sequenceEqual default 두개의 스트림이 같아야 한다.', () {
@@ -745,6 +792,8 @@ test('에러를 비교한값이 다를 경우 false를 방출한다.', () {
 
 ```
 
+</details>
+
 ### SwitchLatest
 상위 Stream에서 가장 최근 방출된 Stream의 항목만 방출하는 용도로 쓰입니다.
 
@@ -752,6 +801,10 @@ switchLatest Stream은 새로운 Stream이 방출될 때 이전에 방출된 Str
 
 > 상위 Stream 
 > Stream.value(Stream.value())
+
+<details>
+
+<summary>> SwitchLatest </summary>
 
 ```js
   test('상위 Stream에서 가장 최근 방출된 데이터를 방출한다.', () {
@@ -796,5 +849,87 @@ switchLatest Stream은 새로운 Stream이 방출될 때 이전에 방출된 Str
 
 ```
 
+</details>
+
+### Timer
+지정된 시간이 지나면 주어진 값을 반환합니다.
+
+![image](https://user-images.githubusercontent.com/85836879/176705639-8f336210-277b-47d6-86c0-ca6605d0b5a3.png)
+
+<details>
+
+<summary>> Timer </summary>
+
+```js
+test('지정된 시간이 지나면 주어진 값을 방출한다.', () async {
+    // given
+    const a = 1;
+
+    // when
+    final stream = Rx.timer(a, const Duration(seconds: 3));
+
+    // then
+    await expectLater(stream, emitsInOrder([1, emitsDone]));
+  }, timeout: const Timeout(Duration(seconds: 5)));
+```
+
+</details>
+
+### Zip
+각각의 Stream이 최소한 1개씩 값을 방출할 때마다 지정된 Zip 메소드를 사용하여 지정된 Stream을 하나의 Stream 시퀀스로 병합합니다.
+
+![image](https://user-images.githubusercontent.com/85836879/176706607-0ac1d147-9f41-4523-b38a-5698ee269217.png)
+
+<details>
+
+<summary>> Zip </summary>
+
+```js
+
+test('지정된 Stream을 하나의 Stream 시퀸스로 병합한다.', () async {
+    // given
+    var a = Stream.fromIterable(['A']),
+        b = Stream.fromIterable(['B']),
+        c = Stream.fromIterable(['C', 'D']);
+
+    // when
+    final stream = Rx.zip([a, b, c], (values) => values);
+
+    // then
+    await expectLater(
+        stream,
+        emitsInOrder([
+          ['A', 'B', 'C'],
+          emitsDone
+        ]));
+  }, timeout: const Timeout(Duration(seconds: 10)));
+
+  test('다수의 Stream을 Zip 메소드로 병합한다.', () async {
+    // given
+    var a = Stream.fromIterable(['1']), b = Stream.fromIterable(['2', '3']);
+
+    // when
+    final stream = Rx.zip2(a, b, (String a, String b) => a + b);
+
+    // then
+    await expectLater(stream, emitsInOrder(['12', emitsDone]));
+  }, timeout: const Timeout(Duration(seconds: 10)));
+
+  test('Stream 중에 에러가 포함되어 있는 경우 에러를 방출한다.', () async {
+    // given
+    var a = Stream.value(1),
+        b = Stream.value(2),
+        c = Stream<int>.error(Exception());
+
+    // when
+    final stream = Rx.zip3(a, b, c, (int a, int b, int c) => a + b + c);
+
+    // then
+    await expectLater(stream, emitsError(const TypeMatcher<Exception>()));
+  }, timeout: const Timeout(Duration(seconds: 10)));
+
+```
+
+</details>
 
 
