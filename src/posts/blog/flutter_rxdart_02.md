@@ -28,11 +28,11 @@ Stream과 Observable은 같은 방식으로 구현하지만 표준 Rx에 익숙�
 | Publish, Behavior, ReplaySubject를 HotObservable로 사용하는지? | 사용 가능 | 사용 가능 |
 | Single / Maybe / Complete 사용 여부 | 사용 가능 | 사용 불가, Dart Future로 대체 사용 |
 | Back pressure 지원 여부 | 지원함 | 지원함 |
-| null을 emit할 수 있는지? | RxJava만 불가능 이외에는 가능 | 가능 |
-| Sync by default | 가능 | 불가능 |
-| 구독을 일시중지, 다시시작 할 수 있는지? | 불가능 | 가능 |
+| null을 emit할 수 있는지? | RxJava만 불가능 이외에는 사용 가능 | 사용 가능 |
+| Sync by default | 사용 가능 | 사용 불가 |
+| 구독을 일시중지, 다시시작 할 수 있는지? | 사용 불가 | 사용 가능 |
 
-
+<br>
 
 <a href="https://pub.dev/documentation/rxdart/latest/rx/Rx-class.html" target="_blank">Rx Dart docs</a>
 
