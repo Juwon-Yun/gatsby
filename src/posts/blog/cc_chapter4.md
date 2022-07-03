@@ -57,7 +57,7 @@ alt: "주석"
     -   [ ]  예제
 -   [ ]  결론
 
-## 1-1. 주석은 나쁜 코드를 보안하지 못한다
+## 4-1. 주석은 나쁜 코드를 보안하지 못한다
 
 ---
 
@@ -69,7 +69,7 @@ alt: "주석"
 
 주석이 없고 표현력이 높은 코드를 작성하자.
 
-## 1-2. 코드로 의도를 표현하라!
+## 4-2. 코드로 의도를 표현하라!
 
 ---
 
@@ -84,13 +84,13 @@ if( (employee.flags & HOURLY_FLAG) && (employee.age > 65) )
 if( employee.isEligibleForFullBenefits() )
 ```
 
-## 1-3. 좋은 주석
+## 4-3. 좋은 주석
 
 ---
 
 주석은 필요악이지만 글자 값을 하는 주석 몇가지를 소개한다.
 
-### 1-3-1. 법적인 주석
+### 4-3-1. 법적인 주석
 
 ---
 
@@ -102,7 +102,7 @@ if( employee.isEligibleForFullBenefits() )
 // MIT License를 따르는 조건으로 배포한다.
 ```
 
-### 1-3-2. 정보를 제공하는 주석
+### 4-3-2. 정보를 제공하는 주석
 
 ---
 
@@ -128,7 +128,7 @@ const validator = (rawInput: string ): boolean => {
 }
 ```
 
-### 1-3-3. 의도를 설명하는 주석
+### 4-3-3. 의도를 설명하는 주석
 
 ---
 
@@ -153,7 +153,7 @@ public void testRequest() throws Exception{
 }
 ```
 
-### 1-3-4. 의미를 명료하게 밝히는 주석
+### 4-3-4. 의미를 명료하게 밝히는 주석
 
 ---
 
@@ -166,7 +166,7 @@ sort( (a, b) => { a - b } ) // 오름차순 정렬, 문자열의 경우 아스�
 sort( (a, b) => { b - a } ) // 내림차순 정렬, 문자열의 경우 아스키 코드값을 비교
 ```
 
-### 1-3-5. 결과를 경고하는 주석
+### 4-3-5. 결과를 경고하는 주석
 
 ---
 
@@ -182,7 +182,7 @@ public void dropTable(){
 }
 ```
 
-### 1-3-6. TODO 주석
+### 4-3-6. TODO 주석
 
 ---
 
@@ -196,7 +196,7 @@ const isLoading = () => {
 }
 ```
 
-### 1-3-7. 중요성을 강조하는 주석
+### 4-3-7. 중요성을 강조하는 주석
 
 ---
 
@@ -216,7 +216,7 @@ const isLoading = useState(true)
 
 대부분은 허술한 코드를 변명하거나 미숙한 결정을 합리화하는 프로그래머의 독백에서 크게 벗어나지 못한다.
 
-### 1-4-1. 주절거리는 주석
+### 4-4-1. 주절거리는 주석
 
 ---
 
@@ -240,7 +240,7 @@ try{
 
 메모리만 낭비한다.
 
-### 1-4-2. 같은 이야기를 중복하는 주석
+### 4-4-2. 같은 이야기를 중복하는 주석
 
 ---
 
@@ -254,7 +254,7 @@ private String logSeq;
 private String logContent;
 ```
 
-### 1-4-3. 오해할 여지가 있는 주석
+### 4-4-3. 오해할 여지가 있는 주석
 
 ---
 
@@ -271,7 +271,7 @@ const appendTxt = (rawInput: string) :string => {
 }
 ```
 
-### 1-4-4. 의무적으로 다는 주석
+### 4-4-4. 의무적으로 다는 주석
 
 ---
 
@@ -287,7 +287,7 @@ const appendTxt = (rawInput: string) :string => {
 public void addBook(String name, String chapter){}
 ```
 
-### 1-4-5. 이력을 기록하는 주석
+### 4-4-5. 이력을 기록하는 주석
 
 ---
 
@@ -306,7 +306,7 @@ public void addBook(String name, String chapter){}
 */
 ```
 
-### 1-4-6. 있으나 마나 한 주석
+### 4-4-6. 있으나 마나 한 주석
 
 ---
 
@@ -324,7 +324,7 @@ public Class UserDto(){
 }
 ```
 
-### 1-4-7. 무서운 잡음
+### 4-4-7. 무서운 잡음
 
 ---
 
@@ -341,7 +341,7 @@ private String name;
 private int age;
 ```
 
-### 1-4-8. 함수나 변수로 표현할 수 있다면 주석을 달지 마라
+### 4-4-8. 함수나 변수로 표현할 수 있다면 주석을 달지 마라
 
 ---
 
@@ -358,7 +358,7 @@ if( employee.isEligibleForFullBenefits() )
 
 주석이 필요하지 않도록 함수나 변수의 코드를 개선한다 .
 
-### 1-4-9. 위치를 표시하는 주석
+### 4-4-9. 위치를 표시하는 주석
 
 ---
 
@@ -372,7 +372,7 @@ if( employee.isEligibleForFullBenefits() )
 ...
 ```
 
-### 1-4-10. 닫는 괄호에 다는 주석
+### 4-4-10. 닫는 괄호에 다는 주석
 
 ---
 
@@ -397,7 +397,7 @@ public static void main(String[] args){
 
 닫는 괄호에 주석을 달아야겠다는 생각이 든다면 함수를 줄이려 시도해보자.
 
-### 1-4-11. 주석으로 처리한 코드
+### 4-4-11. 주석으로 처리한 코드
 
 ---
 
@@ -407,7 +407,7 @@ public static void main(String[] args){
 
 형상관리 시스템이 코드를 기억해주기 때문에 주석으로 처리할 필요없이 삭제하는 것이 좋다.
 
-### 1-4-12. HTML 주석
+### 4-4-12. HTML 주석
 
 ---
 
@@ -424,7 +424,7 @@ public static void main(String[] args){
 */
 ```
 
-### 1-4-13. 전역 정보
+### 4-4-13. 전역 정보
 
 ---
 
@@ -443,7 +443,7 @@ public Stirng setUserName(String userName){
 }
 ```
 
-### 1-4-14. 너무 많은 정보
+### 4-4-14. 너무 많은 정보
 
 ---
 
@@ -451,7 +451,7 @@ public Stirng setUserName(String userName){
 
 특정한 정보에 대한 역사같은 해당 역할에 있어서 필요하지 않은 주석
 
-### 1-4-15. 모호한 관계
+### 4-4-15. 모호한 관계
 
 ---
 
@@ -469,7 +469,7 @@ public Stirng setUserName(String userName){
 this.pngBytes = new byte[ ((this.width + 1) * this.height * 3) + 200];
 ```
 
-### 1-4-16. 함수 헤더
+### 4-4-16. 함수 헤더
 
 ---
 
@@ -479,7 +479,7 @@ this.pngBytes = new byte[ ((this.width + 1) * this.height * 3) + 200];
 
 ( 책에서는 주석으로 헤더를 추가한 함수보다 훨씬 좋다라고 나와있지만 번역이 잘 못 된거같다 )
 
-### 1-4-17. 비공개 코드에서 Javadocs
+### 4-4-17. 비공개 코드에서 Javadocs
 
 ---
 
