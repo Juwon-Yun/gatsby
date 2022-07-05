@@ -104,20 +104,30 @@ alt: "형식 맞추기"
 생각 사이는 빈 행을 넣어 분리해야 마땅하다.
 
 ```java
+package fitnesse.wikitext.widgets;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class BoldWidget extends ParentWidget {
-    public static final String REGEXP = "'''. +?'''";
-    
-    private static final Pattern pattern = Pattern.compile("'''(.+?)'''", Pattern.MULTILINE + Pattern.DOTALL);
+	public static final String REGEXP = "'''.+?'''";
+	private static final Pattern pattern = Pattern.compile("'''(.+?)'''",
+		Pattern.MULTILINE + Pattern.DOTALL
+	);
 
-    public BoldWidget(ParentWidget parent, String text) throws Exception {
-        super(parent);
-        // ...
-    }
+	public BoldWidget(ParentWidget parent, String text) throws Exception {
+		super(parent);
+		Matcher match = pattern.matcher(text);
+		match.find();
+		addChildWidgets(match.group(1));
+	}
 
-    public String render() throws Exception {
-        StringBuffer html =. new StringBuffer("<b>");
-    //...
-}
+	public String render() throws Exception {
+		StringBuffer html = new StringBuffer("<b>");
+		html.append(childHtml()).append("</b>");
+
+	    return html.toString();
+	}
 }
 ```
 
@@ -132,20 +142,25 @@ public class BoldWidget extends ParentWidget {
 빈 행을 없애게 되면 코드 가독성은 현저히 떨어진다.
 
 ```java
+package fitnesse.wikitext.widgets;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 public class BoldWidget extends ParentWidget {
-    public static final String REGEXP = "'''. +?'''";
-    
-    private static final Pattern pattern = Pattern.compile("'''(.+?)'''", Pattern.MULTILINE + Pattern.DOTALL);
-    
-    public BoldWidget(ParentWidget parent, String text) throws Exception {
-        super(parent);
-    // ...
-    }
-
-    public String render() throws Exception {
-        StringBuffer html =. new StringBuffer("<b>");
-        //...
-    }
+	public static final String REGEXP = "'''.+?'''";
+	private static final Pattern pattern = Pattern.compile("'''(.+?)'''",
+		Pattern.MULTILINE + Pattern.DOTALL
+	);
+	public BoldWidget(ParentWidget parent, String text) throws Exception {
+		super(parent);
+		Matcher match = pattern.matcher(text);
+		match.find();
+		addChildWidgets(match.group(1));
+	}
+	public String render() throws Exception {
+		StringBuffer html = new StringBuffer("<b>");
+		html.append(childHtml()).append("</b>");
+	    return html.toString();
+	}
 }
 ```
 
