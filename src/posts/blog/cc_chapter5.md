@@ -62,7 +62,8 @@ alt: "형식 맞추기"
 
 ---
 
-[##_Image|kage@bmtEUl/btryE2FdFC8/2PtYPrdV5JkYXmONyy4WG1/img.png|CDM|1.3|{"originWidth":928,"originHeight":587,"style":"alignCenter","filename":"Untitled 1.png"}_##]
+![5-1](https://user-images.githubusercontent.com/85836879/177247235-f4ed87b5-24d9-44e8-96bc-2185b7848419.png)
+
 
 프로젝트 7개를 묘사한 그래프이다.
 
@@ -102,23 +103,20 @@ alt: "형식 맞추기"
 
 생각 사이는 빈 행을 넣어 분리해야 마땅하다.
 
-```
-package fitnesse.wikitext.widgets;
-
-import java.util.regex.*;
-
+```java
 public class BoldWidget extends ParentWidget {
-public static final String REGEXP = "'''. +?'''";
-private static final Pattern pattern = Pattern.compile("'''(.+?)'''", Pattern.MULTILINE + Pattern.DOTALL);
+    public static final String REGEXP = "'''. +?'''";
+    
+    private static final Pattern pattern = Pattern.compile("'''(.+?)'''", Pattern.MULTILINE + Pattern.DOTALL);
 
-public BoldWidget(ParentWidget parent, String text) throws Exception {
-super(parent);
-// ...
-}
+    public BoldWidget(ParentWidget parent, String text) throws Exception {
+        super(parent);
+        // ...
+    }
 
-public String render() throws Exception {
-StringBuffer html =. new StringBuffer("<b>");
-/...
+    public String render() throws Exception {
+        StringBuffer html =. new StringBuffer("<b>");
+    //...
 }
 }
 ```
@@ -133,20 +131,21 @@ StringBuffer html =. new StringBuffer("<b>");
 
 빈 행을 없애게 되면 코드 가독성은 현저히 떨어진다.
 
-```
-package fitnesse.wikitext.widgets;
-import java.util.regex.*;
+```java
 public class BoldWidget extends ParentWidget {
-public static final String REGEXP = "'''. +?'''";
-private static final Pattern pattern = Pattern.compile("'''(.+?)'''", Pattern.MULTILINE + Pattern.DOTALL);
-public BoldWidget(ParentWidget parent, String text) throws Exception {
-super(parent);
-// ...
-}
-public String render() throws Exception {
-StringBuffer html =. new StringBuffer("<b>");
-/...
-}
+    public static final String REGEXP = "'''. +?'''";
+    
+    private static final Pattern pattern = Pattern.compile("'''(.+?)'''", Pattern.MULTILINE + Pattern.DOTALL);
+    
+    public BoldWidget(ParentWidget parent, String text) throws Exception {
+        super(parent);
+    // ...
+    }
+
+    public String render() throws Exception {
+        StringBuffer html =. new StringBuffer("<b>");
+        //...
+    }
 }
 ```
 
@@ -218,25 +217,25 @@ StringBuffer html =. new StringBuffer("<b>");
 
 또한 비슷한 동작을 수행하는 일군의 함수가 좋은 예시이다.
 
-```
+```java
 public class Assert {
-static public void assertTrue(String message, boolean condition) {
-if(!condition) {
-fail(message)
-}
-}
+    static public void assertTrue(String message, boolean condition) {
+        if(!condition) {
+            fail(message)
+        }
+    }
 
-static public void assertTure(boolean condition) {
-asertTrue(null, condition);
-}
+    static public void assertTure(boolean condition) {
+        asertTrue(null, condition);
+    }
 
-static public void assertFalse(String message, boolean condition) {
-assertTrue(message, !condition);
-}
+    static public void assertFalse(String message, boolean condition) {
+        assertTrue(message, !condition);
+    }
 
-static public void assertFalse(boolean condition) {
-assertFalse(null, condition)
-}
+    static public void assertFalse(boolean condition) {
+        assertFalse(null, condition)
+    }
 }
 ```
 
@@ -272,18 +271,18 @@ lint를 사용해서 120자가 넘어간다면 경고줄을 그어주는 도구�
 
 가로로 공백을 사용해 밀접한 개념과 느슨한 개념을 표현한다.
 
-```
+```java
 private void measureLine(String line) {
-lineCount++;
+    lineCount++;
 
-// 할당 연산자가 강조되어 왼쪽/오른쪽 요소가 나뉨
-int lineSize = line.length();
-totalChars += lineSize;
+    // 할당 연산자가 강조되어 왼쪽/오른쪽 요소가 나뉨
+    int lineSize = line.length();
+    totalChars += lineSize;
 
-// 함수와 인수는 밀접하기에 공백을 넣지 않는다.
-// 인수들은 공백으로 분리(별개라는 점을 보여줌)
-lineWidthHistogram.addLine(lineSize, lineCount);
-recordWidestLine(lineSize);
+    // 함수와 인수는 밀접하기에 공백을 넣지 않는다.
+    // 인수들은 공백으로 분리(별개라는 점을 보여줌)
+    lineWidthHistogram.addLine(lineSize, lineCount);
+    recordWidestLine(lineSize);
 }
 ```
 
@@ -293,28 +292,30 @@ recordWidestLine(lineSize);
 
 가로 정렬을 유용하지 않다.
 
-```
+```java
 public class FitNesseExpediter implements ResponseSender {
-private Socket socket;
-private InputStream input;
-private OutputStream output;
-private Reques request;
-private Response response;
-private FitNesseContex context;
-protected long requestParsingTimeLimit;
-private long requestProgress;
-private long requestParsingDeadline;
-private boolean hasError;
+    private Socket socket;
+    private InputStream input;
+    private OutputStream output;
+    private Reques request;
+    private Response response;
+    private FitNesseContex context;
+    protected long requestParsingTimeLimit;
+    private long requestProgress;
+    private long requestParsingDeadline;
+    private boolean hasError;
 
-public FitNesseExpediter(Socket s,
-FitNesseContext context) throws Exception
-{
-this.context = context;
-socket = s;
-input = s.getInputStream();
-output = s.getOutputStream();
-requestParsingTimeLimit = 10000;
-}
+    public FitNesseExpediter(Socket s, FitNesseContext context) throws Exception {
+
+    }
+    
+    {
+    this.context = context;
+    socket = s;
+    input = s.getInputStream();
+    output = s.getOutputStream();
+    requestParsingTimeLimit = 10000;
+    }
 ```
 
 코드가 엉뚱한 부분을 강조해 진짜 의도를 감춘다.
