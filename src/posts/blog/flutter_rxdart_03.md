@@ -108,4 +108,65 @@ Stream에서 여러 값을 카운트, 버퍼링한 다음 Window로 내보내고
           const [3, 4],
         ]));
   }, timeout: const Timeout(Duration(seconds: 10)));
+
+  test('지정된 개수만큼 새로운 window를 열고, startBufferEvery 값부터 다시 창을 열기 시작해야한다.',
+      () async {
+    // given
+    var temp = Rx.range(0, 4);
+
+    // when
+    Stream<List<int>> stream =
+        temp.windowCount(2, 1).asyncMap((event) => event.toList());
+
+    // then
+    await expectLater(
+        stream,
+        emitsInOrder(<dynamic>[
+          const [0, 1],
+          const [1, 2],
+          const [2, 3],
+          const [3, 4],
+          const [4],
+        ]));
+  }, timeout: const Timeout(Duration(seconds: 10)));
+  
+  test('횟수가 3인 windowCount와 startBufferEvery가 2일 때', () async {
+    // given
+    var temp = Rx.range(0, 8);
+
+    // when
+    Stream<List<int>> stream =
+        temp.windowCount(3, 2).asyncMap((event) => event.toList());
+
+    // then
+    await expectLater(
+        stream,
+        emitsInOrder(<dynamic>[
+          const [0, 1, 2],
+          const [2, 3, 4],
+          const [4, 5, 6],
+          const [6, 7, 8],
+          const [8],
+        ]));
+  }, timeout: const Timeout(Duration(seconds: 10)));
+
+  test('횟수가 3인 windowCount와 startBufferEvery가 4일 때', () async {
+    // given
+    var temp = Rx.range(0, 8);
+
+    // when
+    Stream<List<int>> stream =
+        temp.windowCount(3, 4).asyncMap((event) => event.toList());
+
+    // then
+    await expectLater(
+        stream,
+        emitsInOrder(<dynamic>[
+          const [0, 1, 2],
+          const [4, 5, 6],
+          const [8],
+        ]));
+  }, timeout: const Timeout(Duration(seconds: 10)));
 ```
+
+### WindowTest
