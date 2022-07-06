@@ -65,10 +65,10 @@ Stream 항목을 내보낼 때마다 현재 Window를 내보내고 새로운 Win
 
   test('지정된 시간마다 새로운 상위 Stream을 만들어야 한다.', () {
     // given
-    var a = StreamUtil.getStream(4);
+    var temp = StreamUtil.getStream(4);
 
     // when
-    Stream<List<int>> result = a
+    Stream<List<int>> result = temp
         .window(
             Stream<void>.periodic(const Duration(milliseconds: 200)).take(3))
         .asyncMap((event) => event.toList());
@@ -80,6 +80,32 @@ Stream 항목을 내보낼 때마다 현재 Window를 내보내고 새로운 Win
           const [0, 1],
           const [2, 3],
           emitsDone
+        ]));
+  }, timeout: const Timeout(Duration(seconds: 10)));
+```
+
+### WindowCount
+Stream에서 여러 값을 카운트, 버퍼링한 다음 Window로 내보내고 Stream은 각 startBufferEvery값마다 새 window를 시작합니다.
+
+경우에는 startBufferEvery 값을 제공하지 않으면 새로운 카운트 개수마다 window가 닫히고 방출됩니다.
+
+![windowCount](https://user-images.githubusercontent.com/85836879/177448733-b3574114-9c85-4535-b9c7-c70d4834ed29.png)
+
+```js
+  test('지정된 개수만큼 카운트하여 새로운 window를 열어야 한다.', () async {
+    // given
+    var temp = Rx.range(0, 4);
+
+    // when
+    Stream<List<int>> stream =
+        temp.windowCount(3).asyncMap((event) => event.toList());
+
+    // then
+    await expectLater(
+        stream,
+        emitsInOrder(<dynamic>[
+          const [0, 1, 2],
+          const [3, 4],
         ]));
   }, timeout: const Timeout(Duration(seconds: 10)));
 ```
