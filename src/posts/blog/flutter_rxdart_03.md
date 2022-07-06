@@ -45,17 +45,30 @@ Stream에서 수집한 항목의 Window를 내보내는 Stream을 반환합니�
 
 Stream 항목을 내보낼 때마다 현재 Window를 내보내고 새로운 Window를 열게 됩니다.
 
-각각의 Window는 Stream이므로 출력은 상위 Stream입니다. ( Stream<Stream>() )
+각각의 Window는 Stream이므로 출력은 상위 Stream입니다.
+
+> Stream<\Stream>()
 
 ![window](https://user-images.githubusercontent.com/85836879/177263992-22e3795a-7590-4454-8ceb-93fac53ce6d7.png)
 
 ```js
-test('지정된 시간마다 새로운 상위 Stream을 만들어야 한다.', () {
+  class StreamUtil{
+    static Stream<int> getStream(int n) async* {
+      var temp = 0;
+      while (temp < n) {
+        await Future<void>.delayed(const Duration(milliseconds: 100));
+
+        yield temp++;
+      }
+    }
+  }
+
+  test('지정된 시간마다 새로운 상위 Stream을 만들어야 한다.', () {
     // given
-    var a = Stream.value([0, 1]);
+    var a = StreamUtil.getStream(4);
 
     // when
-    Stream<List<List<int>>> result = a
+    Stream<List<int>> result = a
         .window(
             Stream<void>.periodic(const Duration(milliseconds: 200)).take(3))
         .asyncMap((event) => event.toList());
@@ -64,9 +77,8 @@ test('지정된 시간마다 새로운 상위 Stream을 만들어야 한다.', (
     expectLater(
         result,
         emitsInOrder(<dynamic>[
-          const [
-            [0, 1]
-          ],
+          const [0, 1],
+          const [2, 3],
           emitsDone
         ]));
   }, timeout: const Timeout(Duration(seconds: 10)));
