@@ -215,3 +215,77 @@ Stream 항목을 포함하는 Stream을 작성하고 조건을 통과할 때마�
 
 ### WindowTime
 각 Stream 항목을 포함하는 Stream을 생성하고 주어진 시간마다 샘플링하여 window를 내보냅니다.
+
+```js
+test('지정된 시간마다 창을 새로 열어야 한다.', () async {
+    // given
+    var temp = StreamUtil.getStream(5);
+
+    // when
+    Stream<List<int>> stream = temp
+        .windowTime(const Duration(seconds: 1))
+        .asyncMap((event) => event.toList());
+
+    // then
+    await expectLater(
+        stream,
+        emitsInOrder(<dynamic>[
+          const [0, 1, 2, 3, 4],
+          emitsDone
+        ]));
+  }, timeout: const Timeout(Duration(seconds: 10)));
+```
+
+### Buffer
+각각의 요소를 Buffer에 쌓아 List 타입으로 방출하는 스트림을 만들어 window를 방출합니다.
+
+![windowCount](https://user-images.githubusercontent.com/85836879/177741765-30cc8105-1bd3-40f5-9fe7-c59819ef5ef6.png)
+
+```js
+test('지정된 시간마다 buffer에 쌓아 List타입으로 방출해야 한다.', () async {
+    // given
+    var temp = StreamUtil.getStream(5);
+
+    // when
+    final stream = temp
+        .buffer(Stream<void>.periodic(const Duration(milliseconds: 200)))
+        .take(3);
+
+    // then
+    await expectLater(
+        stream,
+        emitsInOrder(<dynamic>[
+          const [0, 1],
+          const [2, 3],
+          const [4],
+        ]));
+  }, timeout: const Timeout(Duration(seconds: 10)));
+```
+
+### BufferCount
+Stream에서 Count만큼 buffering한 다음 buffer를 내보낸 뒤 지웁니다.
+
+Stream은 각 startBufferEvery의 값마다 새로운 buffer를 시작합니다.
+
+startBufferEvery를 제공하지 않는 경우에는 새로운 buffer는 소스의 개시 때마다 버퍼가 닫히고 즉시 방출됩니다.
+
+![windowCount](https://user-images.githubusercontent.com/85836879/177742908-39aeac29-9ca0-448c-8d60-45448d612f88.png)
+
+```js
+test('지정된 startBufferEvery의 값마다 buffer에 쌓아 방출해야 한다.', () async {
+    // given
+    var temp = Rx.range(0, 4);
+    // when
+    Stream<List<int>> stream =
+        temp.bufferCount(2).asyncMap((event) => event.toList());
+
+    // then
+    await expectLater(
+        stream,
+        emitsInOrder(<dynamic>[
+          const [0, 1],
+          const [2, 3],
+          const [4],
+        ]));
+  }, timeout: const Timeout(Duration(seconds: 10)));
+```
