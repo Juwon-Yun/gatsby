@@ -170,3 +170,48 @@ Stream에서 여러 값을 카운트, 버퍼링한 다음 Window로 내보내고
 ```
 
 ### WindowTest
+Stream 항목을 포함하는 Stream을 작성하고 조건을 통과할 때마다 일괄적으로 처리합니다.
+
+```js
+ test('지정된 조건마다 혹은 지정된 조건까지 window를 열어야 한다.', () async {
+    // given
+    var temp = Rx.range(0, 5);
+    // when
+    Stream<List<int>> stream = temp
+        .windowTest((idx) => idx % 2 == 0)
+        .asyncMap((event) => event.toList());
+
+    // then
+    expectLater(
+        stream,
+        emitsInOrder(<dynamic>[
+          const [0],
+          const [1, 2],
+          const [3, 4],
+          const [5],
+        ]));
+  }, timeout: const Timeout(Duration(seconds: 10)));
+
+  test('windowTest Transformer 함수를 사용하여 window를 열어야 한다.', () async {
+    // given
+    var temp = Rx.range(0, 4);
+    final transformer =
+        WindowTestStreamTransformer<int>((value) => value % 2 == 0);
+
+    // when
+    Stream<List<int>> stream =
+        temp.transform(transformer).asyncMap((event) => event.toList());
+
+    // then
+    expectLater(
+        stream,
+        emitsInOrder(<dynamic>[
+          const [0],
+          const [1, 2],
+          const [3, 4],
+        ]));
+  }, timeout: const Timeout(Duration(seconds: 10)));
+```
+
+### WindowTime
+각 Stream 항목을 포함하는 Stream을 생성하고 주어진 시간마다 샘플링하여 window를 내보냅니다.
