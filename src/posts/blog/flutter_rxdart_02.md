@@ -56,7 +56,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:rxdart/rxdart.dart';
 
 void main() {
-  test('test 1 : 각 스트림에서 모든 값이 한 개 이상 방출되었을 때 가장 최근 값들을 합쳐 방출해야 한다.', () async {
+  test('각 Stream에서 모든 값이 한 개 이상 방출되었을 때 가장 최근 값들을 합쳐 방출해야 한다.', () async {
     // given
     var a = Stream.fromIterable(['a']),
         b = Stream.fromIterable(['b']),
@@ -75,7 +75,8 @@ void main() {
         ]));
   }, timeout: const Timeout(Duration(seconds: 10)));
 
-  test('test 2 : 각 스트림에서 모든 값이 한 개 이상 방출되었을 때, 가장 최근값들의 가장 마지막 값을 합쳐 방출해야 한다.',  () async {
+test('각 Stream에서 모든 값이 한 개 이상 방출되었을 때, 가장 최근값들의 가장 마지막 값을 합쳐 방출해야 한다.',
+      () async {
     // given
     var a = Stream.fromIterable(['a']),
         b = Stream.fromIterable(['b']),
@@ -88,12 +89,14 @@ void main() {
 
     // then
     await expectLater(stream, emitsInOrder(['c', 'd', emitsDone]));
-  }, timeout: const Timeout(Duration(seconds: 10)));
+}, timeout: const Timeout(Duration(seconds: 10)));
+
 }
 
 ```
 
-> test 1의 emitsInOrder 매개변수를 다르게 작성한 경우 가장 최근 값들을 방출하는 것을 알 수 있다.
+> emitsInOrder 매개변수를 다르게 작성한 경우 가장 최근 값들을 방출하는 것을 알 수 있어요.
+
 ![스크린샷 2022-06-23 오후 9 37 05](https://user-images.githubusercontent.com/85836879/175300264-251caf3a-5aa3-4dae-b664-48c4eb05ac9f.png)
 
 </details>
@@ -110,7 +113,7 @@ void main() {
 <summary>> Concat </summary>
 
 ```js
-  test('test 3 : 0, 1, 2, 3, 4, 5가 순차적으로 발행되어야 한다.', () {
+ test('0, 1, 2, 3, 4, 5가 순차적으로 발행되어야 한다.', () {
     //given
     var a = Stream.fromIterable([0, 1, 2]), b = Stream.fromIterable([3, 4, 5]);
 
@@ -139,8 +142,8 @@ void main() {
 
 
 ```js
-test('test 4 : 0, 1, 2, 3, 4, 5가 순차적으로 발행되어야 한다.', () {
-    //given
+  test('0, 1, 2, 3, 4, 5가 순차적으로 발행되어야 한다.', () {
+    // given
     var a = Stream.fromIterable([0, 1, 2]), b = Stream.fromIterable([3, 4, 5]);
 
     // when
