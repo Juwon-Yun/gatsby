@@ -35,6 +35,10 @@ Stream과 Observable은 같은 방식으로 구현하지만 표준 Rx에 익숙�
 <br>
 
 <a href="https://pub.dev/documentation/rxdart/latest/rx/Rx-class.html" target="_blank">Rx Dart docs</a>
+<br>
+<a href="http://reactivex.io/RxJava/javadoc/io/reactivex/Observable.html" target="_blank">reactiveX.io</a>
+
+
 
 ## 변형 함수 (Transformer)
 
@@ -288,4 +292,181 @@ test('지정된 startBufferEvery의 값마다 buffer에 쌓아 방출해야 한�
           const [4],
         ]));
   }, timeout: const Timeout(Duration(seconds: 10)));
+
+  test('지정된 개수만큼 buffer에 쌓아 내보낸 다음 startBufferEvery 값부터 새로운 buffer 쌓기 시작해야 한다.',
+      () async {
+    // given
+    var temp = Rx.range(0, 4);
+
+    // when
+    Stream<List<int>> stream =
+        temp.bufferCount(2, 3).asyncMap((event) => event.toList());
+
+    // then
+    await expectLater(
+        stream,
+        emitsInOrder(<dynamic>[
+          const [0, 1],
+          const [3, 4],
+        ]));
+  }, timeout: const Timeout(Duration(seconds: 10)));
+
+  test('bufferCount가 3의 값을 가지며 startBufferEvery가 2의 값을 가지고 방출해야 한다.', () async {
+    // given
+    var temp = Rx.range(0, 4);
+
+    // when
+    Stream<List<int>> stream =
+        temp.bufferCount(3, 2).asyncMap((event) => event.toList());
+
+    // then
+    await expectLater(
+        stream,
+        emitsInOrder(<dynamic>[
+          const [0, 1, 2],
+          const [2, 3, 4],
+        ]));
+  }, timeout: const Timeout(Duration(seconds: 10)));
+
+  test('bufferCount가 3의 값을 가지며 startBufferEvery가 4의 값을 가지고 방출해야 한다.', () async {
+    // given
+    var temp = Rx.range(0, 16);
+
+    // when
+    Stream<List<int>> stream =
+        temp.bufferCount(3, 4).asyncMap((event) => event.toList());
+
+    // then
+    await expectLater(
+        stream,
+        emitsInOrder(<dynamic>[
+          const [0, 1, 2],
+          const [4, 5, 6],
+          const [8, 9, 10],
+          const [12, 13, 14],
+          const [16],
+        ]));
+  }, timeout: const Timeout(Duration(seconds: 10)));
 ```
+
+### BufferTest
+각각의 Stream 항목을 작성하고 조건(테스트)를 통과할 때마다 일괄적으로 처리합니다.
+
+```js
+  test('조건을 만족할 때까지 항목을 buffer에 쌓고 조건을 통과하면 방출한다.', () async {
+    // given
+    var temp = Rx.range(0, 4);
+
+    // when
+    Stream<List<int>> stream = temp
+        .bufferTest((idx) => idx % 2 == 0)
+        .asyncMap((event) => event.toList());
+
+    // then
+    await expectLater(
+        stream,
+        emitsInOrder(<List<int>>[
+          const [0],
+          const [1, 2],
+          const [3, 4],
+        ]));
+  }, timeout: const Timeout(Duration(seconds: 10)));
+
+  test('bufferTest Transformer 함수를 사용해야 한다.', () async {
+    // given
+    var temp = Rx.range(0, 4);
+    final transformer =
+        BufferTestStreamTransformer<int>((int value) => value % 3 == 0);
+
+    // when
+    Stream<List<int>> stream =
+        temp.transform(transformer).asyncMap((event) => event.toList());
+
+    // then
+    await expectLater(
+        stream,
+        emitsInOrder(<List<int>>[
+          const [0],
+          const [1, 2, 3],
+        ]));
+  }, timeout: const Timeout(Duration(seconds: 10)));
+```
+
+### BufferTime
+각각의 Stream 항목을 생성하고 주어진 시간마다 샘플링하여 window를 방출합니다.
+
+```js
+  test('지정된 시간동안 buffer에 항목을 쌓고 지정된 시간이 지나면 방출해야 한다.', () async {
+    // given
+    var temp = StreamUtil.getStream(5);
+
+    // when
+    Stream<List<int>> stream =
+        temp.bufferTime(const Duration(milliseconds: 200));
+
+    // then
+    await expectLater(
+        stream,
+        emitsInOrder(<List<int>>[
+          const [0, 1],
+          const [2, 3],
+        ]));
+  }, timeout: const Timeout(Duration(seconds: 10)));
+```
+
+### Debounce
+Stream이 다른 항목을 방출하지 않고 완료된 경우에만 소스에서 항목을 방출하도록 변환합니다.
+
+![windowCount](https://user-images.githubusercontent.com/85836879/178020492-137838a8-cf05-4f14-b280-28a7d65e29d9.png)
+
+```js
+  class StreamUtil{
+    Stream<int> getControllerStream(int count) {
+      final streamController = StreamController<int>();
+
+      for (var i = 1; i <= count; i++) {
+        if (i == count) {
+          Timer(Duration(milliseconds: i * 100), () {
+            streamController.add(i);
+            streamController.close();
+          });
+          continue;
+        }
+        Timer(Duration(milliseconds: i * 100), () => streamController.add(i));
+      }
+      return streamController.stream;
+    }
+    
+    test('지정된 시간동안 값이 방출되지 않았을 때, 값을 방출한다.', () async {
+        // given
+      var temp = StreamUtil.getControllerStream(4);
+
+      // when
+      final stream = temp.debounce((_) => Stream<void>.fromFuture(
+        Future<void>.delayed(const Duration(milliseconds: 1000))));
+
+      // then
+      await expectLater(stream, emitsInOrder([4, emitsDone]));
+      }, timeout: const Timeout(Duration(seconds: 10)));
+  }
+```
+
+### DebounceTime
+DebounceTimeStream이 지정한 시간 동안 다른 항목을 방출하지 않고 완료된 경우에만 항목을 방출하도록 변환합니다.
+
+![windowCount](https://user-images.githubusercontent.com/85836879/178021288-0e2a4ac3-7a9b-47d7-b625-c1ca64086b2e.png)
+
+```js
+  test('지정된 시간동안 값이 방출되지 않았을 때, 값을 방출한다.', () async {
+    // given
+    var temp = StreamUtil.getControllerStream(5);
+
+    // when
+    final stream = temp.debounceTime(const Duration(milliseconds: 500));
+
+    // then
+    await expectLater(stream, emitsInOrder([5, emitsDone]));
+  }, timeout: const Timeout(Duration(seconds: 10)));
+```
+
+### Sample
