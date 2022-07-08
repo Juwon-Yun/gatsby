@@ -472,7 +472,7 @@ DebounceTimeStream이 지정한 시간 동안 다른 항목을 방출하지 않�
 ### Sample
 SampleStream에서 방출된 Stream이 가장 최근에 방출된 항목을(있는 경우에) 방출합니다.
 
-![Sample](https://user-images.githubusercontent.com/85836879/178021288-0e2a4ac3-7a9b-47d7-b625-c1ca64086b2e.png)
+![Sample](https://user-images.githubusercontent.com/85836879/178024486-4722bcee-b46c-4120-a0b8-d0c4967edebe.png)
 
 ```js
   class StreamUtil{
