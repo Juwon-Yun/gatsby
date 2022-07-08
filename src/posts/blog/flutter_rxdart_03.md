@@ -417,7 +417,7 @@ test('지정된 startBufferEvery의 값마다 buffer에 쌓아 방출해야 한�
 ### Debounce
 Stream이 다른 항목을 방출하지 않고 완료된 경우에만 소스에서 항목을 방출하도록 변환합니다.
 
-![windowCount](https://user-images.githubusercontent.com/85836879/178020492-137838a8-cf05-4f14-b280-28a7d65e29d9.png)
+![Debounce](https://user-images.githubusercontent.com/85836879/178020492-137838a8-cf05-4f14-b280-28a7d65e29d9.png)
 
 ```js
   class StreamUtil{
@@ -454,7 +454,7 @@ Stream이 다른 항목을 방출하지 않고 완료된 경우에만 소스에�
 ### DebounceTime
 DebounceTimeStream이 지정한 시간 동안 다른 항목을 방출하지 않고 완료된 경우에만 항목을 방출하도록 변환합니다.
 
-![windowCount](https://user-images.githubusercontent.com/85836879/178021288-0e2a4ac3-7a9b-47d7-b625-c1ca64086b2e.png)
+![DebounceTime](https://user-images.githubusercontent.com/85836879/178021288-0e2a4ac3-7a9b-47d7-b625-c1ca64086b2e.png)
 
 ```js
   test('지정된 시간동안 값이 방출되지 않았을 때, 값을 방출한다.', () async {
@@ -470,3 +470,44 @@ DebounceTimeStream이 지정한 시간 동안 다른 항목을 방출하지 않�
 ```
 
 ### Sample
+SampleStream에서 방출된 Stream이 가장 최근에 방출된 항목을(있는 경우에) 방출합니다.
+
+![Sample](https://user-images.githubusercontent.com/85836879/178021288-0e2a4ac3-7a9b-47d7-b625-c1ca64086b2e.png)
+
+```js
+  class StreamUtil{
+    Stream<int> getSampleStream(
+          {required int count, int? milliseconds, int? interval}) =>
+      Stream<int>.periodic(Duration(milliseconds: milliseconds ??= 35),
+          (idx) => idx + (interval ??= 0)).take(count);
+    
+    test('sample Stream이 방출될 때마다 Stream에서 가장 최근에 방출된 값을 방출한다.', () async {
+      // given
+      var temp = StreamUtil.getSampleStream(count: 5, milliseconds: 20);
+
+      // when
+      final stream = temp.sample(StreamUtil.getSampleStream(count: 10));
+
+      // then
+      await expectLater(stream, emitsInOrder([2, 3, 4, emitsDone]));
+    }, timeout: const Timeout(Duration(seconds: 10)));
+  }
+```
+
+### SampleTime
+Sample의 방출 시간 범위내에서 이전 방출된 가장 최근의 값이 있는 경우 방출합니다.
+
+![SampleTime](https://user-images.githubusercontent.com/85836879/178022303-9044b6d5-5227-4b38-8721-7cf3a09b38f3.png)
+
+```js
+  test('지정된 시간에서 방출된 Stream의 가장 최근에 방출된 값이 있는 경우 방출한다.', () async {
+    // given
+    var temp = StreamUtil.getSampleStream(count: 5, milliseconds: 20);
+
+    // when
+    final stream = temp.sampleTime(const Duration(milliseconds: 35));
+
+    // then
+    await expectLater(stream, emitsInOrder([2, 3, 4, emitsDone]));
+  }, timeout: const Timeout(Duration(seconds: 10)));
+```

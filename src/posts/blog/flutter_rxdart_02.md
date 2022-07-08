@@ -35,6 +35,8 @@ Stream과 Observable은 같은 방식으로 구현하지만 표준 Rx에 익숙�
 <br>
 
 <a href="https://pub.dev/documentation/rxdart/latest/rx/Rx-class.html" target="_blank">Rx Dart docs</a>
+<br>
+<a href="http://reactivex.io/RxJava/javadoc/io/reactivex/Observable.html" target="_blank">reactiveX.io</a>
 
 ## 생성 함수 (Factory)
 
