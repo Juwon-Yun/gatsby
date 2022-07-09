@@ -51,42 +51,45 @@ Stream 항목을 내보낼 때마다 현재 Window를 내보내고 새로운 Win
 
 각각의 Window는 Stream이므로 출력은 상위 Stream입니다.
 
-> Stream<\Stream>()
+![window](https://user-images.githubusercontent.com/85836879/178093581-cb9f7174-cde7-4dc9-b8eb-1df97c8699a2.png)
 
-![window](https://user-images.githubusercontent.com/85836879/177263992-22e3795a-7590-4454-8ceb-93fac53ce6d7.png)
+<details>
+
+<summary> Window </summary>
 
 ```js
-  class StreamUtil{
-    static Stream<int> getStream(int n) async* {
-      var temp = 0;
-      while (temp < n) {
-        await Future<void>.delayed(const Duration(milliseconds: 100));
+class StreamUtil{
+  static Stream<int> getStream(int n) async* {
+    var temp = 0;
+    while (temp < n) {
+      await Future<void>.delayed(const Duration(milliseconds: 100));
 
-        yield temp++;
-      }
+      yield temp++;
     }
   }
+}
 
-  test('지정된 시간마다 새로운 상위 Stream을 만들어야 한다.', () {
-    // given
-    var temp = StreamUtil.getStream(4);
+test('지정된 시간마다 새로운 상위 Stream을 만들어야 한다.', () {
+  // given
+  var temp = StreamUtil.getStream(4);
 
-    // when
-    Stream<List<int>> result = temp
-        .window(
-            Stream<void>.periodic(const Duration(milliseconds: 200)).take(3))
-        .asyncMap((event) => event.toList());
+  // when
+  Stream<List<int>> result = temp
+      .window(
+          Stream<void>.periodic(const Duration(milliseconds: 200)).take(3))
+      .asyncMap((event) => event.toList());
 
-    // then
-    expectLater(
-        result,
-        emitsInOrder(<dynamic>[
-          const [0, 1],
-          const [2, 3],
-          emitsDone
-        ]));
-  }, timeout: const Timeout(Duration(seconds: 10)));
+  // then
+  expectLater(
+      result,
+      emitsInOrder(<dynamic>[
+        const [0, 1],
+        const [2, 3],
+        emitsDone
+      ]));
+}, timeout: const Timeout(Duration(seconds: 10)));
 ```
+</details>
 
 ### WindowCount
 Stream에서 여러 값을 카운트, 버퍼링한 다음 Window로 내보내고 Stream은 각 startBufferEvery값마다 새 window를 시작합니다.
@@ -95,176 +98,198 @@ Stream에서 여러 값을 카운트, 버퍼링한 다음 Window로 내보내고
 
 ![windowCount](https://user-images.githubusercontent.com/85836879/177448733-b3574114-9c85-4535-b9c7-c70d4834ed29.png)
 
+<details>
+
+<summary> WindowCount </summary>
+
 ```js
-  test('지정된 개수만큼 카운트하여 새로운 window를 열어야 한다.', () async {
-    // given
-    var temp = Rx.range(0, 4);
+test('지정된 개수만큼 카운트하여 새로운 window를 열어야 한다.', () async {
+  // given
+  var temp = Rx.range(0, 4);
 
-    // when
-    Stream<List<int>> stream =
-        temp.windowCount(3).asyncMap((event) => event.toList());
+  // when
+  Stream<List<int>> stream =
+      temp.windowCount(3).asyncMap((event) => event.toList());
 
-    // then
-    await expectLater(
-        stream,
-        emitsInOrder(<dynamic>[
-          const [0, 1, 2],
-          const [3, 4],
-        ]));
-  }, timeout: const Timeout(Duration(seconds: 10)));
+  // then
+  await expectLater(
+      stream,
+      emitsInOrder(<dynamic>[
+        const [0, 1, 2],
+        const [3, 4],
+      ]));
+}, timeout: const Timeout(Duration(seconds: 10)));
 
-  test('지정된 개수만큼 새로운 window를 열고, startBufferEvery 값부터 다시 창을 열기 시작해야한다.',
-      () async {
-    // given
-    var temp = Rx.range(0, 4);
+test('지정된 개수만큼 새로운 window를 열고, startBufferEvery 값부터 다시 창을 열기 시작해야한다.',
+    () async {
+  // given
+  var temp = Rx.range(0, 4);
 
-    // when
-    Stream<List<int>> stream =
-        temp.windowCount(2, 1).asyncMap((event) => event.toList());
+  // when
+  Stream<List<int>> stream =
+      temp.windowCount(2, 1).asyncMap((event) => event.toList());
 
-    // then
-    await expectLater(
-        stream,
-        emitsInOrder(<dynamic>[
-          const [0, 1],
-          const [1, 2],
-          const [2, 3],
-          const [3, 4],
-          const [4],
-        ]));
-  }, timeout: const Timeout(Duration(seconds: 10)));
-  
-  test('횟수가 3인 windowCount와 startBufferEvery가 2일 때', () async {
-    // given
-    var temp = Rx.range(0, 8);
+  // then
+  await expectLater(
+      stream,
+      emitsInOrder(<dynamic>[
+        const [0, 1],
+        const [1, 2],
+        const [2, 3],
+        const [3, 4],
+        const [4],
+      ]));
+}, timeout: const Timeout(Duration(seconds: 10)));
 
-    // when
-    Stream<List<int>> stream =
-        temp.windowCount(3, 2).asyncMap((event) => event.toList());
+test('횟수가 3인 windowCount와 startBufferEvery가 2일 때', () async {
+  // given
+  var temp = Rx.range(0, 8);
 
-    // then
-    await expectLater(
-        stream,
-        emitsInOrder(<dynamic>[
-          const [0, 1, 2],
-          const [2, 3, 4],
-          const [4, 5, 6],
-          const [6, 7, 8],
-          const [8],
-        ]));
-  }, timeout: const Timeout(Duration(seconds: 10)));
+  // when
+  Stream<List<int>> stream =
+      temp.windowCount(3, 2).asyncMap((event) => event.toList());
 
-  test('횟수가 3인 windowCount와 startBufferEvery가 4일 때', () async {
-    // given
-    var temp = Rx.range(0, 8);
+  // then
+  await expectLater(
+      stream,
+      emitsInOrder(<dynamic>[
+        const [0, 1, 2],
+        const [2, 3, 4],
+        const [4, 5, 6],
+        const [6, 7, 8],
+        const [8],
+      ]));
+}, timeout: const Timeout(Duration(seconds: 10)));
 
-    // when
-    Stream<List<int>> stream =
-        temp.windowCount(3, 4).asyncMap((event) => event.toList());
+test('횟수가 3인 windowCount와 startBufferEvery가 4일 때', () async {
+  // given
+  var temp = Rx.range(0, 8);
 
-    // then
-    await expectLater(
-        stream,
-        emitsInOrder(<dynamic>[
-          const [0, 1, 2],
-          const [4, 5, 6],
-          const [8],
-        ]));
-  }, timeout: const Timeout(Duration(seconds: 10)));
+  // when
+  Stream<List<int>> stream =
+      temp.windowCount(3, 4).asyncMap((event) => event.toList());
+
+  // then
+  await expectLater(
+      stream,
+      emitsInOrder(<dynamic>[
+        const [0, 1, 2],
+        const [4, 5, 6],
+        const [8],
+      ]));
+}, timeout: const Timeout(Duration(seconds: 10)));
 ```
+
+</details>
 
 ### WindowTest
 Stream 항목을 포함하는 Stream을 작성하고 조건을 통과할 때마다 일괄적으로 처리합니다.
 
+<details>
+
+<summary> WindowTest </summary>
+
 ```js
- test('지정된 조건마다 혹은 지정된 조건까지 window를 열어야 한다.', () async {
-    // given
-    var temp = Rx.range(0, 5);
-    // when
-    Stream<List<int>> stream = temp
-        .windowTest((idx) => idx % 2 == 0)
-        .asyncMap((event) => event.toList());
+test('지정된 조건마다 혹은 지정된 조건까지 window를 열어야 한다.', () async {
+  // given
+  var temp = Rx.range(0, 5);
 
-    // then
-    expectLater(
-        stream,
-        emitsInOrder(<dynamic>[
-          const [0],
-          const [1, 2],
-          const [3, 4],
-          const [5],
-        ]));
-  }, timeout: const Timeout(Duration(seconds: 10)));
+  // when
+  Stream<List<int>> stream = temp
+      .windowTest((idx) => idx % 2 == 0)
+      .asyncMap((event) => event.toList());
 
-  test('windowTest Transformer 함수를 사용하여 window를 열어야 한다.', () async {
-    // given
-    var temp = Rx.range(0, 4);
-    final transformer =
-        WindowTestStreamTransformer<int>((value) => value % 2 == 0);
+  // then
+  expectLater(
+    stream,
+      emitsInOrder(<dynamic>[
+        const [0],
+        const [1, 2],
+        const [3, 4],
+        const [5],
+      ]));
+}, timeout: const Timeout(Duration(seconds: 10)));
 
-    // when
-    Stream<List<int>> stream =
-        temp.transform(transformer).asyncMap((event) => event.toList());
+test('windowTest Transformer 함수를 사용하여 window를 열어야 한다.', () async {
+  // given
+  var temp = Rx.range(0, 4);
+  final transformer =
+      WindowTestStreamTransformer<int>((value) => value % 2 == 0);
 
-    // then
-    expectLater(
-        stream,
-        emitsInOrder(<dynamic>[
-          const [0],
-          const [1, 2],
-          const [3, 4],
-        ]));
-  }, timeout: const Timeout(Duration(seconds: 10)));
+  // when
+  Stream<List<int>> stream =
+      temp.transform(transformer).asyncMap((event) => event.toList());
+
+  // then
+  expectLater(
+    stream,
+      emitsInOrder(<dynamic>[
+        const [0],
+        const [1, 2],
+        const [3, 4],
+      ]));
+}, timeout: const Timeout(Duration(seconds: 10)));
 ```
+</details>
 
 ### WindowTime
 각 Stream 항목을 포함하는 Stream을 생성하고 주어진 시간마다 샘플링하여 window를 내보냅니다.
 
+<details>
+
+<summary> WindowTime </summary>
+
 ```js
 test('지정된 시간마다 창을 새로 열어야 한다.', () async {
-    // given
-    var temp = StreamUtil.getStream(5);
+  // given  
+  var temp = StreamUtil.getStream(5);
 
-    // when
-    Stream<List<int>> stream = temp
-        .windowTime(const Duration(seconds: 1))
-        .asyncMap((event) => event.toList());
+  // when
+  Stream<List<int>> stream = temp
+      .windowTime(const Duration(seconds: 1))
+      .asyncMap((event) => event.toList());
 
-    // then
-    await expectLater(
-        stream,
-        emitsInOrder(<dynamic>[
-          const [0, 1, 2, 3, 4],
-          emitsDone
-        ]));
-  }, timeout: const Timeout(Duration(seconds: 10)));
+  // then
+  await expectLater(
+    stream,
+      emitsInOrder(<dynamic>[
+        const [0, 1, 2, 3, 4],
+        emitsDone
+      ]));
+}, timeout: const Timeout(Duration(seconds: 10)));
 ```
+</details>
 
 ### Buffer
 각각의 요소를 Buffer에 쌓아 List 타입으로 방출하는 스트림을 만들어 window를 방출합니다.
 
-![windowCount](https://user-images.githubusercontent.com/85836879/177741765-30cc8105-1bd3-40f5-9fe7-c59819ef5ef6.png)
+![Buffer](https://user-images.githubusercontent.com/85836879/177741765-30cc8105-1bd3-40f5-9fe7-c59819ef5ef6.png)
+
+<details>
+
+<summary> Buffer </summary>
 
 ```js
 test('지정된 시간마다 buffer에 쌓아 List타입으로 방출해야 한다.', () async {
-    // given
-    var temp = StreamUtil.getStream(5);
+// given
+  var temp = StreamUtil.getStream(5);
 
-    // when
-    final stream = temp
-        .buffer(Stream<void>.periodic(const Duration(milliseconds: 200)))
-        .take(3);
+  // when
+  final stream = temp
+      .buffer(Stream<void>.periodic(const Duration(milliseconds: 200)))
+      .take(3);
 
-    // then
-    await expectLater(
-        stream,
-        emitsInOrder(<dynamic>[
-          const [0, 1],
-          const [2, 3],
-          const [4],
-        ]));
-  }, timeout: const Timeout(Duration(seconds: 10)));
+  // then
+  await expectLater(
+    stream,
+      emitsInOrder(<dynamic>[
+        const [0, 1],
+        const [2, 3],
+        const [4],
+      ]));
+}, timeout: const Timeout(Duration(seconds: 10)));
 ```
+</details>
 
 ### BufferCount
 Stream에서 Count만큼 buffering한 다음 buffer를 내보낸 뒤 지웁니다.
@@ -273,244 +298,280 @@ Stream은 각 startBufferEvery의 값마다 새로운 buffer를 시작합니다.
 
 startBufferEvery를 제공하지 않는 경우에는 새로운 buffer는 소스의 개시 때마다 버퍼가 닫히고 즉시 방출됩니다.
 
-![windowCount](https://user-images.githubusercontent.com/85836879/177742908-39aeac29-9ca0-448c-8d60-45448d612f88.png)
+![BufferCount](https://user-images.githubusercontent.com/85836879/177742908-39aeac29-9ca0-448c-8d60-45448d612f88.png)
+
+<details>
+
+<summary> BufferCount </summary>
 
 ```js
 test('지정된 startBufferEvery의 값마다 buffer에 쌓아 방출해야 한다.', () async {
-    // given
-    var temp = Rx.range(0, 4);
-    // when
-    Stream<List<int>> stream =
-        temp.bufferCount(2).asyncMap((event) => event.toList());
+  // given
+  var temp = Rx.range(0, 4);
 
-    // then
-    await expectLater(
-        stream,
-        emitsInOrder(<dynamic>[
-          const [0, 1],
-          const [2, 3],
-          const [4],
-        ]));
-  }, timeout: const Timeout(Duration(seconds: 10)));
+  // when
+  Stream<List<int>> stream =
+      temp.bufferCount(2).asyncMap((event) => event.toList());
 
-  test('지정된 개수만큼 buffer에 쌓아 내보낸 다음 startBufferEvery 값부터 새로운 buffer 쌓기 시작해야 한다.',
-      () async {
-    // given
-    var temp = Rx.range(0, 4);
+  // then
+  await expectLater(
+    stream,
+      emitsInOrder(<dynamic>[
+        const [0, 1],
+        const [2, 3],
+        const [4],
+      ]));
+}, timeout: const Timeout(Duration(seconds: 10)));
 
-    // when
-    Stream<List<int>> stream =
-        temp.bufferCount(2, 3).asyncMap((event) => event.toList());
+test('지정된 개수만큼 buffer에 쌓아 내보낸 다음 startBufferEvery 값부터 새로운 buffer 쌓기 시작해야 한다.',
+    () async {
+  // given
+  var temp = Rx.range(0, 4);
 
-    // then
-    await expectLater(
-        stream,
-        emitsInOrder(<dynamic>[
-          const [0, 1],
-          const [3, 4],
-        ]));
-  }, timeout: const Timeout(Duration(seconds: 10)));
+  // when
+  Stream<List<int>> stream =
+      temp.bufferCount(2, 3).asyncMap((event) => event.toList());
 
-  test('bufferCount가 3의 값을 가지며 startBufferEvery가 2의 값을 가지고 방출해야 한다.', () async {
-    // given
-    var temp = Rx.range(0, 4);
+  // then
+  await expectLater(
+    stream,
+      emitsInOrder(<dynamic>[
+        const [0, 1],
+        const [3, 4],
+      ]));
+}, timeout: const Timeout(Duration(seconds: 10)));
 
-    // when
-    Stream<List<int>> stream =
-        temp.bufferCount(3, 2).asyncMap((event) => event.toList());
+test('bufferCount가 3의 값을 가지며 startBufferEvery가 2의 값을 가지고 방출해야 한다.', () async {
+  // given
+  var temp = Rx.range(0, 4);
 
-    // then
-    await expectLater(
-        stream,
-        emitsInOrder(<dynamic>[
-          const [0, 1, 2],
-          const [2, 3, 4],
-        ]));
-  }, timeout: const Timeout(Duration(seconds: 10)));
+  // when
+  Stream<List<int>> stream =
+      temp.bufferCount(3, 2).asyncMap((event) => event.toList());
 
-  test('bufferCount가 3의 값을 가지며 startBufferEvery가 4의 값을 가지고 방출해야 한다.', () async {
-    // given
-    var temp = Rx.range(0, 16);
+  // then
+  await expectLater(
+    stream,
+      emitsInOrder(<dynamic>[
+        const [0, 1, 2],
+        const [2, 3, 4],
+      ]));
+}, timeout: const Timeout(Duration(seconds: 10)));
 
-    // when
-    Stream<List<int>> stream =
-        temp.bufferCount(3, 4).asyncMap((event) => event.toList());
+test('bufferCount가 3의 값을 가지며 startBufferEvery가 4의 값을 가지고 방출해야 한다.', () async {
+  // given
+  var temp = Rx.range(0, 16);
 
-    // then
-    await expectLater(
-        stream,
-        emitsInOrder(<dynamic>[
-          const [0, 1, 2],
-          const [4, 5, 6],
-          const [8, 9, 10],
-          const [12, 13, 14],
-          const [16],
-        ]));
-  }, timeout: const Timeout(Duration(seconds: 10)));
+  // when
+  Stream<List<int>> stream =
+      temp.bufferCount(3, 4).asyncMap((event) => event.toList());
+
+  // then
+  await expectLater(
+    stream,
+      emitsInOrder(<dynamic>[
+        const [0, 1, 2],
+        const [4, 5, 6],
+        const [8, 9, 10],
+        const [12, 13, 14],
+        const [16],
+      ]));
+}, timeout: const Timeout(Duration(seconds: 10)));
 ```
+</details>
 
 ### BufferTest
 각각의 Stream 항목을 작성하고 조건(테스트)를 통과할 때마다 일괄적으로 처리합니다.
 
+<details>
+
+<summary> BufferTest </summary>
+
 ```js
-  test('조건을 만족할 때까지 항목을 buffer에 쌓고 조건을 통과하면 방출한다.', () async {
-    // given
-    var temp = Rx.range(0, 4);
+test('조건을 만족할 때까지 항목을 buffer에 쌓고 조건을 통과하면 방출한다.', () async {
+  // given
+  var temp = Rx.range(0, 4);
 
-    // when
-    Stream<List<int>> stream = temp
-        .bufferTest((idx) => idx % 2 == 0)
-        .asyncMap((event) => event.toList());
+  // when
+  Stream<List<int>> stream = temp
+      .bufferTest((idx) => idx % 2 == 0)
+      .asyncMap((event) => event.toList());
 
-    // then
-    await expectLater(
-        stream,
-        emitsInOrder(<List<int>>[
-          const [0],
-          const [1, 2],
-          const [3, 4],
-        ]));
-  }, timeout: const Timeout(Duration(seconds: 10)));
+  // then
+  await expectLater(
+    stream,
+      emitsInOrder(<List<int>>[
+        const [0],
+        const [1, 2],
+        const [3, 4],
+      ]));
+}, timeout: const Timeout(Duration(seconds: 10)));
 
-  test('bufferTest Transformer 함수를 사용해야 한다.', () async {
-    // given
-    var temp = Rx.range(0, 4);
-    final transformer =
-        BufferTestStreamTransformer<int>((int value) => value % 3 == 0);
+test('bufferTest Transformer 함수를 사용해야 한다.', () async {
+  // given
+  var temp = Rx.range(0, 4);
+  final transformer =
+      BufferTestStreamTransformer<int>((int value) => value % 3 == 0);
 
-    // when
-    Stream<List<int>> stream =
-        temp.transform(transformer).asyncMap((event) => event.toList());
+  // when
+  Stream<List<int>> stream =
+      temp.transform(transformer).asyncMap((event) => event.toList());
 
-    // then
-    await expectLater(
-        stream,
-        emitsInOrder(<List<int>>[
-          const [0],
-          const [1, 2, 3],
-        ]));
-  }, timeout: const Timeout(Duration(seconds: 10)));
+  // then
+  await expectLater(
+    stream,
+      emitsInOrder(<List<int>>[
+        const [0],
+        const [1, 2, 3],
+      ]));
+}, timeout: const Timeout(Duration(seconds: 10)));
 ```
+</details>
 
 ### BufferTime
 각각의 Stream 항목을 생성하고 주어진 시간마다 샘플링하여 window를 방출합니다.
 
+<details>
+
+<summary> BufferTime </summary>
+
 ```js
-  test('지정된 시간동안 buffer에 항목을 쌓고 지정된 시간이 지나면 방출해야 한다.', () async {
-    // given
-    var temp = StreamUtil.getStream(5);
+test('지정된 시간동안 buffer에 항목을 쌓고 지정된 시간이 지나면 방출해야 한다.', () async {
+  // given
+  var temp = StreamUtil.getStream(5);
 
-    // when
-    Stream<List<int>> stream =
-        temp.bufferTime(const Duration(milliseconds: 200));
+  // when
+  Stream<List<int>> stream =
+      temp.bufferTime(const Duration(milliseconds: 200));
 
-    // then
-    await expectLater(
-        stream,
-        emitsInOrder(<List<int>>[
-          const [0, 1],
-          const [2, 3],
-        ]));
-  }, timeout: const Timeout(Duration(seconds: 10)));
+  // then
+  await expectLater(
+    stream,
+      emitsInOrder(<List<int>>[
+        const [0, 1],
+        const [2, 3],
+      ]));
+}, timeout: const Timeout(Duration(seconds: 10)));
 ```
+</details>
 
 ### Debounce
 Stream이 다른 항목을 방출하지 않고 완료된 경우에만 소스에서 항목을 방출하도록 변환합니다.
 
 ![Debounce](https://user-images.githubusercontent.com/85836879/178020492-137838a8-cf05-4f14-b280-28a7d65e29d9.png)
 
+<details>
+
+<summary> Debounce </summary>
+
 ```js
-  class StreamUtil{
-    Stream<int> getControllerStream(int count) {
-      final streamController = StreamController<int>();
+class StreamUtil{
+  Stream<int> getControllerStream(int count) {
+    final streamController = StreamController<int>();
 
-      for (var i = 1; i <= count; i++) {
-        if (i == count) {
-          Timer(Duration(milliseconds: i * 100), () {
-            streamController.add(i);
-            streamController.close();
-          });
-          continue;
-        }
-        Timer(Duration(milliseconds: i * 100), () => streamController.add(i));
+    for (var i = 1; i <= count; i++) {
+      if (i == count) {
+        Timer(Duration(milliseconds: i * 100), () {
+          streamController.add(i);
+          streamController.close();
+        });
+        continue;
       }
-      return streamController.stream;
+      Timer(Duration(milliseconds: i * 100), () => streamController.add(i));
     }
-    
-    test('지정된 시간동안 값이 방출되지 않았을 때, 값을 방출한다.', () async {
-        // given
-      var temp = StreamUtil.getControllerStream(4);
-
-      // when
-      final stream = temp.debounce((_) => Stream<void>.fromFuture(
-        Future<void>.delayed(const Duration(milliseconds: 1000))));
-
-      // then
-      await expectLater(stream, emitsInOrder([4, emitsDone]));
-      }, timeout: const Timeout(Duration(seconds: 10)));
+    return streamController.stream;
   }
+  
+  test('지정된 시간동안 값이 방출되지 않았을 때, 값을 방출한다.', () async {
+    // given
+    var temp = StreamUtil.getControllerStream(4);
+
+    // when
+    final stream = temp.debounce((_) => Stream<void>.fromFuture(
+      Future<void>.delayed(const Duration(milliseconds: 1000))));
+
+    // then
+    await expectLater(stream, emitsInOrder([4, emitsDone]));
+    }, timeout: const Timeout(Duration(seconds: 10)));
+}
 ```
+</details>
 
 ### DebounceTime
 DebounceTimeStream이 지정한 시간 동안 다른 항목을 방출하지 않고 완료된 경우에만 항목을 방출하도록 변환합니다.
 
 ![DebounceTime](https://user-images.githubusercontent.com/85836879/178021288-0e2a4ac3-7a9b-47d7-b625-c1ca64086b2e.png)
 
+<details>
+
+<summary> DebounceTime </summary>
+
 ```js
-  test('지정된 시간동안 값이 방출되지 않았을 때, 값을 방출한다.', () async {
-    // given
-    var temp = StreamUtil.getControllerStream(5);
+test('지정된 시간동안 값이 방출되지 않았을 때, 값을 방출한다.', () async {
+  // given
+  var temp = StreamUtil.getControllerStream(5);
 
-    // when
-    final stream = temp.debounceTime(const Duration(milliseconds: 500));
+  // when
+  final stream = temp.debounceTime(const Duration(milliseconds: 500));
 
-    // then
-    await expectLater(stream, emitsInOrder([5, emitsDone]));
-  }, timeout: const Timeout(Duration(seconds: 10)));
+  // then
+  await expectLater(stream, emitsInOrder([5, emitsDone]));
+}, timeout: const Timeout(Duration(seconds: 10)));
 ```
+</details>
 
 ### Sample
 SampleStream에서 방출된 Stream이 가장 최근에 방출된 항목을(있는 경우에) 방출합니다.
 
 ![Sample](https://user-images.githubusercontent.com/85836879/178024486-4722bcee-b46c-4120-a0b8-d0c4967edebe.png)
 
+<details>
+
+<summary> Sample </summary>
+
 ```js
-  class StreamUtil{
-    Stream<int> getSampleStream(
-          {required int count, int? milliseconds, int? interval}) =>
-      Stream<int>.periodic(Duration(milliseconds: milliseconds ??= 35),
-          (idx) => idx + (interval ??= 0)).take(count);
-    
-    test('sample Stream이 방출될 때마다 Stream에서 가장 최근에 방출된 값을 방출한다.', () async {
-      // given
-      var temp = StreamUtil.getSampleStream(count: 5, milliseconds: 20);
+class StreamUtil{
+  Stream<int> getSampleStream(
+    {required int count, int? milliseconds, int? interval}) =>
+    Stream<int>.periodic(Duration(milliseconds: milliseconds ??= 35),
+        (idx) => idx + (interval ??= 0)).take(count);
+  
+  test('sample Stream이 방출될 때마다 Stream에서 가장 최근에 방출된 값을 방출한다.', () async {
+    // given
+    var temp = StreamUtil.getSampleStream(count: 5, milliseconds: 20);
 
-      // when
-      final stream = temp.sample(StreamUtil.getSampleStream(count: 10));
+    // when
+    final stream = temp.sample(StreamUtil.getSampleStream(count: 10));
 
-      // then
-      await expectLater(stream, emitsInOrder([2, 3, 4, emitsDone]));
-    }, timeout: const Timeout(Duration(seconds: 10)));
-  }
+    // then
+    await expectLater(stream, emitsInOrder([2, 3, 4, emitsDone]));
+  }, timeout: const Timeout(Duration(seconds: 10)));
+}
 ```
+</details>
 
 ### SampleTime
 Sample의 방출 시간 범위내에서 이전 방출된 가장 최근의 값이 있는 경우 방출합니다.
 
 ![SampleTime](https://user-images.githubusercontent.com/85836879/178022303-9044b6d5-5227-4b38-8721-7cf3a09b38f3.png)
 
+<details>
+
+<summary> SampleTime </summary>
+
 ```js
-  test('지정된 시간에서 방출된 Stream의 가장 최근에 방출된 값이 있는 경우 방출한다.', () async {
-    // given
-    var temp = StreamUtil.getSampleStream(count: 5, milliseconds: 20);
+test('지정된 시간에서 방출된 Stream의 가장 최근에 방출된 값이 있는 경우 방출한다.', () async {
+  // given
+  var temp = StreamUtil.getSampleStream(count: 5, milliseconds: 20);
 
-    // when
-    final stream = temp.sampleTime(const Duration(milliseconds: 35));
+  // when
+  final stream = temp.sampleTime(const Duration(milliseconds: 35));
 
-    // then
-    await expectLater(stream, emitsInOrder([2, 3, 4, emitsDone]));
-  }, timeout: const Timeout(Duration(seconds: 10)));
+  // then
+  await expectLater(stream, emitsInOrder([2, 3, 4, emitsDone]));
+}, timeout: const Timeout(Duration(seconds: 10)));
 ```
+</details>
 
 ### Throttle
 Stream이 열려있는 동안 소스에서 방출한 첫 번째 항목만 방출합니다.
@@ -519,56 +580,66 @@ trailing 값을 사용하여 처음 throttle을 시작할 시간을 결정할 �
 
 ![Throttle](https://user-images.githubusercontent.com/85836879/178093302-86da9d4b-2d0f-4c90-9417-8abd3d643672.png)
 
+<details>
+
+<summary> Throttle </summary>
+
 ```js
-  test('Stream이 열려있는 지정된 시간 동안 첫 번째 항목만 방출한다. ', () async {
-    // given
-    var temp =
-        StreamUtil.getSampleStream(count: 10, milliseconds: 100, interval: 1);
+test('Stream이 열려있는 지정된 시간 동안 첫 번째 항목만 방출한다. ', () async {
+  // given
+  var temp =
+      StreamUtil.getSampleStream(count: 10, milliseconds: 100, interval: 1);
 
-    // when
-    Stream<int> stream = temp
-        .throttle(
-            (_) => Stream<void>.periodic(const Duration(milliseconds: 250)))
-        .take(3);
+  // when
+  Stream<int> stream = temp
+      .throttle(
+        (_) => Stream<void>.periodic(const Duration(milliseconds: 250)))
+      .take(3);
 
-    // then
-    await expectLater(stream, emitsInOrder([1, 4, 7, emitsDone]));
-  }, timeout: const Timeout(Duration(seconds: 10)));
+  // then
+  await expectLater(stream, emitsInOrder([1, 4, 7, emitsDone]));
+}, timeout: const Timeout(Duration(seconds: 10)));
 
-  test('trailing이 설정된 경우 throttle 시간만큼 시작이 지연되서 시작되어야 한다.', () async {
-    // given
-    var temp =
-        StreamUtil.getSampleStream(count: 10, milliseconds: 100, interval: 1);
+test('trailing이 설정된 경우 throttle 시간만큼 시작이 지연되서 시작되어야 한다.', () async {
+  // given
+  var temp =
+      StreamUtil.getSampleStream(count: 10, milliseconds: 100, interval: 1);
 
-    // when
-    Stream<int> stream = temp
-        .throttle(
-            (_) => Stream<void>.periodic(const Duration(milliseconds: 250)),
-            trailing: true)
-        .take(3);
+  // when
+  Stream<int> stream = temp
+      .throttle(
+        (_) => Stream<void>.periodic(const Duration(milliseconds: 250)),
+          trailing: true)
+      .take(3);
 
-    // then
-    await expectLater(stream, emitsInOrder([1, 3, 4, emitsDone]));
-  }, timeout: const Timeout(Duration(seconds: 10)));
+  // then
+  await expectLater(stream, emitsInOrder([1, 3, 4, emitsDone]));
+}, timeout: const Timeout(Duration(seconds: 10)));
 ```
+</details>
 
 ### ThrottleTime
 Stream의 시간 범위 내에 소스에서 방출한 첫 번째 항목만 방출합니다.
 
 ![ThrottleTime](https://user-images.githubusercontent.com/85836879/178093408-009d355c-33a5-4636-b508-00535689367b.png)
 
+<details>
+
+<summary> ThrottleTime </summary>
+
 ```js
-  test('Stream이 지정된 시간 범위내에서 방출한 첫 번째 항목만 방출합니다.', () async {
-    // given
-    var temp =
-        StreamUtil.getSampleStream(count: 10, milliseconds: 100, interval: 1);
+test('Stream이 지정된 시간 범위내에서 방출한 첫 번째 항목만 방출합니다.', () async {
+  // given
+  var temp =
+      StreamUtil.getSampleStream(count: 10, milliseconds: 100, interval: 1);
 
-    // when
-    Stream<int> stream =
-        temp.throttleTime(const Duration(milliseconds: 250)).take(3);
+  // when
+  Stream<int> stream =
+      temp.throttleTime(const Duration(milliseconds: 250)).take(3);
 
-    // then
-    await expectLater(stream, emitsInOrder([1, 4, 7, emitsDone]));
-  }, timeout: const Timeout(Duration(seconds: 10)));
+  // then
+  await expectLater(stream, emitsInOrder([1, 4, 7, emitsDone]));
+}, timeout: const Timeout(Duration(seconds: 10)));
 ```
+</details>
 
