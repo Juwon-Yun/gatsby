@@ -2,7 +2,7 @@
 title: "RxDart 변형 함수"
 category: "Flutter"
 date: "2022-07-01 00:32:00 +09:00"
-desc: "테스트코드로 알아보는 변형 함수 "
+desc: "테스트코드로 알아보는 변형(배압) 함수 "
 thumbnail: "./images/flutter/reactivex_logo.jpg"
 alt: "flutter"
 ---
@@ -13,7 +13,7 @@ RxDart는 'dart:async' 패키지의 Dart Stream을 대체하기 위해 자체 Ob
 
 기본 제공되는 'dart:async' 패키지의 Stream 및 StreamController에 확장 기능을 구현한 것입니다.
 
-<a href="https://api.dart.dev/stable/2.9.0/dart-async/Stream-class.html" target="_blank">기본 제공되는 Stream보러가기</a>
+<a href="https://api.dart.dev/stable/2.9.0/dart-async/Stream-class.html" target="_blank">기본 제공되는 Stream 보러가기</a>
 
 ### 표준 Rx와 RxDart(Stream API) 비교해보기
 Stream과 Observable은 같은 방식으로 구현하지만 표준 Rx에 익숙하다면 RxDart의 일부 기능에 놀랄 수 있습니다.
@@ -34,13 +34,15 @@ Stream과 Observable은 같은 방식으로 구현하지만 표준 Rx에 익숙�
 
 <br>
 
-<a href="https://pub.dev/documentation/rxdart/latest/rx/Rx-class.html" target="_blank">Rx Dart docs</a>
+<a href="https://pub.dev/documentation/rxdart/latest/rx/Rx-class.html" target="_blank">Rx Dart 공식 홈페이지 방문하기</a>
 <br>
-<a href="http://reactivex.io/RxJava/javadoc/io/reactivex/Observable.html" target="_blank">reactiveX.io</a>
+<a href="http://reactivex.io/RxJava/javadoc/io/reactivex/Observable.html" target="_blank">reactiveX.io 방문하기</a>
 
+## 변형(배압) 함수 (Transformer)
 
+변형(배압)함수는 생성된 Stream에 대해 조건을 추가하거나 시간을 지연시키는 동작을 추가할 수 있습니다.
 
-## 변형 함수 (Transformer)
+변형(배압)함수에서는 우리가 흔히 사용하는 debounce와 throttle을 다루고 있습니다.
 
 ### Window
 Stream에서 수집한 항목의 Window를 내보내는 Stream을 반환합니다.

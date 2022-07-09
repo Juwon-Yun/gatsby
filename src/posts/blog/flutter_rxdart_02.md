@@ -34,9 +34,9 @@ Stream과 Observable은 같은 방식으로 구현하지만 표준 Rx에 익숙�
 
 <br>
 
-<a href="https://pub.dev/documentation/rxdart/latest/rx/Rx-class.html" target="_blank">Rx Dart docs</a>
+<a href="https://pub.dev/documentation/rxdart/latest/rx/Rx-class.html" target="_blank">Rx Dart 공식 홈페이지 방문하기</a>
 <br>
-<a href="http://reactivex.io/RxJava/javadoc/io/reactivex/Observable.html" target="_blank">reactiveX.io</a>
+<a href="http://reactivex.io/RxJava/javadoc/io/reactivex/Observable.html" target="_blank">reactiveX.io 방문하기</a>
 
 ## 생성 함수 (Factory)
 
@@ -943,7 +943,7 @@ ReactiveX의 Factory(생성) 메소드는 포스팅한 내용보다 더 다양�
 
 Rx에 대해서 자세히 알고싶으면 공식 홈페이지 방문을 통해 확인할 수 있어요.
 
-Rx의 메소든는 총 3가지 구성으로 생성, 변형(배압), 변형으로 구성되어있어요.
+Rx의 메소드는 보통 3가지로 나뉘어 생성, 변형(배압), 변형으로 구성되어있어요.
 
 반응형 프로그래밍을 구현하기에 알맞는 메소드를 사용하면 될 것 같아요!
 
