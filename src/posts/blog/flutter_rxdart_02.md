@@ -51,7 +51,7 @@ Stream 중 하나가 아이템을 방출할 때마다 결합하여 Stream을 하
 
 <details>
 
-<summary>> CombineLatestList </summary>
+<summary> CombineLatestList </summary>
 
 ```js
 import 'package:flutter_test/flutter_test.dart';
@@ -112,7 +112,7 @@ test('각 Stream에서 모든 값이 한 개 이상 방출되었을 때, 가장 
 
 <details>
 
-<summary>> Concat </summary>
+<summary> Concat </summary>
 
 ```js
  test('0, 1, 2, 3, 4, 5가 순차적으로 발행되어야 한다.', () {
@@ -136,11 +136,11 @@ test('각 Stream에서 모든 값이 한 개 이상 방출되었을 때, 가장 
 
 그런 다음 이전 Stream이 아이템을 방출한 이후에 이벤트가 생성됩니다.
 
-![ismage](https://user-images.githubusercontent.com/85836879/175467063-872b046d-3c99-4055-9276-6519782f0d14.png)
+![image](https://user-images.githubusercontent.com/85836879/175467063-872b046d-3c99-4055-9276-6519782f0d14.png)
 
 <details>
 
-<summary>> ConcatEager </summary>
+<summary> ConcatEager </summary>
 
 
 ```js
@@ -165,11 +165,11 @@ Defer는 Stream이 구독할 때까지 기다린 다음 지정된 팩토리 기�
 
 기본적으로 DeferStreams는 단일 구독이지만 재사용할 수 있습니다.
 
-![ismage](https://user-images.githubusercontent.com/85836879/175467865-5d932893-be0f-4f90-85ad-d339e9ba5b68.png)
+![image](https://user-images.githubusercontent.com/85836879/175467865-5d932893-be0f-4f90-85ad-d339e9ba5b68.png)
 
 <details>
 
-<summary>> Defer </summary>
+<summary> Defer </summary>
 
 
 ```js
@@ -247,7 +247,7 @@ forkJoin은 Future.wait를 사용하는 방법과 비슷합니다.
 
 <details>
 
-<summary>> ForkJoin </summary>
+<summary> ForkJoin </summary>
 
 
 ```js
@@ -315,11 +315,11 @@ test('각 스트림의 가장 최근 값을 합쳐 List로 반환합니다.', ()
 ### Merge
 지정된 List에서 방출될 값을 병합하여 반환합니다.
 
-![ismage](https://user-images.githubusercontent.com/85836879/175764017-ee2895ce-5a06-41e2-877a-02feef7566c2.png)
+![image](https://user-images.githubusercontent.com/85836879/175764017-ee2895ce-5a06-41e2-877a-02feef7566c2.png)
 
 <details>
 
-<summary>> Merge </summary>
+<summary> Merge </summary>
 
 ```js
 test('각 리스트에서 방출된 값을 리스트로 병합한다.', () async {
@@ -364,7 +364,7 @@ never 연산자는 테스트 목적으로 유용하며 때로는 다른 Stream�
 
 <details>
 
-<summary>> Never </summary>
+<summary> Never </summary>
 
 ```js
 test('어떤 에러나 데이터등을 리턴하지 않아야 한다.', () async {
@@ -407,7 +407,7 @@ test('어떤 에러나 데이터등을 리턴하지 않아야 한다.', () async
 
 <details>
 
-<summary>> Race </summary>
+<summary> Race </summary>
 
 ```js
  test('race default', () {
@@ -452,7 +452,7 @@ test('어떤 에러나 데이터등을 리턴하지 않아야 한다.', () async
 
 <details>
 
-<summary>> Range </summary>
+<summary> Range </summary>
 
 ```js
 test('Range 1 ~ 3 범위 안의 값을 방출해야 한다.', () async {
@@ -496,7 +496,7 @@ Stream이 성공적으로 종료될 때까지 지정한 횟수만큼 Stream을 �
 
 <details>
 
-<summary>> Repeat </summary>
+<summary> Repeat </summary>
 
 ```js
 class StreamUtil {
@@ -561,7 +561,7 @@ RetryError에는 오류를 일으킨 모든 오류 및 StackTrace가 포함됩�
 
 <details>
 
-<summary>> Retry </summary>
+<summary> Retry </summary>
 
 ```js
 class StreamUtil {
@@ -636,7 +636,7 @@ RetryError는 실패를 일으킨 모든 Error 및 StackTrace를 포함합니다
 
 <details>
 
-<summary>> RetryWhen </summary>
+<summary> RetryWhen </summary>
 
 ```js
 class StreamUtil{
@@ -719,7 +719,7 @@ test('retryWhen 에러 발생시에 whenFactory에서 다시 스트림으로 변
 
 <details>
 
-<summary>> SequenceEqual </summary>
+<summary> SequenceEqual </summary>
 
 ```js
 test('sequenceEqual default 두개의 스트림이 같아야 한다.', () {
@@ -811,7 +811,7 @@ switchLatest Stream은 새로운 Stream이 방출될 때 이전에 방출된 Str
 
 <details>
 
-<summary>> SwitchLatest </summary>
+<summary> SwitchLatest </summary>
 
 ```js
   test('상위 Stream에서 가장 최근 방출된 데이터를 방출한다.', () {
@@ -865,7 +865,7 @@ switchLatest Stream은 새로운 Stream이 방출될 때 이전에 방출된 Str
 
 <details>
 
-<summary>> Timer </summary>
+<summary> Timer </summary>
 
 ```js
 test('지정된 시간이 지나면 주어진 값을 방출한다.', () async {
@@ -889,7 +889,7 @@ test('지정된 시간이 지나면 주어진 값을 방출한다.', () async {
 
 <details>
 
-<summary>> Zip </summary>
+<summary> Zip </summary>
 
 ```js
 
@@ -909,34 +909,42 @@ test('지정된 Stream을 하나의 Stream 시퀸스로 병합한다.', () async
           ['A', 'B', 'C'],
           emitsDone
         ]));
-  }, timeout: const Timeout(Duration(seconds: 10)));
+}, timeout: const Timeout(Duration(seconds: 10)));
 
-  test('다수의 Stream을 Zip 메소드로 병합한다.', () async {
-    // given
-    var a = Stream.fromIterable(['1']), b = Stream.fromIterable(['2', '3']);
+test('다수의 Stream을 Zip 메소드로 병합한다.', () async {
+  // given
+  var a = Stream.fromIterable(['1']), b = Stream.fromIterable(['2', '3']);
 
-    // when
-    final stream = Rx.zip2(a, b, (String a, String b) => a + b);
+  // when
+  final stream = Rx.zip2(a, b, (String a, String b) => a + b);
 
-    // then
-    await expectLater(stream, emitsInOrder(['12', emitsDone]));
-  }, timeout: const Timeout(Duration(seconds: 10)));
+  // then
+  await expectLater(stream, emitsInOrder(['12', emitsDone]));
+}, timeout: const Timeout(Duration(seconds: 10)));
 
-  test('Stream 중에 에러가 포함되어 있는 경우 에러를 방출한다.', () async {
-    // given
-    var a = Stream.value(1),
-        b = Stream.value(2),
-        c = Stream<int>.error(Exception());
+test('Stream 중에 에러가 포함되어 있는 경우 에러를 방출한다.', () async {
+  // given
+  var a = Stream.value(1),
+      b = Stream.value(2),
+      c = Stream<int>.error(Exception());
 
-    // when
-    final stream = Rx.zip3(a, b, c, (int a, int b, int c) => a + b + c);
+  // when
+  final stream = Rx.zip3(a, b, c, (int a, int b, int c) => a + b + c);
 
-    // then
-    await expectLater(stream, emitsError(const TypeMatcher<Exception>()));
-  }, timeout: const Timeout(Duration(seconds: 10)));
-
+  // then
+  await expectLater(stream, emitsError(const TypeMatcher<Exception>()));
+}, timeout: const Timeout(Duration(seconds: 10)));
 ```
 
 </details>
 
+### 마무리...
+ReactiveX의 Factory(생성) 메소드는 포스팅한 내용보다 더 다양합니다.
 
+Rx에 대해서 자세히 알고싶으면 공식 홈페이지 방문을 통해 확인할 수 있어요.
+
+Rx의 메소든는 총 3가지 구성으로 생성, 변형(배압), 변형으로 구성되어있어요.
+
+반응형 프로그래밍을 구현하기에 알맞는 메소드를 사용하면 될 것 같아요!
+
+감사합니다.
