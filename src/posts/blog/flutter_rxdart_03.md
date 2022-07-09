@@ -511,3 +511,64 @@ Sample의 방출 시간 범위내에서 이전 방출된 가장 최근의 값이
     await expectLater(stream, emitsInOrder([2, 3, 4, emitsDone]));
   }, timeout: const Timeout(Duration(seconds: 10)));
 ```
+
+### Throttle
+Stream이 열려있는 동안 소스에서 방출한 첫 번째 항목만 방출합니다.
+
+trailing 값을 사용하여 처음 throttle을 시작할 시간을 결정할 수 있습니다.
+
+![Throttle](https://user-images.githubusercontent.com/85836879/178093302-86da9d4b-2d0f-4c90-9417-8abd3d643672.png)
+
+```js
+  test('Stream이 열려있는 지정된 시간 동안 첫 번째 항목만 방출한다. ', () async {
+    // given
+    var temp =
+        StreamUtil.getSampleStream(count: 10, milliseconds: 100, interval: 1);
+
+    // when
+    Stream<int> stream = temp
+        .throttle(
+            (_) => Stream<void>.periodic(const Duration(milliseconds: 250)))
+        .take(3);
+
+    // then
+    await expectLater(stream, emitsInOrder([1, 4, 7, emitsDone]));
+  }, timeout: const Timeout(Duration(seconds: 10)));
+
+  test('trailing이 설정된 경우 throttle 시간만큼 시작이 지연되서 시작되어야 한다.', () async {
+    // given
+    var temp =
+        StreamUtil.getSampleStream(count: 10, milliseconds: 100, interval: 1);
+
+    // when
+    Stream<int> stream = temp
+        .throttle(
+            (_) => Stream<void>.periodic(const Duration(milliseconds: 250)),
+            trailing: true)
+        .take(3);
+
+    // then
+    await expectLater(stream, emitsInOrder([1, 3, 4, emitsDone]));
+  }, timeout: const Timeout(Duration(seconds: 10)));
+```
+
+### ThrottleTime
+Stream의 시간 범위 내에 소스에서 방출한 첫 번째 항목만 방출합니다.
+
+![ThrottleTime](https://user-images.githubusercontent.com/85836879/178093408-009d355c-33a5-4636-b508-00535689367b.png)
+
+```js
+  test('Stream이 지정된 시간 범위내에서 방출한 첫 번째 항목만 방출합니다.', () async {
+    // given
+    var temp =
+        StreamUtil.getSampleStream(count: 10, milliseconds: 100, interval: 1);
+
+    // when
+    Stream<int> stream =
+        temp.throttleTime(const Duration(milliseconds: 250)).take(3);
+
+    // then
+    await expectLater(stream, emitsInOrder([1, 4, 7, emitsDone]));
+  }, timeout: const Timeout(Duration(seconds: 10)));
+```
+
