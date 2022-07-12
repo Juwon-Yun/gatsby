@@ -1,5 +1,5 @@
 ---
-title: "RxDart 변형 함수"
+title: "RxDart 변형(배압) 함수"
 category: "Flutter"
 date: "2022-07-01 00:32:00 +09:00"
 desc: "테스트코드로 알아보는 변형(배압) 함수 "

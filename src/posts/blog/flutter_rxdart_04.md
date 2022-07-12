@@ -7,7 +7,6 @@ thumbnail: "./images/flutter/reactivex_logo.jpg"
 alt: "flutter"
 ---
 
-
 ### 들어가며
 
 RxDart는 'dart:async' 패키지의 Dart Stream을 대체하기 위해 자체 Observable 클래스를 제공하지 않습니다.
@@ -40,5 +39,119 @@ Stream과 Observable은 같은 방식으로 구현하지만 표준 Rx에 익숙�
 <a href="http://reactivex.io/RxJava/javadoc/io/reactivex/Observable.html" target="_blank">reactiveX.io 방문하기</a>
 
 
-
 ## 변형 함수 (Transformer)
+Rx 라이브러리는 변형(backpressured)함수와 변형(non-backpressured)함수, 두 가지 변형 함수를 제공합니다.
+
+배압의 유무는 Observable 클래스의 포함 유무 차이로 많은 함수가 Observable 클래스를 기반으로 구현되어 있습니다.
+
+### ConcatWith
+Stream에서 모든 항목을 방출한 다음 지정된 Stream의 모든 항목을 차례대로 내보내는 Stream을 반환합니다.
+
+![ConcatWith](https://user-images.githubusercontent.com/85836879/178094248-62d3b159-37e3-4e3e-9590-bf8b0e53cd11.png)
+
+```js
+test('Stream을 방출한 뒤 지정된 Stream을 순서대로 이어서 방출해야 한다.', () async {
+    // given
+    final delayedStream = Rx.timer(1, const Duration(milliseconds: 10));
+    final immediateStream = Stream.value(2);
+
+    // when
+    final concatWithStream = delayedStream.concatWith([immediateStream]);
+
+    // then
+    await expectLater(concatWithStream, emitsInOrder([1, 2, emitsDone]));
+  }, timeout: const Timeout(Duration(seconds: 10)));
+```
+
+### StartWith
+Stream이 값을 방출할 때 방출되는 항목 앞에 값을 추가합니다.
+
+![StartWith](https://user-images.githubusercontent.com/85836879/178416757-bbbcc20f-871a-4b30-bf45-37aaffcd4a9e.png)
+
+```js
+class StreamUtil{
+    Stream<int> getIterableStream({required int length, int? start}) =>
+        Stream.fromIterable(
+            List.generate(length, (index) => index + (start ??= 0)));
+}
+
+test('Stream을 방출할 때 첫 번째 항목으로 지정된 값을 추가해야 한다.', () async {
+    // given
+    final temp = StreamUtil.getIterableStream(length: 5, startWith: 1);
+
+    // when
+    final stream = temp.startWith(0);
+
+    // then
+    await expectLater(stream, emitsInOrder([0, 1, 2, 3, 4, 5, emitsDone]));
+}, timeout: const Timeout(Duration(seconds: 10)));
+```
+
+### StartWithMany
+Stream이 값을 방출할 때 방출되는 값 앞에 List 타입을 추가합니다.
+
+```js
+test('Stream을 방출할 때 첫 번째 항목으로 List 값을 추가해야 한다.', () async {
+    // given
+    final temp = StreamUtil.getIterableStream(length: 5, startWith: 1);
+
+    // when
+    final stream = temp.startWithMany([-1, 0]);
+
+    // then
+    await expectLater(stream, emitsInOrder([-1, 0, 1, 2, 3, 4, 5, emitsDone]));
+}, timeout: const Timeout(Duration(seconds: 10)));
+```
+
+### EndWith
+Stream이 값을 방출한 후에 방출된 항목 뒤에 값을 추가합니다.
+
+```js
+test('Stream을 방출할 때 마지막 항목으로 지정된 값을 추가해야 한다.', () async {
+    // given
+    final temp = StreamUtil.getIterableStream(length: 5, start: 1);
+
+    // when
+    final stream = temp.endWith(6);
+
+    // then
+    await expectLater(stream, emitsInOrder([1, 2, 3, 4, 5, 6, emitsDone]));
+}, timeout: const Timeout(Duration(seconds: 10)));
+```
+
+### EndWithMany
+Stream이 값을 방출한 후에 방출된 항목 뒤에 List 타입을 추가합니다.
+
+```js
+test('Stream을 방출할 때 마지막 항목으로 List 값을 추가해야 한다.', () async {
+    // given
+    final temp = StreamUtil.getIterableStream(length: 5, start: 1);
+
+    // when
+    final stream = temp.endWithMany([6, 7]);
+
+    // then
+    await expectLater(stream, emitsInOrder([1, 2, 3, 4, 5, 6, 7, emitsDone]));
+}, timeout: const Timeout(Duration(seconds: 10)));
+```
+
+### ZipWith
+주어진 Zip 함수를 사용하여 현재 Stream을 다른 Stream과 결합한 Stream을 방출합니다.
+
+![ZipWith](https://user-images.githubusercontent.com/85836879/178418266-1f650989-f657-4926-8cb5-d3128c2a7404.png)
+
+```js
+test('주어진 Zip 함수를 이용해 Stream과 결합해 방출해야 한다.', () async {
+    // given
+    final temp = Stream<int>.value(1);
+
+    // when
+    final stream =
+        temp.zipWith(Stream<int>.value(2), (int temp, int zip) => temp + zip);
+
+    // then
+    await expectLater(stream, emitsInOrder([3]));
+}, timeout: const Timeout(Duration(seconds: 10)));
+```
+
+### MergeWith
