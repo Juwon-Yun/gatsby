@@ -778,7 +778,7 @@ test('Comparable 인터페이스를 상속받아 가장 작은 항목을 방출�
 pairwise<T>(): OperatorFunction<T, [T, T]>
 ```
 
-![Interval](https://user-images.githubusercontent.com/85836879/178907946-d4b7c5a6-1e5d-40d9-a191-18bd70c118cb.png)
+![PairWise](https://user-images.githubusercontent.com/85836879/178907946-d4b7c5a6-1e5d-40d9-a191-18bd70c118cb.png)
 
 ```js
 test('index와 index-1 이벤트를 Iterable 타입으로 방출해야 한다.', () async {
@@ -797,5 +797,173 @@ test('index와 index-1 이벤트를 Iterable 타입으로 방출해야 한다.',
           [2, 3],
           [3, 4],
         ]));
+}, timeout: const Timeout(Duration(seconds: 10)));
+```
+
+### SkipUntil
+Stream이 항목을 방출한 후에만 방출을 시작합니다.
+
+![SkipUntil](https://user-images.githubusercontent.com/85836879/178910642-916bedd6-3206-4b64-8f3f-ca9a8cfc5ef3.png)
+
+```js
+class StreamUtil{
+    Stream<int> getControllerStream({required int count, int? increase}) {
+        final streamController = StreamController<int>();
+
+        for (var i = 1; i <= count; i++) {
+            if (i == count) {
+                Timer(Duration(milliseconds: i * 100), () {
+                    streamController.add(i + (increase ??= 0));
+                    streamController.close();
+                });
+                continue;
+            }
+
+            Timer(Duration(milliseconds: i * 100),
+                () => streamController.add(i + (increase ??= 0)));
+        }
+
+        return streamController.stream;
+    }
+}
+test('지정된 Stream이 항목을 방출한 이후에만 방출을 시작합니다.', () async {
+    // given
+    var temp = StreamUtil.getControllerStream(count: 5);
+
+    // when
+    final stream = temp.skipUntil(StreamUtil.getControllerStream(count: 1));
+
+    // then
+    await expectLater(
+        stream,
+        emitsInOrder([
+          2,
+          3,
+          4,
+          5,
+          emitsDone,
+        ]));
+}, timeout: const Timeout(Duration(seconds: 10)));
+```
+
+### TakeUntil
+다른 Stream의 항목을 생성할때까지만 기존 Stream의 항목을 방출합니다.
+
+![TakeUntil](https://user-images.githubusercontent.com/85836879/178911029-ddb8c85c-124d-45b9-b167-c3b22a514a0c.png)
+
+```js
+test('다른 스트림의 값이 방출될 때까지만 소스 스트림의 값들을 방출해야 한다.', () async {
+    // given
+    var temp = StreamUtil.getControllerStream(count: 5);
+
+    // when
+    final stream = temp.takeUntil(StreamUtil.getControllerStream(count: 2));
+
+    // then
+    await expectLater(
+        stream,
+        emitsInOrder(
+          [1, emitsDone],
+        ));
+}, timeout: const Timeout(Duration(seconds: 10)));
+```
+
+### TakeWhileInclusive
+Stream의 각각의 항목이 주어진 조건을 충족할 때까지만 Stream에서 항목을 방출합니다.
+
+조건으로 값이 만족되지 않으면 항목을 모두 방출합니다.
+
+![TakeWhileInclusive](https://user-images.githubusercontent.com/85836879/178912514-3b7646dd-d454-45e7-8333-e20992546e3b.png)
+
+```js
+test('정해진 조건을 만족할 때까지만 Stream의 항목을 방출해야 한다.', () async {
+    // given
+    var temp = Stream.fromIterable(List.generate(5, (index) => index + 1));
+
+    // when
+    final stream = temp.takeWhileInclusive((element) => element < 4);
+
+    // then
+    await expectLater(
+        stream,
+        emitsInOrder([
+            1,
+            2,
+            3,
+            4,
+            emitsDone,
+        ]));
+}, timeout: const Timeout(Duration(seconds: 10)));
+
+test('정해진 조건에 일치하는 값이 없을 때, Stream의 첫 번째 값을 방출한다.', () async {
+    // given
+    var temp = Stream.fromIterable(List.generate(5, (index) => index + 1));
+
+    // when
+    final stream = temp.takeWhileInclusive((element) => element > 4);
+
+    // then
+    await expectLater(
+        stream,
+        emitsInOrder([
+          1,
+          emitsDone,
+        ]));
+  }, timeout: const Timeout(Duration(seconds: 10)));
+```
+
+### TimeStamp
+Stream에서 내보낼 각 항목을 항목이 내보내진 시간을 포함하는 객체에 랩핑하여 방출합니다.
+
+![TimeStamp](https://user-images.githubusercontent.com/85836879/178913246-c907d9f8-a0ec-4a13-93cb-e9246e722694.png)
+
+```js
+test('Stream에서 방출한 각각의 항목을 항목이 내보내진 시간을 포함하는 객체와 감싸져야 한다.', () async {
+    // given
+    var temp = Stream.fromIterable(List.generate(5, (index) => index + 1));
+
+    // when
+    final stream = temp.timestamp();
+
+    // then
+    await expectLater(
+        stream,
+        emitsInOrder(const [
+          TypeMatcher<Timestamped>(),
+          TypeMatcher<Timestamped>(),
+          TypeMatcher<Timestamped>(),
+          TypeMatcher<Timestamped>(),
+          TypeMatcher<Timestamped>(),
+        ]));
+    // TimeStamp{timestamp: 2022-07-13 19:39:40.883533, value: 1}
+    // TimeStamp{timestamp: 2022-07-13 19:39:40.910490, value: 2}
+    // TimeStamp{timestamp: 2022-07-13 19:39:40.914601, value: 3}
+    // TimeStamp{timestamp: 2022-07-13 19:39:40.915421, value: 4}
+    // TimeStamp{timestamp: 2022-07-13 19:39:40.915920, value: 5}
+  }, timeout: const Timeout(Duration(seconds: 10)));
+```
+
+### WhereType
+조건의 타입과 일치하지 않는 항목은 필터링되며 방출되어질 Stream의 타입은 조건이 가지고있는 타입입니다.
+
+> WhereTypeStreamTransformer<S, T> class
+
+```js
+test('정해진 조건의 타입과 일치하지 않는 항목은 필터링되어 방출해야 한다.', () async {
+    // given
+    var temp = Stream.fromIterable([
+      1,
+      'two',
+      3,
+      false,
+      [1, 2],
+      {'six': 6},
+    ]);
+
+    // when
+    final stream = temp.whereType<int>();
+
+    // then
+    await expectLater(stream, emitsInOrder([1, 3]));
 }, timeout: const Timeout(Duration(seconds: 10)));
 ```
