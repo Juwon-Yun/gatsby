@@ -371,3 +371,431 @@ test('Stream 항목을 방출할 때마다 순서대로 조건에 맞게 변환�
 ```
 
 ### FlatMapIteratorble
+Stream이 방출될 때마다 List 타입의 Stream으로 변환하여 방출합니다.
+
+![FlatMapIteratorble](https://user-images.githubusercontent.com/85836879/178904225-f46da1a2-fd03-46b5-b3c1-1216c794d3fb.png)
+
+
+```js
+test('Stream 항목을 방출할 때마다 순서대로 List 타입을 방출합니다.', () async {
+    // given
+    var temp = Rx.range(1, 4);
+
+    // when
+    Stream<int> stream = temp.flatMapIterable(
+        (value) => Stream<List<int>>.value([value, value + 1]));
+
+    // then
+    await expectLater(
+        stream, emitsInOrder([1, 2, 2, 3, 3, 4, 4, 5, emitsDone]));
+}, timeout: const Timeout(Duration(seconds: 10)));
+```
+
+### SwitchMap
+주어진 매핑 함수를 사용해 방출된 각각의 항목을 Stream으로 변환합니다.
+
+새로 생성된 Stream은 항목을 수신하고 방출을 시작하며 이전에 생성된 방출은 중지합니다.
+
+SwitchMap 연산자는 flatMap 연산자와 concatMap 함수와 유사하지만 가장 최근에 생성된 Stream에서만 항목을 내보냅니다.
+
+> 비동기 요청에 대한 API의 응답이 최신 상태만 원할 때 유용할 수 있습니다.
+
+![FlatMapIteratorble](https://user-images.githubusercontent.com/85836879/178904632-6f6fe09f-33d7-4b36-b640-3263008b2fc0.png)
+
+```js
+class StreamUtil{
+    Stream<int> getControllerStream({required int count, int? increase}) {
+    final streamController = StreamController<int>();
+
+    for (var i = 1; i <= count; i++) {
+      if (i == count) {
+        Timer(Duration(milliseconds: i * 100), () {
+          streamController.add(i + (increase ??= 0));
+          streamController.close();
+        });
+        continue;
+      }
+      Timer(Duration(milliseconds: i * 100),
+          () => streamController.add(i + (increase ??= 0)));
+    }
+    return streamController.stream;
+  }
+
+  Stream<int> getOtherStream(int value) {
+    final streamController = StreamController<int>();
+
+    Timer(const Duration(milliseconds: 15),
+        () => streamController.add(value + 1));
+    Timer(const Duration(milliseconds: 20),
+        () => streamController.add(value + 2));
+    Timer(const Duration(milliseconds: 25),
+        () => streamController.add(value + 3));
+    Timer(const Duration(milliseconds: 30), () {
+      streamController.add(value + 4);
+      streamController.close();
+    });
+
+    return streamController.stream;
+  }
+}
+
+test('기본 Stream과 다른 Stream 중 가장 최근에 방출한 항목들만 방출해야 한다.', ()      async {
+    // given
+    var temp = StreamUtil.getControllerStream(count: 4);
+
+    // when
+    final stream = temp.switchMap((_) => StreamUtil.getOtherStream(5));
+
+    // then
+    await expectLater(stream, emitsInOrder([6, 7, 8, 9]));
+}, timeout: const Timeout(Duration(seconds: 10)));
+```
+
+### ExhaustMap
+지정된 매핑 함수를 사용해 Stream의 항목들을 Stream으로 변환합니다.
+
+새로운 Stream이 완료될 때까지 기존 Stream의 모든 항목을 무시합니다.
+
+> 기존 Stream의 이전 비동기 작업이 완료된 후에만 응답하려는 경우 유용할 수 있습니다.
+
+```js
+test(
+      '지정된 Mapper를 사용하여 새로운 Stream이 완료될 떄까지 항목들을 Stream으로 변환한다. 기존 스트림의 모든 항목은 무시한다.',
+      () async {
+    // given
+    var count = 0;
+    var temp = Rx.range(1, 9);
+
+    // then
+    final stream = temp.exhaustMap((_) {
+      count++;
+      return Rx.timer(5, const Duration(milliseconds: 100));
+    });
+
+    // when
+    await expectLater(stream, emitsInOrder([5, emitsDone]));
+    await expectLater(count, 1);
+}, timeout: const Timeout(Duration(seconds: 10)));
+```
+
+### MapTo
+Stream이 값을 방출할 때마다 무조건 방출될 항목에서 주어진 상수 값을 방출합니다.
+
+![MapTo](https://user-images.githubusercontent.com/85836879/178905367-0cc8e6f1-4373-4807-8c9e-1455fde77e19.png)
+
+```js
+test('Stream이 값을 내보낼 때마다 무조건 주어진 상수 값을 내보냅니다.', () async {
+    // given
+    var temp = Rx.range(1, 4);
+
+    // when
+    final stream = temp.mapTo(true);
+
+    // then
+    await expectLater(
+        stream,
+        emitsInOrder([
+          true,
+          true,
+          true,
+          true,
+          emitsDone,
+        ]));
+  }, timeout: const Timeout(Duration(seconds: 10)));
+
+test('Stream이 값을 내보낼 때 무조건 에러를 동반해야 한다.', () async {
+    // given
+    var temp = Rx.range(1, 2)
+        .concatWith([Stream<int>.error(ArgumentError('error message'))]);
+
+    // when
+    final stream = temp.mapTo(true);
+
+    // then
+    await expectLater(
+        stream,
+        emitsInOrder([
+          true,
+          true,
+          emitsError(const TypeMatcher<ArgumentError>()),
+        ]));
+}, timeout: const Timeout(Duration(seconds: 10)));
+```
+
+### GroupBy
+각각의 항목을 그룹지어 GroupByStream으로 방출합니다.
+
+GroupByStream은 일반적인 Stream처럼 작동하지만
+
+Fuction Type에서 값을 받는 'Key' 속성이 존재합니다.
+
+![GroupBy](https://user-images.githubusercontent.com/85836879/178906047-74a04f63-160d-45c9-b086-1b9e42637869.png)
+
+```js
+test('Stream의 각각의 항목을 묶어 key 속성이 있는 Stream으로 방출해야 한다.', () async {
+    // given
+    var temp = Stream.fromIterable(List.generate(3, (index) => index + 1));
+
+    // when
+    final stream = temp.groupBy((value) => value);
+
+    // then
+    await expectLater(
+        stream,
+        emitsInOrder(<Matcher>[
+          const TypeMatcher<GroupedStream<int, int>>()
+              .having((stream) => stream.key, 'key', 1),
+          const TypeMatcher<GroupedStream<int, int>>()
+              .having((stream) => stream.key, 'key', 2),
+          const TypeMatcher<GroupedStream<int, int>>()
+              .having((stream) => stream.key, 'key', 3)
+        ]));
+  }, timeout: const Timeout(Duration(seconds: 10)));
+
+test('Stream의 각각의 항목을 묶어 Map 타입으로 방출해야 한다.', () async {
+    // given
+    var temp = Stream.fromIterable([1, 2, 3, 4]);
+
+    // when
+    final stream = temp
+        .groupBy((int value) => StreamUtil.toEvenOdd(value))
+        .flatMap((GroupedStream<int, String> stream) =>
+            stream.map((int event) => {stream.key: event}));
+
+    // then
+    await expectLater(
+        stream,
+        emitsInOrder(<Map<String, int>>[
+          {'odd': 1},
+          {'even': 2},
+          {'odd': 3},
+          {'even': 4},
+        ]));
+  }, timeout: const Timeout(Duration(seconds: 10)));
+
+class StreamUtil{
+    String toEvenOdd(int value) => value % 2 == 0 ? 'even' : 'odd';
+}
+
+test('Stream의 각 항목을 짝수 혹은 홀수를 구분해 Map의 항목으로 방출해야 한다.', () async {
+    // given
+    var temp = Stream.fromIterable(List.generate(5, (index) => index + 1));
+
+    // when
+    // fold 함수는 Stream 타입의 onDone 트리거에 의해 호출됩니다.
+    final stream = temp
+        .groupBy((value) => StreamUtil.toEvenOdd(value))
+        .map((stream) async => await stream.fold(
+              {stream.key: <int>[]},
+              (Map<String, List<int>> previous, element) {
+                return previous..[stream.key]?.add(element);
+              },
+            ));
+
+    // then
+    await expectLater(
+        stream,
+        emitsInOrder([
+          {
+            'odd': [1, 3, 5]
+          },
+          {
+            'even': [2, 4]
+          },
+          emitsDone
+        ]));
+  }, timeout: const Timeout(Duration(seconds: 10)));
+```
+
+### Interval
+지정된 기간마다 Stream의 항목을 방출하는 Stream을 만듭니다.
+
+![Interval](https://user-images.githubusercontent.com/85836879/178906523-987010f3-c4ed-47e6-bc41-ade363ae7e0e.png)
+
+```js
+class StreamUtil{
+    Stream<int> getStream(int n) async* {
+        var temp = 0;
+        while (temp < n) {
+        await Future<void>.delayed(const Duration(milliseconds: 100));
+
+        yield temp++;
+        }
+  }
+}
+
+test('지정된 기간(interval) 마다 Stream의 항목을 방출해야 한다.', () async {
+    // given
+    var temp = StreamUtil.getStream(5),
+        count = 0,
+        lastInterval = -1,
+        expectOutput = [0, 1, 2, 3, 4];
+    final stopWatch = Stopwatch()..start();
+
+    // when
+    final stream = temp.interval(const Duration(milliseconds: 100));
+
+    // then
+    stream.listen(
+        expectAsync1(
+          (result) {
+            expect(expectOutput[count++], result);
+
+            if (lastInterval != -1) {
+              expect(stopWatch.elapsedMilliseconds - lastInterval >= 1, true);
+            }
+
+            lastInterval = stopWatch.elapsedMilliseconds;
+          },
+          count: expectOutput.length,
+        ),
+        onDone: stopWatch.stop);
+  }, timeout: const Timeout(Duration(seconds: 10)));
+```
+
+### Max
+Stream에서 방출된 가장 큰 항목으로 완성되는 Future로 Stream을 변환합니다.
+
+Max 연산자는 목록에서 최대값을 찾는 것과 유사하지만 값은 비동기적입니다.
+
+반환 값은 Future 타입입니다.
+
+![Interval](https://user-images.githubusercontent.com/85836879/178907135-e0f5e2b8-7386-4658-ae3c-899762ce28c2.png)
+
+
+```js
+completion은 Future<dynamic> 타입을 가지고 성공적으로 완료된 Future와 일치하는 값을 찾습니다.
+
+비동기 expect를 생성하며 또한 호출이 즉시 반환되고 실행이 계속됩니다.
+
+나중에 Future가 완료되면 기대하는 matcher가 실행됩니다.
+
+Future가 완성되고 실행될 것으로 예상되기를 기다리려면 expectLater를 사용하고 반환될 Future를 기다립니다.
+```
+
+```js
+class ComparableTest implements Comparable<ComparableTest> {
+  final int value;
+
+  const ComparableTest(this.value);
+
+  @override
+  String toString() => 'ComparableTest(value : $value)';
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ComparableTest &&
+          runtimeType == other.runtimeType &&
+          value == other.value;
+
+  @override
+  int get hashCode => value.hashCode;
+
+  @override
+  int compareTo(ComparableTest other) => value.compareTo(other.value);
+}
+
+test('Stream에서 방출된 가장 큰 항목을 Futrue로 완성되는 Stream을 방출해야 한다.', () async {
+    // given
+    var temp = StreamUtil.getStream(5);
+
+    // when
+    final stream = temp.max();
+
+    // then
+    await expectLater(stream, completion(4));
+
+    expect(await Stream.fromIterable([1, 2, 2.5]).max(), 2.5);
+  }, timeout: const Timeout(Duration(seconds: 10)));
+
+  test('Comparable 인터페이스를 상속받아 가장 큰 항목을 방출해야 한다.', () async {
+    // given
+    const expected = ComparableTest(3);
+    var temp = Stream.fromIterable(const [
+      ComparableTest(0),
+      expected,
+      ComparableTest(2),
+      ComparableTest(-1),
+      ComparableTest(2),
+    ]);
+
+    // when
+    final stream = await temp.max();
+
+    // then
+    expect(stream, expected);
+  }, timeout: const Timeout(Duration(seconds: 10)));
+```
+
+### Min
+Stream에서 내보낸 항목 중 가장 작은 항목으로 완료되는 Future로 Stream을 변환합니다.
+
+Min 연산자는 목록에서 최솟값을 찾는 것과 유사하지만 값은 비동기 적입니다.
+
+```js
+test('Stream에서 방출된 가장 작은 항목을 Futrue로 완성되는 Stream을 방출해야 한다.', () async {
+    // given
+    var temp = StreamUtil.getStream(5);
+
+    // when
+    final stream = temp.min();
+
+    // then
+    await expectLater(stream, completion(0));
+    expect(
+        await Stream.fromIterable(
+          List.generate(10, (index) => index),
+        ).min(),
+        0);
+  }, timeout: const Timeout(Duration(seconds: 10)));
+
+test('Comparable 인터페이스를 상속받아 가장 작은 항목을 방출해야 한다.', () async {
+    // given
+    const expected = ComparableTest(-2);
+    var temp = Stream.fromIterable(const [
+      ComparableTest(0),
+      expected,
+      ComparableTest(2),
+      ComparableTest(-1),
+      ComparableTest(3),
+    ]);
+
+    // when
+    final stream = await temp.min();
+
+    // then
+    expect(stream, expected);
+}, timeout: const Timeout(Duration(seconds: 10)));
+```
+
+### PairWise
+지정된 인덱스와 인덱스-1의 이벤트를 묶어 방출합니다.
+
+> Groups pairs of consecutive emissions together and emits them as an array of two values.
+
+```java
+pairwise<T>(): OperatorFunction<T, [T, T]>
+```
+
+![Interval](https://user-images.githubusercontent.com/85836879/178907946-d4b7c5a6-1e5d-40d9-a191-18bd70c118cb.png)
+
+```js
+test('index와 index-1 이벤트를 Iterable 타입으로 방출해야 한다.', () async {
+    // given
+    var temp = Rx.range(0, 4);
+
+    // when
+    Stream<Iterable<int>> stream = temp.pairwise();
+
+    // then
+    await expectLater(
+        stream,
+        emitsInOrder(const [
+          [0, 1],
+          [1, 2],
+          [2, 3],
+          [3, 4],
+        ]));
+}, timeout: const Timeout(Duration(seconds: 10)));
+```
