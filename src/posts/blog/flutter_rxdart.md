@@ -145,7 +145,7 @@ Rx에서는 이러한 이벤트의 종류를 Next, Error, Complete의 3가지 Ty
 void main() {
   final random = Random();
   final even = [1, 2, 3, 4, 5].map(
-          (ele) => random.nextInt(ele * 10)).where((element) => element %  2 == 0);
+          (element) => random.nextInt(element * 10)).where((value) => value %  2 == 0);
   print(even);
 }
 ```
