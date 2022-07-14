@@ -30,13 +30,15 @@ Stream과 Observable은 같은 방식으로 구현하지만 표준 Rx에 익숙�
 | Back pressure 지원 여부 | 지원함 | 지원함 |
 | null을 emit할 수 있는지? | RxJava만 불가능 이외에는 사용 가능 | 사용 가능 |
 | Sync by default | 사용 가능 | 사용 불가 |
-| 구독을 일시중지, 다시시작 할 수 있는지? | 사용 불가 | 사용 가능 |
+| 구독을 일시중지, 다시 시작 할 수 있는지? | 사용 불가 | 사용 가능 |
 
 <br>
 
 <a href="https://pub.dev/documentation/rxdart/latest/rx/Rx-class.html" target="_blank">Rx Dart 공식 홈페이지 방문하기</a>
 <br>
-<a href="http://reactivex.io/RxJava/javadoc/io/reactivex/Observable.html" target="_blank">reactiveX.io 방문하기</a>
+<a href="http://reactivex.io/RxJava/javadoc/io/reactivex/Observable.html" target="_blank">RxJava 방문하기</a>
+<br>
+<a href="https://rxjs-dev.firebaseapp.com/api/index" target="_blank">RxJs 방문하기</a>
 
 ## 생성 함수 (Factory)
 

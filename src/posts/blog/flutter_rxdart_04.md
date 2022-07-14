@@ -30,7 +30,7 @@ Stream과 Observable은 같은 방식으로 구현하지만 표준 Rx에 익숙�
 | Back pressure 지원 여부 | 지원함 | 지원함 |
 | null을 emit할 수 있는지? | RxJava만 불가능 이외에는 사용 가능 | 사용 가능 |
 | Sync by default | 사용 가능 | 사용 불가 |
-| 구독을 일시중지, 다시시작 할 수 있는지? | 사용 불가 | 사용 가능 |
+| 구독을 일시중지, 다시 시작 할 수 있는지? | 사용 불가 | 사용 가능 |
 
 <br>
 
@@ -533,6 +533,10 @@ Fuction Type에서 값을 받는 'Key' 속성이 존재합니다.
 ![GroupBy](https://user-images.githubusercontent.com/85836879/178906047-74a04f63-160d-45c9-b086-1b9e42637869.png)
 
 ```js
+class StreamUtil{
+    String toEvenOdd(int value) => value % 2 == 0 ? 'even' : 'odd';
+}
+
 test('Stream의 각각의 항목을 묶어 key 속성이 있는 Stream으로 방출해야 한다.', () async {
     // given
     var temp = Stream.fromIterable(List.generate(3, (index) => index + 1));
@@ -572,18 +576,14 @@ test('Stream의 각각의 항목을 묶어 Map 타입으로 방출해야 한다.
           {'odd': 3},
           {'even': 4},
         ]));
-  }, timeout: const Timeout(Duration(seconds: 10)));
-
-class StreamUtil{
-    String toEvenOdd(int value) => value % 2 == 0 ? 'even' : 'odd';
-}
+}, timeout: const Timeout(Duration(seconds: 10)));
 
 test('Stream의 각 항목을 짝수 혹은 홀수를 구분해 Map의 항목으로 방출해야 한다.', () async {
     // given
     var temp = Stream.fromIterable(List.generate(5, (index) => index + 1));
 
-    // when
     // fold 함수는 Stream 타입의 onDone 트리거에 의해 호출됩니다.
+    // when
     final stream = temp
         .groupBy((value) => StreamUtil.toEvenOdd(value))
         .map((stream) async => await stream.fold(
@@ -605,7 +605,7 @@ test('Stream의 각 항목을 짝수 혹은 홀수를 구분해 Map의 항목으
           },
           emitsDone
         ]));
-  }, timeout: const Timeout(Duration(seconds: 10)));
+}, timeout: const Timeout(Duration(seconds: 10)));
 ```
 
 ### Interval
@@ -970,9 +970,9 @@ test('정해진 조건의 타입과 일치하지 않는 항목은 필터링되�
 ```
 
 ## 마치며...
-소프트웨어 개발을 하면서 만나게되는 반응형 프로그래밍의 대표적인 예인 Reactive X의 내장 함수로 간접적으로 느껴보았습니다.
+소프트웨어 개발을 하면서 만나게되는 반응형 프로그래밍을 ReactiveX의 내장 함수로 간접적으로 느껴보았습니다.
 
-작성한 내용 이외에도 공식 문서에서도 엄청나게 많은 정보를 제공하고 있습니다.
+작성한 내용 이외에도 공식 문서에서 엄청나게 많은 정보를 제공하고 있습니다.
 
 포스팅에 올려놓은 이미지 캡쳐본은 RxJava와 RxJs를 오가며 캡처하였어요.
 
@@ -980,4 +980,4 @@ test('정해진 조건의 타입과 일치하지 않는 항목은 필터링되�
 
 용어가 다소 어색하지만 참고하면 Stream을 이해하는데 도움될 것 같아요.
 
-우린 이제 반응형 프로그래밍의 대표적인 예시인 Rx 패키지를 Dart 언어를 통해 알게되었습니다!
+우린 이제 반응형 프로그래밍의 대표주자인 Rx 패키지를 Dart 언어를 통해 알게되었습니다!
