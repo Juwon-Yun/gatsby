@@ -104,7 +104,7 @@ Rx에서는 이러한 이벤트의 종류를 Next, Error, Complete의 3가지 Ty
 ![images_teo_post_5300b104-dad8-4fa0-8253-c70760d670bd_image](https://user-images.githubusercontent.com/85836879/173493925-eb7cfa5b-1d26-435a-ac7a-01581e01e536.png)
 
 
-(try, catch, finally와 같은 맥락으로 이해하시면 도움될 것 같아요.)
+(try, catch, finally과 같은 맥락으로 이해하시면 도움될 것 같아요.)
 
 > 스트림 + 선언형 프로그래밍 = 반응형 프로그래밍
 > 
@@ -144,9 +144,9 @@ Rx에서는 이러한 이벤트의 종류를 Next, Error, Complete의 3가지 Ty
 ```js
 void main() {
   final random = Random();
-  final ran = [1, 2, 3, 4, 5].map(
-          (e) => random.nextInt(e * 10)).where((element) => element %  2 == 0);
-  print(ran);
+  final even = [1, 2, 3, 4, 5].map(
+          (ele) => random.nextInt(ele * 10)).where((element) => element %  2 == 0);
+  print(even);
 }
 ```
 
@@ -177,7 +177,7 @@ Stream<int> getNumberStream() async* {
 
 이렇듯 이벤트를 하나의 값으로 생각하고 이를 Array Method를 다루듯이 작성한다면 훨씬 더 직관적이고 간결하게 프로그래밍을 할 수 있을 것 같습니다.
 
-( 실제로 1초마다 숫자를 받아서 짝수를 축력하기를 그냥 구현하면 어떻게 코딩을 할지 상상해보세요. )
+( 실제로 1초마다 숫자를 받아서 짝수를 출력하기를 그냥 구현하면 어떻게 코딩을 할지 상상해보세요. )
 
 ### Rx는 무엇인가요?
 ![images_teo_post_2e9989a7-4280-4d72-9e1f-fbf0361d754a_image](https://user-images.githubusercontent.com/85836879/173501135-5f538d00-8c6b-41e9-b9f9-aecef34b45b4.png)
