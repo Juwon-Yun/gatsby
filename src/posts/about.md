@@ -6,4 +6,4 @@
 
 ✉️  eooll4@naver.com
 
-🚀 [Github](https://github.com/Juwon-Yun).
+🚀 [Github](https://github.com/Juwon-Yun)

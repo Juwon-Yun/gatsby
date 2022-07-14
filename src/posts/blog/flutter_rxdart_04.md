@@ -155,3 +155,86 @@ test('주어진 Zip 함수를 이용해 Stream과 결합해 방출해야 한다.
 ```
 
 ### MergeWith
+여러 Stream이 방출한 항목을 단일 Stream으로 결합합니다.
+
+항목은 Stream에서 방출되는 순서로 방출됩니다.
+
+![MergeWith](https://user-images.githubusercontent.com/85836879/178880050-5a5ad516-cf3b-43c9-b2e9-b6a9b626f004.png)
+
+```js
+test('여러 Stream에서 방출된 순서대로 항목을 단일 Stream으로 결합하여 방출합니다.', () async {
+    // given
+    final delayedStream = Rx.timer(1, const Duration(milliseconds: 10));
+    final immediateStream = Stream.value(2);
+
+    // when
+    final stream = delayedStream.mergeWith([immediateStream]);
+
+    // then
+    await expectLater(stream, emitsInOrder([2, 1, emitsDone]));
+}, timeout: const Timeout(Duration(seconds: 10)));
+```
+
+### DefaultIfEmpty
+Stream에서 아무것도 방출하지 않는 경우 단일 Stream을 방출합니다.
+
+![DefaultIfEmpty](https://user-images.githubusercontent.com/85836879/178880538-580e4680-e0ce-4121-875a-44a30fc3d582.png)
+
+```js
+test('Stream에서 아무것도 내보내지 않는 경우 지정된 기본값을 방출합니다.', () async {
+    // given
+    var temp = const Stream<bool>.empty();
+
+    // when
+    final stream = temp.defaultIfEmpty(false);
+
+    // then
+    await expectLater(stream, emitsInOrder([false, emitsDone]));
+}, timeout: const Timeout(Duration(seconds: 10)));
+```
+
+### SwitchIfEmpty
+Stream에서 아무것도 방출하지 않으면 SwitchIfEmpty 연산자로 지정된 Stream을 구독하고 해당 Stream의 항목을 방출합니다.
+
+SwitchIfEmpty는 여러가지 데이터를 사용할 때 유용할 수 있습니다.
+
+> 메모리 내 데이터를 조회한 다음 파일 시스템의 데이터베이스를 조회한 다음 데이터가 로컬 시스템에 없으면 네트워크로 조회합니다.
+>
+> 불어와야할 데이터가 있다고 가정하면 가장 빠른 액세스 포인트로 시작하고 이후에 가장 느린 액세스 포인트로 돌아가는것이 좋습니다.
+
+이것을 SwitchIfEmpty 연산자로 아주 간단하게 달성할 수 있습니다.
+
+```java
+Stream<Data> memory, Stream<Data> disk, Stream<Data> network;
+
+Stream<Data> fetchData = memory.switchIfEmpty(disk).switchIfEmpty(network);
+```
+
+![SwitchIfEmpty](https://user-images.githubusercontent.com/85836879/178882186-43fa3aeb-69ee-4e77-a8db-cb2b6d5e9078.png)
+
+
+```js
+test('Stream이 아무것도 내보내지 않는 경우 다른 Stream을 방출합니다.', () async {
+    // given
+    var temp = const Stream<int>.empty();
+
+    // when
+    final stream = temp.switchIfEmpty(Stream.value(1));
+
+    // then
+    await expectLater(stream, emitsInOrder([1, emitsDone]));
+}, timeout: const Timeout(Duration(seconds: 10)));
+
+test('Stream이 항목을 내보낸다면 다른 항목을 방출하지 않는다.', () async {
+    // given
+    var temp = Stream<dynamic>.value(1);
+
+    // when
+    final stream = temp.switchIfEmpty(Stream.value(false));
+
+    // then
+    await expectLater(stream, emitsInOrder([1, emitsDone]));
+}, timeout: const Timeout(Duration(seconds: 10)));
+```
+
+### Distinct
