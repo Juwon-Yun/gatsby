@@ -238,3 +238,112 @@ test('Stream이 항목을 내보낸다면 다른 항목을 방출하지 않는�
 ```
 
 ### Distinct
+현재 Stream에서 중복을 제거합니다.
+
+![Distinct](https://user-images.githubusercontent.com/85836879/178882901-0ce3c45e-af3a-47cc-9f64-37341f65d33e.png)
+
+```js
+test('Stream 항목에서 중복되는 항목 없이 방출해야 한다.', () async {
+    // given
+    var temp = Stream.fromIterable([1, 1]);
+
+    // when
+    final stream = temp.distinct();
+
+    // then
+    await expectLater(stream, emitsInOrder([1, emitsDone]));
+}, timeout: const Timeout(Duration(seconds: 10)));
+```
+
+### DistinctUnique
+데이터가 이전에 이미 생성된 경우 건너뛰는 Stream을 생성합니다.
+
+같음을 나타내는 조건은 제공되어진 equals 함수와 hashCode 함수에 의해 결정됩니다.
+
+생략한다면 마지막으로 생성 혹은 제공된 데이터의 equals 연산자와 hashCode 함수가 사용됩니다.
+
+DistinctUnique으로 반한되는 Stream은 BroadCastStream입니다.
+
+BroadCastStream이 두 번이상 수신되는 경우 각각의 구독은 equals 함수와 hashCode 함수를 개별적으로 수행합니다.
+
+```js
+class TestModel {
+  final String key;
+
+  const TestModel({required this.key});
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is TestModel &&
+          runtimeType == other.runtimeType &&
+          key == other.key;
+
+  @override
+  int get hashCode => key.hashCode;
+
+  @override
+  String toString() => key;
+}
+
+test(
+    'Stream 항목에서 해당 클래스의 equals와 hashCode 값비교를 통해 중복되는 항목 없이 broadCast Stream을 방출해야 한다.',
+    () async {
+    // given
+    final temp = Stream.fromIterable(const [
+      TestModel(key: 'a'),
+      TestModel(key: 'b'),
+      TestModel(key: 'a'),
+      TestModel(key: 'a'),
+      TestModel(key: 'c'),
+      TestModel(key: 'a'),
+      TestModel(key: 'b'),
+    ]);
+
+    // when
+    final stream = temp.distinctUnique();
+
+    // then
+    await expectLater(
+        stream,
+        emitsInOrder([
+          const TestModel(key: 'a'),
+          const TestModel(key: 'b'),
+          const TestModel(key: 'c'),
+          emitsDone
+        ]));
+  }, timeout: const Timeout(Duration(seconds: 10)));
+
+test(
+    'Stream 항목에서 조건으로 제공된 equals와 hashCode 값비교를 통해 중복되는 항목 없이 broadCast Stream을 방출해야 한다.',
+    () async {
+    // given
+    final temp = Stream.fromIterable(const [
+      TestModel(key: 'a'),
+      TestModel(key: 'b'),
+      TestModel(key: 'a'),
+      TestModel(key: 'a'),
+      TestModel(key: 'c'),
+      TestModel(key: 'a'),
+      TestModel(key: 'b'),
+    ]);
+
+    // when
+    final stream = temp.distinctUnique(
+      equals: (a, b) => a.key == b.key,
+      hashCode: (source) => source.key.hashCode,
+    );
+
+    // then
+    await expectLater(
+        stream,
+        emitsInOrder([
+          const TestModel(key: 'a'),
+          const TestModel(key: 'b'),
+          const TestModel(key: 'c'),
+          emitsDone
+        ]));
+}, timeout: const Timeout(Duration(seconds: 10)));
+```
+
+### FlatMap
