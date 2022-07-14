@@ -36,11 +36,12 @@ Stream과 Observable은 같은 방식으로 구현하지만 표준 Rx에 익숙�
 
 <a href="https://pub.dev/documentation/rxdart/latest/rx/Rx-class.html" target="_blank">Rx Dart 공식 홈페이지 방문하기</a>
 <br>
-<a href="http://reactivex.io/RxJava/javadoc/io/reactivex/Observable.html" target="_blank">reactiveX.io 방문하기</a>
-
+<a href="http://reactivex.io/RxJava/javadoc/io/reactivex/Observable.html" target="_blank">RxJava 방문하기</a>
+<br>
+<a href="https://rxjs-dev.firebaseapp.com/api/index" target="_blank">RxJs 방문하기</a>
 
 ## 변형 함수 (Transformer)
-Rx 라이브러리는 변형(backpressured)함수와 변형(non-backpressured)함수, 두 가지 변형 함수를 제공합니다.
+Rx 라이브러리는 배압-변형(backpressured)함수와 일반-변형(non-backpressured)함수, 두 가지 변형 함수를 제공합니다.
 
 배압의 유무는 Observable 클래스의 포함 유무 차이로 많은 함수가 Observable 클래스를 기반으로 구현되어 있습니다.
 
@@ -60,7 +61,7 @@ test('Stream을 방출한 뒤 지정된 Stream을 순서대로 이어서 방출�
 
     // then
     await expectLater(concatWithStream, emitsInOrder([1, 2, emitsDone]));
-  }, timeout: const Timeout(Duration(seconds: 10)));
+}, timeout: const Timeout(Duration(seconds: 10)));
 ```
 
 ### StartWith
@@ -967,3 +968,16 @@ test('정해진 조건의 타입과 일치하지 않는 항목은 필터링되�
     await expectLater(stream, emitsInOrder([1, 3]));
 }, timeout: const Timeout(Duration(seconds: 10)));
 ```
+
+## 마치며...
+소프트웨어 개발을 하면서 만나게되는 반응형 프로그래밍의 대표적인 예인 Reactive X의 내장 함수로 간접적으로 느껴보았습니다.
+
+작성한 내용 이외에도 공식 문서에서도 엄청나게 많은 정보를 제공하고 있습니다.
+
+포스팅에 올려놓은 이미지 캡쳐본은 RxJava와 RxJs를 오가며 캡처하였어요.
+
+테스트 코드의 Should Be 문구에서 자주 등장한 '방출' 용어는 Apache Kafka Streams가 언급한 Streams Architecture에서의 데이터 파이프라인을 표방했습니다.
+
+용어가 다소 어색하지만 참고하면 Stream을 이해하는데 도움될 것 같아요.
+
+우린 이제 반응형 프로그래밍의 대표적인 예시인 Rx 패키지를 Dart 언어를 통해 알게되었습니다!
