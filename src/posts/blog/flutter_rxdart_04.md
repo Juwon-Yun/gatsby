@@ -347,3 +347,27 @@ test(
 ```
 
 ### FlatMap
+주어진 매핑 함수를 사용하여 방출된 각 항목을 Stream으로 변환합니다.
+
+새로 생성된 Stream이 수신되고 항목을 방출하기 시작합니다.
+
+각각의 Stream에서 방출되는 항목은 도착한 순서대로 방출됩니다.
+
+따라서 Sequence가 함께 병합됩니다.
+
+![FlatMap](https://user-images.githubusercontent.com/85836879/178884998-f6b6b068-05d6-4938-bd62-54387a1d6ab3.png)
+
+```js
+test('Stream 항목을 방출할 때마다 순서대로 조건에 맞게 변환하여 방출합니다.', () async {
+    // given
+    var temp = Rx.range(1, 4);
+
+    // when
+    Stream<int> stream = temp.flatMap((idx) => Stream<int>.value(idx * 2));
+
+    // then
+    await expectLater(stream, emitsInOrder([2, 4, 6, 8, emitsDone]));
+}, timeout: const Timeout(Duration(seconds: 10)));
+```
+
+### FlatMapIteratorble
