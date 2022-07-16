@@ -51,6 +51,10 @@ PublishSubject는 구독 이후에 Stream이 방출한 항목들만 옵저버에
 
 ![PublishSubject](https://user-images.githubusercontent.com/85836879/179347921-b16819f4-2d68-48aa-984e-2c0e469da82b.png)
 
+<details>
+
+<summary> PublishSubject </summary>
+
 ```js
 test('PublishSubject를 이용해 구독한 모든 항목들을 옵저버에게 방출해야 한다. ', () async {
     // given
@@ -68,11 +72,17 @@ test('PublishSubject를 이용해 구독한 모든 항목들을 옵저버에게 
     await expectLater(subject.stream, emitsInOrder([1, 2, 3, emitsDone]));
 }, timeout: const Timeout(Duration(seconds: 10)));
 ```
+</details>
+
 
 ## BehaviorSubject
 BehaviorSubject는 구독을 시작하면 Stream이 가장 최근에 방출한 항목 또는 기본값(없다면 첫 번째 항목)의 방출을 시작하며 이후 Stream에 의해 방출된 항목들을 이어서 방출합니다.
 
 ![BehaviorSubject](https://user-images.githubusercontent.com/85836879/179347859-3026f13d-89f5-47f4-920d-b7b262daf872.png)
+
+<details>
+
+<summary> BehaviorSubject </summary>
 
 ```java
 test(
@@ -95,11 +105,17 @@ test(
     await expectLater(seeded.stream, emits(0));
 }, timeout: const Timeout(Duration(seconds: 10)));
 ```
+</details>
 
 ## ReplaySubject
 ReplaySubject는 옵저버가 구독을 시작한 시점과 관계없이 Stream을 처음부터 모두 방출합니다.
 
 ![ReplaySubject](https://user-images.githubusercontent.com/85836879/179347886-b173de5b-0a04-4a53-ac5c-2e43aab389d6.png)
+
+<details>
+
+<summary> ReplaySubject </summary>
+
 
 ```js
 test('ReplaySubject를 이용해 옵저버가 Stream을 처음부터 방출해야 한다.', () async {
@@ -115,6 +131,7 @@ test('ReplaySubject를 이용해 옵저버가 Stream을 처음부터 방출해�
     await expectLater(subject.stream, emitsInOrder([1, 2, 3]));
 }, timeout: const Timeout(Duration(seconds: 10)));
 ```
+</details>
 
 ---
 ## Do 함수
@@ -123,6 +140,10 @@ test('ReplaySubject를 이용해 옵저버가 Stream을 처음부터 방출해�
 Stream이 항목을 내보낼 때 지정된 콜백 함수를 호출합니다.
 
 다른 Rx 구현체에서는 doOnNext로 사용합니다.
+
+<details>
+
+<summary> doOnData </summary>
 
 ```js
 test('Stream이 항목을 방출할 때 지정된 콜백 함수를 호출해야 한다.', () async {
@@ -157,11 +178,16 @@ test('BroadCastStream에서 doOnData는 1번만 호출되어야 한다.', () asy
     await controller.close();
 }, timeout: const Timeout(Duration(seconds: 10)));
 ```
+</details>
 
 ### doOnDone
 Stream의 방출이 완료되면 지정된 콜백 함수를 호출합니다.
 
 다른 Rx 구현체에서는 doOnComplete로 사용합니다.
+
+<details>
+
+<summary> doOnDone </summary>
 
 ```js
 test('Stream이 종료되면 doOnDone 콜백 함수가 호출되어야 한다.', () async {
@@ -177,9 +203,14 @@ test('Stream이 종료되면 doOnDone 콜백 함수가 호출되어야 한다.',
     await expectLater(onDoneCalled, isTrue);
 }, timeout: const Timeout(Duration(seconds: 10)));
 ```
+</details>
 
 ### doOnError
 Stream에서 에러가 방출되면 지정된 콜백 함수를 호출합니다.
+
+<details>
+
+<summary> doOnError </summary>
 
 ```js
 test('에러가 방출되었을때 doOnError가 호출되어야 한다.', () async {
@@ -215,6 +246,7 @@ test('broadCastStream에서 에러가 발생했을떄, doOnError는 1번만 호�
     await subject.close();
 }, timeout: const Timeout(Duration(seconds: 10)));
 ```
+</details>
 
 ### doOnEach
 Stream이 데이터를 내보내거나 에러를 내보내거나 완료를 표시하는 경우 지정된 콜백 함수를 호출합니다.
@@ -227,6 +259,9 @@ Notification 객체는 onData, onDone, onError 3개의 Kind를 가지고 있습�
 
 Notification의 매개변수 중에 ErrorAndStackTrace를 갖지만 onError 콜백함수는 Error와 StackTrace 타입을 나눠 갖습니다.
 
+<details>
+
+<summary> doOnEach </summary>
 
 ```java
 test('Data, Error, Done의 Notification이 있을때 doOnEach를 호출해야 한다.', () async {
@@ -278,11 +313,16 @@ test('BroadCastStream에서 doOnEach는 1번만 호출되어야 한다.', () asy
     await controller.close();
 }, timeout: const Timeout(Duration(seconds: 10)));
 ```
+</details>
 
 ### doOnCancel
 Stream 구독이 취조되면 지정된 콜백 함수를 호출합니다.
 
 다른 Rx 구현테에서는 doOnUnsubscribe 또는 doOnDispose로 사용합니다.
+
+<details>
+
+<summary> doOnCancel </summary>
 
 ```js
 test('구독을 취소하였을 때, doOnCancel가 호출되어야 한다.', () async {
@@ -312,9 +352,14 @@ test('BroadCastStream에서 dpOnCancel가 1번만 호출되어야 한다.', () a
     await subject.close();
 }, timeout: const Timeout(Duration(seconds: 10)));
 ```
+</details>
 
 ### doOnPause
 Stream 구독이 일시 중지 되면 지정된 콜백 함수를 호출합니다.
+
+<details>
+
+<summary> doOnPause </summary>
 
 ```js
 test('구독이 일시 중지되면 doOnPause가 호출되어야 한다.', () async {
@@ -333,9 +378,14 @@ test('구독이 일시 중지되면 doOnPause가 호출되어야 한다.', () as
       ..resume();
 }, timeout: const Timeout(Duration(seconds: 10)));
 ```
+</details>
 
 ### doOnResume
 Stream 구독이 수신을 재개할 때 지정된 콜백 함수를 호출합니다.
+
+<details>
+
+<summary> doOnResume </summary>
 
 ```js
 test('구독 취소후 재구독을 할 때 doOnResume가 호출되어야 한다.', () async {
@@ -354,8 +404,9 @@ test('구독 취소후 재구독을 할 때 doOnResume가 호출되어야 한다
       ..resume();
 }, timeout: const Timeout(Duration(seconds: 10)));
 ```
+</details>
 
 ### 마치며..
 포스팅한 내용이외에도 많은 Do 함수와 Subject 함수가 존재합니다.
 
-궁금하다면 [RxDart 공식 깃허브](https://github.com/ReactiveX/rxdart)를 방문하세요!
+궁금하다면 <a href="https://github.com/ReactiveX/rxdart" target="_blank">RxDart 공식 깃허브</a>를 방문하세요!
