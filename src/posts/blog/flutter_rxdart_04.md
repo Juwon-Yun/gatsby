@@ -50,6 +50,10 @@ Stream에서 모든 항목을 방출한 다음 지정된 Stream의 모든 항목
 
 ![ConcatWith](https://user-images.githubusercontent.com/85836879/178094248-62d3b159-37e3-4e3e-9590-bf8b0e53cd11.png)
 
+<details>
+
+<summary> ConcatWith </summary>
+
 ```js
 test('Stream을 방출한 뒤 지정된 Stream을 순서대로 이어서 방출해야 한다.', () async {
     // given
@@ -63,11 +67,16 @@ test('Stream을 방출한 뒤 지정된 Stream을 순서대로 이어서 방출�
     await expectLater(concatWithStream, emitsInOrder([1, 2, emitsDone]));
 }, timeout: const Timeout(Duration(seconds: 10)));
 ```
+</details>
 
 ### StartWith
 Stream이 값을 방출할 때 방출되는 항목 앞에 값을 추가합니다.
 
 ![StartWith](https://user-images.githubusercontent.com/85836879/178416757-bbbcc20f-871a-4b30-bf45-37aaffcd4a9e.png)
+
+<details>
+
+<summary> StartWith </summary>
 
 ```js
 class StreamUtil{
@@ -87,9 +96,14 @@ test('Stream을 방출할 때 첫 번째 항목으로 지정된 값을 추가해
     await expectLater(stream, emitsInOrder([0, 1, 2, 3, 4, 5, emitsDone]));
 }, timeout: const Timeout(Duration(seconds: 10)));
 ```
+</details>
 
 ### StartWithMany
 Stream이 값을 방출할 때 방출되는 값 앞에 List 타입을 추가합니다.
+
+<details>
+
+<summary> StartWithMany </summary>
 
 ```js
 test('Stream을 방출할 때 첫 번째 항목으로 List 값을 추가해야 한다.', () async {
@@ -103,9 +117,14 @@ test('Stream을 방출할 때 첫 번째 항목으로 List 값을 추가해야 �
     await expectLater(stream, emitsInOrder([-1, 0, 1, 2, 3, 4, 5, emitsDone]));
 }, timeout: const Timeout(Duration(seconds: 10)));
 ```
+</details>
 
 ### EndWith
 Stream이 값을 방출한 후에 방출된 항목 뒤에 값을 추가합니다.
+
+<details>
+
+<summary> EndWith </summary>
 
 ```js
 test('Stream을 방출할 때 마지막 항목으로 지정된 값을 추가해야 한다.', () async {
@@ -119,9 +138,14 @@ test('Stream을 방출할 때 마지막 항목으로 지정된 값을 추가해�
     await expectLater(stream, emitsInOrder([1, 2, 3, 4, 5, 6, emitsDone]));
 }, timeout: const Timeout(Duration(seconds: 10)));
 ```
+</details>
 
 ### EndWithMany
 Stream이 값을 방출한 후에 방출된 항목 뒤에 List 타입을 추가합니다.
+
+<details>
+
+<summary> EndWithMany </summary>
 
 ```js
 test('Stream을 방출할 때 마지막 항목으로 List 값을 추가해야 한다.', () async {
@@ -135,11 +159,16 @@ test('Stream을 방출할 때 마지막 항목으로 List 값을 추가해야 �
     await expectLater(stream, emitsInOrder([1, 2, 3, 4, 5, 6, 7, emitsDone]));
 }, timeout: const Timeout(Duration(seconds: 10)));
 ```
+</details>
 
 ### ZipWith
 주어진 Zip 함수를 사용하여 현재 Stream을 다른 Stream과 결합한 Stream을 방출합니다.
 
 ![ZipWith](https://user-images.githubusercontent.com/85836879/178418266-1f650989-f657-4926-8cb5-d3128c2a7404.png)
+
+<details>
+
+<summary> ZipWith </summary>
 
 ```js
 test('주어진 Zip 함수를 이용해 Stream과 결합해 방출해야 한다.', () async {
@@ -154,6 +183,7 @@ test('주어진 Zip 함수를 이용해 Stream과 결합해 방출해야 한다.
     await expectLater(stream, emitsInOrder([3]));
 }, timeout: const Timeout(Duration(seconds: 10)));
 ```
+</details>
 
 ### MergeWith
 여러 Stream이 방출한 항목을 단일 Stream으로 결합합니다.
@@ -161,6 +191,10 @@ test('주어진 Zip 함수를 이용해 Stream과 결합해 방출해야 한다.
 항목은 Stream에서 방출되는 순서로 방출됩니다.
 
 ![MergeWith](https://user-images.githubusercontent.com/85836879/178880050-5a5ad516-cf3b-43c9-b2e9-b6a9b626f004.png)
+
+<details>
+
+<summary> MergeWith </summary>
 
 ```js
 test('여러 Stream에서 방출된 순서대로 항목을 단일 Stream으로 결합하여 방출합니다.', () async {
@@ -175,11 +209,16 @@ test('여러 Stream에서 방출된 순서대로 항목을 단일 Stream으로 �
     await expectLater(stream, emitsInOrder([2, 1, emitsDone]));
 }, timeout: const Timeout(Duration(seconds: 10)));
 ```
+</details>
 
 ### DefaultIfEmpty
 Stream에서 아무것도 방출하지 않는 경우 단일 Stream을 방출합니다.
 
 ![DefaultIfEmpty](https://user-images.githubusercontent.com/85836879/178880538-580e4680-e0ce-4121-875a-44a30fc3d582.png)
+
+<details>
+
+<summary> DefaultIfEmpty </summary>
 
 ```js
 test('Stream에서 아무것도 내보내지 않는 경우 지정된 기본값을 방출합니다.', () async {
@@ -193,6 +232,7 @@ test('Stream에서 아무것도 내보내지 않는 경우 지정된 기본값�
     await expectLater(stream, emitsInOrder([false, emitsDone]));
 }, timeout: const Timeout(Duration(seconds: 10)));
 ```
+</details>
 
 ### SwitchIfEmpty
 Stream에서 아무것도 방출하지 않으면 SwitchIfEmpty 연산자로 지정된 Stream을 구독하고 해당 Stream의 항목을 방출합니다.
@@ -213,6 +253,9 @@ Stream<Data> fetchData = memory.switchIfEmpty(disk).switchIfEmpty(network);
 
 ![SwitchIfEmpty](https://user-images.githubusercontent.com/85836879/178882186-43fa3aeb-69ee-4e77-a8db-cb2b6d5e9078.png)
 
+<details>
+
+<summary> SwitchIfEmpty </summary>
 
 ```js
 test('Stream이 아무것도 내보내지 않는 경우 다른 Stream을 방출합니다.', () async {
@@ -237,11 +280,16 @@ test('Stream이 항목을 내보낸다면 다른 항목을 방출하지 않는�
     await expectLater(stream, emitsInOrder([1, emitsDone]));
 }, timeout: const Timeout(Duration(seconds: 10)));
 ```
+</details>
 
 ### Distinct
 현재 Stream에서 중복을 제거합니다.
 
 ![Distinct](https://user-images.githubusercontent.com/85836879/178882901-0ce3c45e-af3a-47cc-9f64-37341f65d33e.png)
+
+<details>
+
+<summary> Distinct </summary>
 
 ```js
 test('Stream 항목에서 중복되는 항목 없이 방출해야 한다.', () async {
@@ -255,6 +303,7 @@ test('Stream 항목에서 중복되는 항목 없이 방출해야 한다.', () a
     await expectLater(stream, emitsInOrder([1, emitsDone]));
 }, timeout: const Timeout(Duration(seconds: 10)));
 ```
+</details>
 
 ### DistinctUnique
 데이터가 이전에 이미 생성된 경우 건너뛰는 Stream을 생성합니다.
@@ -266,6 +315,10 @@ test('Stream 항목에서 중복되는 항목 없이 방출해야 한다.', () a
 DistinctUnique으로 반한되는 Stream은 BroadCastStream입니다.
 
 BroadCastStream이 두 번이상 수신되는 경우 각각의 구독은 equals 함수와 hashCode 함수를 개별적으로 수행합니다.
+
+<details>
+
+<summary> DistinctUnique </summary>
 
 ```js
 class TestModel {
@@ -346,6 +399,7 @@ test(
         ]));
 }, timeout: const Timeout(Duration(seconds: 10)));
 ```
+</details>
 
 ### FlatMap
 주어진 매핑 함수를 사용하여 방출된 각 항목을 Stream으로 변환합니다.
@@ -357,6 +411,10 @@ test(
 따라서 Sequence가 함께 병합됩니다.
 
 ![FlatMap](https://user-images.githubusercontent.com/85836879/178884998-f6b6b068-05d6-4938-bd62-54387a1d6ab3.png)
+
+<details>
+
+<summary> FlatMap </summary>
 
 ```js
 test('Stream 항목을 방출할 때마다 순서대로 조건에 맞게 변환하여 방출합니다.', () async {
@@ -370,12 +428,16 @@ test('Stream 항목을 방출할 때마다 순서대로 조건에 맞게 변환�
     await expectLater(stream, emitsInOrder([2, 4, 6, 8, emitsDone]));
 }, timeout: const Timeout(Duration(seconds: 10)));
 ```
+</details>
 
 ### FlatMapIteratorble
 Stream이 방출될 때마다 List 타입의 Stream으로 변환하여 방출합니다.
 
 ![FlatMapIteratorble](https://user-images.githubusercontent.com/85836879/178904225-f46da1a2-fd03-46b5-b3c1-1216c794d3fb.png)
 
+<details>
+
+<summary> FlatMapIteratorble </summary>
 
 ```js
 test('Stream 항목을 방출할 때마다 순서대로 List 타입을 방출합니다.', () async {
@@ -391,6 +453,7 @@ test('Stream 항목을 방출할 때마다 순서대로 List 타입을 방출합
         stream, emitsInOrder([1, 2, 2, 3, 3, 4, 4, 5, emitsDone]));
 }, timeout: const Timeout(Duration(seconds: 10)));
 ```
+</details>
 
 ### SwitchMap
 주어진 매핑 함수를 사용해 방출된 각각의 항목을 Stream으로 변환합니다.
@@ -402,6 +465,10 @@ SwitchMap 연산자는 flatMap 연산자와 concatMap 함수와 유사하지만 
 > 비동기 요청에 대한 API의 응답이 최신 상태만 원할 때 유용할 수 있습니다.
 
 ![FlatMapIteratorble](https://user-images.githubusercontent.com/85836879/178904632-6f6fe09f-33d7-4b36-b640-3263008b2fc0.png)
+
+<details>
+
+<summary> SwitchMap </summary>
 
 ```js
 class StreamUtil{
@@ -451,6 +518,7 @@ test('기본 Stream과 다른 Stream 중 가장 최근에 방출한 항목들만
     await expectLater(stream, emitsInOrder([6, 7, 8, 9]));
 }, timeout: const Timeout(Duration(seconds: 10)));
 ```
+</details>
 
 ### ExhaustMap
 지정된 매핑 함수를 사용해 Stream의 항목들을 Stream으로 변환합니다.
@@ -458,6 +526,10 @@ test('기본 Stream과 다른 Stream 중 가장 최근에 방출한 항목들만
 새로운 Stream이 완료될 때까지 기존 Stream의 모든 항목을 무시합니다.
 
 > 기존 Stream의 이전 비동기 작업이 완료된 후에만 응답하려는 경우 유용할 수 있습니다.
+
+<details>
+
+<summary> ExhaustMap </summary>
 
 ```js
 test(
@@ -478,11 +550,16 @@ test(
     await expectLater(count, 1);
 }, timeout: const Timeout(Duration(seconds: 10)));
 ```
+</details>
 
 ### MapTo
 Stream이 값을 방출할 때마다 무조건 방출될 항목에서 주어진 상수 값을 방출합니다.
 
 ![MapTo](https://user-images.githubusercontent.com/85836879/178905367-0cc8e6f1-4373-4807-8c9e-1455fde77e19.png)
+
+<details>
+
+<summary> MapTo </summary>
 
 ```js
 test('Stream이 값을 내보낼 때마다 무조건 주어진 상수 값을 내보냅니다.', () async {
@@ -522,6 +599,7 @@ test('Stream이 값을 내보낼 때 무조건 에러를 동반해야 한다.', 
         ]));
 }, timeout: const Timeout(Duration(seconds: 10)));
 ```
+</details>
 
 ### GroupBy
 각각의 항목을 그룹지어 GroupByStream으로 방출합니다.
@@ -531,6 +609,10 @@ GroupByStream은 일반적인 Stream처럼 작동하지만
 Fuction Type에서 값을 받는 'Key' 속성이 존재합니다.
 
 ![GroupBy](https://user-images.githubusercontent.com/85836879/178906047-74a04f63-160d-45c9-b086-1b9e42637869.png)
+
+<details>
+
+<summary> GroupBy </summary>
 
 ```js
 class StreamUtil{
@@ -607,11 +689,16 @@ test('Stream의 각 항목을 짝수 혹은 홀수를 구분해 Map의 항목으
         ]));
 }, timeout: const Timeout(Duration(seconds: 10)));
 ```
+</details>
 
 ### Interval
 지정된 기간마다 Stream의 항목을 방출하는 Stream을 만듭니다.
 
 ![Interval](https://user-images.githubusercontent.com/85836879/178906523-987010f3-c4ed-47e6-bc41-ade363ae7e0e.png)
+
+<details>
+
+<summary> Interval </summary>
 
 ```js
 class StreamUtil{
@@ -653,6 +740,7 @@ test('지정된 기간(interval) 마다 Stream의 항목을 방출해야 한다.
         onDone: stopWatch.stop);
   }, timeout: const Timeout(Duration(seconds: 10)));
 ```
+</details>
 
 ### Max
 Stream에서 방출된 가장 큰 항목으로 완성되는 Future로 Stream을 변환합니다.
@@ -663,7 +751,6 @@ Max 연산자는 목록에서 최대값을 찾는 것과 유사하지만 값은 
 
 ![Interval](https://user-images.githubusercontent.com/85836879/178907135-e0f5e2b8-7386-4658-ae3c-899762ce28c2.png)
 
-
 ```js
 completion은 Future<dynamic> 타입을 가지고 성공적으로 완료된 Future와 일치하는 값을 찾습니다.
 
@@ -673,6 +760,10 @@ completion은 Future<dynamic> 타입을 가지고 성공적으로 완료된 Futu
 
 Future가 완성되고 실행될 것으로 예상되기를 기다리려면 expectLater를 사용하고 반환될 Future를 기다립니다.
 ```
+
+<details>
+
+<summary> Max </summary>
 
 ```js
 class ComparableTest implements Comparable<ComparableTest> {
@@ -728,11 +819,16 @@ test('Stream에서 방출된 가장 큰 항목을 Futrue로 완성되는 Stream�
     expect(stream, expected);
   }, timeout: const Timeout(Duration(seconds: 10)));
 ```
+</details>
 
 ### Min
 Stream에서 내보낸 항목 중 가장 작은 항목으로 완료되는 Future로 Stream을 변환합니다.
 
 Min 연산자는 목록에서 최솟값을 찾는 것과 유사하지만 값은 비동기 적입니다.
+
+<details>
+
+<summary> Min </summary>
 
 ```js
 test('Stream에서 방출된 가장 작은 항목을 Futrue로 완성되는 Stream을 방출해야 한다.', () async {
@@ -769,6 +865,7 @@ test('Comparable 인터페이스를 상속받아 가장 작은 항목을 방출�
     expect(stream, expected);
 }, timeout: const Timeout(Duration(seconds: 10)));
 ```
+</details>
 
 ### PairWise
 지정된 인덱스와 인덱스-1의 이벤트를 묶어 방출합니다.
@@ -780,6 +877,10 @@ pairwise<T>(): OperatorFunction<T, [T, T]>
 ```
 
 ![PairWise](https://user-images.githubusercontent.com/85836879/178907946-d4b7c5a6-1e5d-40d9-a191-18bd70c118cb.png)
+
+<details>
+
+<summary> PairWise </summary>
 
 ```js
 test('index와 index-1 이벤트를 Iterable 타입으로 방출해야 한다.', () async {
@@ -800,11 +901,16 @@ test('index와 index-1 이벤트를 Iterable 타입으로 방출해야 한다.',
         ]));
 }, timeout: const Timeout(Duration(seconds: 10)));
 ```
+</details>
 
 ### SkipUntil
 Stream이 항목을 방출한 후에만 방출을 시작합니다.
 
 ![SkipUntil](https://user-images.githubusercontent.com/85836879/178910642-916bedd6-3206-4b64-8f3f-ca9a8cfc5ef3.png)
+
+<details>
+
+<summary> SkipUntil </summary>
 
 ```js
 class StreamUtil{
@@ -846,11 +952,16 @@ test('지정된 Stream이 항목을 방출한 이후에만 방출을 시작합�
         ]));
 }, timeout: const Timeout(Duration(seconds: 10)));
 ```
+</details>
 
 ### TakeUntil
 다른 Stream의 항목을 생성할때까지만 기존 Stream의 항목을 방출합니다.
 
 ![TakeUntil](https://user-images.githubusercontent.com/85836879/178911029-ddb8c85c-124d-45b9-b167-c3b22a514a0c.png)
+
+<details>
+
+<summary> TakeUntil </summary>
 
 ```js
 test('다른 스트림의 값이 방출될 때까지만 소스 스트림의 값들을 방출해야 한다.', () async {
@@ -868,6 +979,7 @@ test('다른 스트림의 값이 방출될 때까지만 소스 스트림의 값�
         ));
 }, timeout: const Timeout(Duration(seconds: 10)));
 ```
+</details>
 
 ### TakeWhileInclusive
 Stream의 각각의 항목이 주어진 조건을 충족할 때까지만 Stream에서 항목을 방출합니다.
@@ -875,6 +987,10 @@ Stream의 각각의 항목이 주어진 조건을 충족할 때까지만 Stream�
 조건으로 값이 만족되지 않으면 항목을 모두 방출합니다.
 
 ![TakeWhileInclusive](https://user-images.githubusercontent.com/85836879/178912514-3b7646dd-d454-45e7-8333-e20992546e3b.png)
+
+<details>
+
+<summary> TakeWhileInclusive </summary>
 
 ```js
 test('정해진 조건을 만족할 때까지만 Stream의 항목을 방출해야 한다.', () async {
@@ -912,11 +1028,16 @@ test('정해진 조건에 일치하는 값이 없을 때, Stream의 첫 번째 �
         ]));
   }, timeout: const Timeout(Duration(seconds: 10)));
 ```
+</details>
 
 ### TimeStamp
 Stream에서 내보낼 각 항목을 항목이 내보내진 시간을 포함하는 객체에 랩핑하여 방출합니다.
 
 ![TimeStamp](https://user-images.githubusercontent.com/85836879/178913246-c907d9f8-a0ec-4a13-93cb-e9246e722694.png)
+
+<details>
+
+<summary> TimeStamp </summary>
 
 ```js
 test('Stream에서 방출한 각각의 항목을 항목이 내보내진 시간을 포함하는 객체와 감싸져야 한다.', () async {
@@ -943,11 +1064,16 @@ test('Stream에서 방출한 각각의 항목을 항목이 내보내진 시간�
     // TimeStamp{timestamp: 2022-07-13 19:39:40.915920, value: 5}
   }, timeout: const Timeout(Duration(seconds: 10)));
 ```
+</details>
 
 ### WhereType
 조건의 타입과 일치하지 않는 항목은 필터링되며 방출되어질 Stream의 타입은 조건이 가지고있는 타입입니다.
 
-> WhereTypeStreamTransformer<S, T> class
+> WhereTypeStreamTransformer< S, T > class
+
+<details>
+
+<summary> WhereType </summary>
 
 ```js
 test('정해진 조건의 타입과 일치하지 않는 항목은 필터링되어 방출해야 한다.', () async {
@@ -968,6 +1094,7 @@ test('정해진 조건의 타입과 일치하지 않는 항목은 필터링되�
     await expectLater(stream, emitsInOrder([1, 3]));
 }, timeout: const Timeout(Duration(seconds: 10)));
 ```
+</details>
 
 ## 마치며...
 소프트웨어 개발을 하면서 만나게되는 반응형 프로그래밍을 ReactiveX의 내장 함수로 간접적으로 느껴보았습니다.
