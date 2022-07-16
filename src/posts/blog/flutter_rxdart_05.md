@@ -145,7 +145,7 @@ Stream이 항목을 내보낼 때 지정된 콜백 함수를 호출합니다.
 
 <summary> doOnData </summary>
 
-```js
+```java
 test('Stream이 항목을 방출할 때 지정된 콜백 함수를 호출해야 한다.', () async {
     // given
     var onDataCalled = false;
@@ -189,7 +189,7 @@ Stream의 방출이 완료되면 지정된 콜백 함수를 호출합니다.
 
 <summary> doOnDone </summary>
 
-```js
+```java
 test('Stream이 종료되면 doOnDone 콜백 함수가 호출되어야 한다.', () async {
     // given
     var onDoneCalled = false;
@@ -324,7 +324,7 @@ Stream 구독이 취조되면 지정된 콜백 함수를 호출합니다.
 
 <summary> doOnCancel </summary>
 
-```js
+```java
 test('구독을 취소하였을 때, doOnCancel가 호출되어야 한다.', () async {
     // given
     var onCancelCalled = false;
@@ -361,7 +361,7 @@ Stream 구독이 일시 중지 되면 지정된 콜백 함수를 호출합니다
 
 <summary> doOnPause </summary>
 
-```js
+```java
 test('구독이 일시 중지되면 doOnPause가 호출되어야 한다.', () async {
     // given
     var onPauseCalled = false;
@@ -387,7 +387,7 @@ Stream 구독이 수신을 재개할 때 지정된 콜백 함수를 호출합니
 
 <summary> doOnResume </summary>
 
-```js
+```java
 test('구독 취소후 재구독을 할 때 doOnResume가 호출되어야 한다.', () async {
     // given
     var onResumeCalled = false;
