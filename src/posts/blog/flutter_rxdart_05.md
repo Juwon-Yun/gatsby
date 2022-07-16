@@ -45,7 +45,7 @@ Stream과 Observable은 같은 방식으로 구현하지만 표준 Rx에 익숙�
 
 Do 함수는 Stream 방출 이후의 시점에서 콜백 함수를 의미하며, Subject 함수는 Stream 구독 시작 또는 구독 이후에 옵저버에게 제공하는 함수를 의미합니다.
 
-# Subject 함수
+## Subject 함수
 ## PublishSubject
 PublishSubject는 구독 이후에 Stream이 방출한 항목들만 옵저버에게 방출합니다.
 
@@ -74,8 +74,8 @@ BehaviorSubject는 구독을 시작하면 Stream이 가장 최근에 방출한 �
 
 ![BehaviorSubject](https://user-images.githubusercontent.com/85836879/179347859-3026f13d-89f5-47f4-920d-b7b262daf872.png)
 
-```js
-  test(
+```java
+test(
       'BehaviorSubject를 이용해 구독 이후 Stream이 최근에 방출한 항목을 방출하고 없는 경우 기본값 또는 최근값을 옵저버에게 방출해야 한다.',
       () async {
     // given
@@ -93,7 +93,7 @@ BehaviorSubject는 구독을 시작하면 Stream이 가장 최근에 방출한 �
     await expectLater(unseeded.stream, emits(3));
 
     await expectLater(seeded.stream, emits(0));
-  }, timeout: const Timeout(Duration(seconds: 10)));
+}, timeout: const Timeout(Duration(seconds: 10)));
 ```
 
 ## ReplaySubject
@@ -117,7 +117,7 @@ test('ReplaySubject를 이용해 옵저버가 Stream을 처음부터 방출해�
 ```
 
 ---
-# Do 함수
+## Do 함수
 
 ## doOnData
 Stream이 항목을 내보낼 때 지정된 콜백 함수를 호출합니다.
@@ -136,7 +136,7 @@ test('Stream이 항목을 방출할 때 지정된 콜백 함수를 호출해야 
     // then
     await expectLater(stream, emits(1));
     await expectLater(onDataCalled, true);
-  }, timeout: const Timeout(Duration(seconds: 10)));
+}, timeout: const Timeout(Duration(seconds: 10)));
 
 test('BroadCastStream에서 doOnData는 1번만 호출되어야 한다.', () async {
     // given
@@ -221,14 +221,14 @@ Stream이 데이터를 내보내거나 에러를 내보내거나 완료를 표�
 
 콜백은 Notification 객체로 수산합니다.
 
-Notification 객체는 .onData, .onDone, onError 3개의 Kind를 가지고 있습니다.
+Notification 객체는 onData, onDone, onError 3개의 Kind를 가지고 있습니다.
 
-데이터는 .onData 콜백함수에 담기고 완료시에는 onDone 콜백을 호출하고, 에러발생시 onError 함수를 호출합니다.
+데이터는 onData 콜백함수에 담기고 완료시에는 onDone 콜백을 호출하고, 에러 발생시 onError 함수를 호출합니다.
 
 Notification의 매개변수 중에 ErrorAndStackTrace를 갖지만 onError 콜백함수는 Error와 StackTrace 타입을 나눠 갖습니다.
 
 
-```js
+```java
 test('Data, Error, Done의 Notification이 있을때 doOnEach를 호출해야 한다.', () async {
     // given
     StackTrace? stackTrace;
@@ -256,7 +256,7 @@ test('Data, Error, Done의 Notification이 있을때 doOnEach를 호출해야 �
       Notification<int>.onError(exception, stackTrace),
       Notification<int>.onDone(),
     ]);
-  }, timeout: const Timeout(Duration(seconds: 10)));
+}, timeout: const Timeout(Duration(seconds: 10)));
 
 test('BroadCastStream에서 doOnEach는 1번만 호출되어야 한다.', () async {
     // given
