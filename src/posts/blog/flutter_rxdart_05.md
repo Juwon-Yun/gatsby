@@ -136,7 +136,7 @@ test('ReplaySubject를 이용해 옵저버가 Stream을 처음부터 방출해�
 ---
 ## Do 함수
 
-## doOnData
+### doOnData
 Stream이 항목을 내보낼 때 지정된 콜백 함수를 호출합니다.
 
 다른 Rx 구현체에서는 doOnNext로 사용합니다.
@@ -316,9 +316,9 @@ test('BroadCastStream에서 doOnEach는 1번만 호출되어야 한다.', () asy
 </details>
 
 ### doOnCancel
-Stream 구독이 취조되면 지정된 콜백 함수를 호출합니다.
+Stream 구독이 취소되면 지정된 콜백 함수를 호출합니다.
 
-다른 Rx 구현테에서는 doOnUnsubscribe 또는 doOnDispose로 사용합니다.
+다른 Rx 구현체에서는 doOnUnsubscribe 또는 doOnDispose로 사용합니다.
 
 <details>
 

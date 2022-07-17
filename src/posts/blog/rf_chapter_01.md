@@ -13,26 +13,26 @@ alt: "리팩터링"
 
 ---
 ### 이 책을 읽어야 하는 사람
-이 책의 주 대상은 리펙터링을 배우려는 개발자와 이미 리펙터링을 이해하고 있는 개발자에게도 읽으면 좋은 책이다.
+이 책의 주 대상은 리팩터링을 배우려는 개발자와 이미 리팩터링을 이해하고 있는 개발자에게도 읽으면 좋은 책이다.
 
-이 책을 읽음으로써 교육용 자료로 활용할 수 있고 숙련된 개발자가 동료들에게 멘토링을 할 수 있는 다양한 리펙터링의 작동 원리를 제공한다.
+이 책을 읽음으로써 교육용 자료로 활용할 수 있고 숙련된 개발자가 동료들에게 멘토링을 할 수 있는 다양한 리팩터링의 작동 원리를 제공한다.
 
 ---
 > 마틴 파울러 (Martin Fowler, 1963년 12월 18일 ~)
 ![Webysther_20150414193208_-_Martin_Fowler](https://user-images.githubusercontent.com/85836879/172094236-093fa532-4324-41b3-b82c-707f98dfaa48.jpeg)
 
 ### 들어가며
-리펙터링이란 겉으로 드러나는 코드의 기능은 바꾸지 않으면서 내부 구조를 개선하는 방식으로 소프트웨어 시스템을 수정하는 과정이다.
+리팩터링이란 겉으로 드러나는 코드의 기능은 바꾸지 않으면서 내부 구조를 개선하는 방식으로 소프트웨어 시스템을 수정하는 과정이다.
 
-버그가 생길 가능성을 최소로 줄이면서 코드를 정리하는 정제된 방법이며 리펙터링한다는 것은 코드를 작성하고 난 뒤에 설계를 개선하는 일이다.
+버그가 생길 가능성을 최소로 줄이면서 코드를 정리하는 정제된 방법이며 리팩터링한다는 것은 코드를 작성하고 난 뒤에 설계를 개선하는 일이다.
 
 좋은 설계후에 코드를 작성하지만 시간이 흐르면서 코드는 수정되고 시스템의 무결성, 즉 설계에 맞춘 구조는 점차 엉켜지며 공학에 가깝던 코드는 서서히 해킹에 가까워진다.
 
-이 과정을 반대로 한 것이 리펙터링이다.
+이 과정을 반대로 한 것이 리팩터링이다.
 
-이 책을 읽으며 리펙터링이란 무엇인지 어떻게 재설계와 코드 수정을 통해 설계의 체계를 바로잡는지를 배울 수 있다.
+이 책을 읽으며 리팩터링이란 무엇인지 어떻게 재설계와 코드 수정을 통해 설계의 체계를 바로잡는지를 배울 수 있다.
 
-리펙터링 2판은 예시코드가 자바스크립트로 되어있어 자바 개발을 하거나 준비하는 개발자는 1판을 추천한다.
+리팩터링 2판은 예시코드가 자바스크립트로 되어있어 자바 개발을 하거나 준비하는 개발자는 1판을 추천한다.
 
 ---
 ### 1장 리팩터링: 첫 번째 예시
@@ -93,8 +93,507 @@ alt: "리팩터링"
 [
     {
         "customer" : "BigCo",
+        "performances" : [
+            {
+                "playID" : "hamlet",
+                "audience" : 55,
+            },
+            {
+                "playID" : "as-like",
+                "audience" : 35,
+            },
+            {
+                "playID" : "othello",
+                "audience" : 40,
+            },
+        ],
     }
 ]
 ```
 
+공연료 청구서를 출력하는 코드는 다음과 같이 간단히 함수로 구현했다.
 
+```js
+function statement(invoice, plays){
+    let totalAmount = 0;
+    let volumeCredits = 0;
+    let result = `청구 내역 (고객명 : ${invoice.customer})\n`;
+    const format = new Intl.NumberFormat(
+        "en-us",
+        {
+            style : "currency", 
+            currency: "USD", 
+            minimumFractionDigits : 2
+        }).format;
+    
+    for(let perf of invoice.performances){
+        const play = plays[perf.playID];        
+        let thisAmount = 0;
+
+        switch(play.type){
+            case "tragedy" :
+                thisAmount = 40000;
+                if(perf.audience > 30){
+                    this.Amount += 1000 * (perf.audience - 30);
+                }
+                break;
+            case "comedy" :
+                thisAmount = 30000;
+                if(perf.audience > 20){
+                    this.Amount += 10000 + 500 * (perf.audience - 20);
+                }
+                thisAmount += 300 * perf.audience;
+                break;
+            default:
+                throw new Error(`알 수 없는 장르: ${play.type}`);
+        }
+
+        // 포인트를 적립한다.
+        volumeCredits += Math.max(perf.audience - 30, 0);
+        // 희극 관객 5명마다 추가 포인트를 제공한다.
+        if("comedy" === play.type) volumeCredits += Math.floor(perf.audience / 5);
+
+        // 청구 내역을 출력한다.
+        result += ` ${play.name}: ${format(thisAmount/100)} (${perf.audience}석)\n`;
+        totalAmount += thisAmount;
+    }
+    result += `총액: ${format(totalAmount/100)}\n`;
+    result += `적립 포인트: ${volumeCredits}점\n`;
+    return result;
+}
+```
+
+이 코드에 앞의 두 테스트 데이터 파일을 입력해 실행한 결과는 다음과 같다.
+
+```
+청구 내역 (고객명: BigCo)
+Hamlet: $650.00 (55석)
+As You Like It: $580.00 (35석)
+Othello: $500.00 (40석)
+총액: $1,730,00
+적립 포인트: 47점
+```
+
+### 1-2. 예시 프로그램을 본 소감
+이 프로그램의 설계를 보고난 소감은 어떤가? 
+
+프로그램이 짧아서 애써 이해해야 할 구조도 없다.
+
+하지만 이런 코드가 수백 줄짜리 프로그램의 일부라면 간단한 인라인 함수 하나라도 이해하기가 쉽지 않다.
+
+프로그램이 잘 작동하는 상황에서 그저 코드가 '지저분하다'는 이유로 불평하는 것은 프로그램의 구조를 너무 미적인 기준으로만 판단하는 건 아닐까?
+
+설계가 나쁜 시스템은 수정하기 어렵다.
+
+무엇을 수정할지 찾기 어렵다면 실수를 저질러서 버그가 생길 가능성도 높아진다.
+
+수백 줄 짜리 코드를 수정할 때면 먼저프로그램의 작동 방식을 더 쉽게 파악할 수 있도록 코드를 여러 함수와 프로그램 요소로 재구성한다.
+
+프로그램의 구조가 빈약하다면 대체로 구조부터 바로잡은 뒤에 기능을 수정하는 편이 작헙하기 수월하다.
+
+> 프로그램이 새로운 기능을 추가하기에 편한 구조가 아니라면, 먼저 기능을 추가하기 쉬운 형태로 리팩터링하고 나서 원하는 기능을 추가한다.
+
+가장 먼저 청구 내역을 HTML로 출력하는 기능이 필요하다.
+
+청구 결과에 문자열을 추가하는 문장 각각을 조건문으로 감싸야한다.
+
+그러면 statement() 함수의 복잡도가 크게 증가한다.
+
+청구서 작성 로직을 변경할 때마다 기존 함수와 HTML 버전 함수 모두를 수정하고, 항시 일관되게 수정했는지도 확인해야 한다.
+
+로직을 변경할 일이 절대 없다면 이렇게 복사해서 붙이는 방식도 산과없지만 오래 사용할 프로그램이라면 중복 코드는 골칫거리가 된다.
+
+나중에 연극 장르와 공연료 정책이 달라질 때마다 statement() 함수를 수정해야 한다.
+
+만약 statement()를 복사해서 별도의 htmlStatement()를 만든다면 두 함수에 일관되게 반영되도록 보장해야 한다.
+
+게다가 정책이 복잡해질수록 수정할 부분을 찾기 어려워지고 수정 과정에서 실수할 가능성도 커진다.
+
+리팩터링이 필요한 이유는 바로 이러한 변경 때문이다.
+
+잘 작동하고 나중에 변경할 일이 절대 없다면 코드를 현재 상태로 놔둬도 아무런 문제가 없다.
+
+하지만 다른 사람이 읽고 이해해야 할 일이 생겼는데 로직을 파악하기 어렵다면 대책을 마련해야 한다.
+
+### 1-3. 리팩터링의 첫 단게  
+리팩터링의 첫 단계는 항상 똑같다.
+
+리팩터링할 코드 영역을 꼼꼼하게 검사해줄 테스트 코드부터 마련해야 한다.
+
+리팩터링에서 테스트의 역할은 굉장히 중요하다.
+
+프로그램이 클수록 수정 과정에서 예상치 못한 문제가 발생할 가능성이 크다.
+
+테스트 코드 작성도 중요하지만 테스트 결과를 보고하는 방식도 중요하다.
+
+테스트 결과를 성공/실패로 판단하는 자가진단 테스트를 만든다.
+
+자가진단 여부는 매우 중요하다.
+
+최신 테스트 프레임워크는 자가진단 테스트를 작성하고 실행하는데 필요한 모든 기능을 제공한다.
+
+> 리팩터링하기 전에 제대로 된 테스트부터 마련한다. 테스트는 반드시 자가진단하도록 만든다.
+
+내가 리팩터링하면서 저지른 실수로부터 보호해주는 버그 검출기 역할을 테스트 코드가 해주기 때문에 의지해야 한다.
+
+테스트를 작성하는 데 시간이 좀 걸리지만, 신경 써서 만들어두면 디버깅 시간이 줄어서 전체 작업 시간은 오히려 단축된다.
+
+### 1-4. statement() 함수 쪼개기
+statement()처럼 긴 함수를 리팩터링할 때 중간 즈음 switch문이 가장 먼저 눈에 띌 것이다.
+
+```js
+switch(play.type){
+    case "tragedy" :
+        thisAmount = 40000;
+        if(perf.audience > 30){
+            this.Amount += 1000 * (perf.audience - 30);
+        }
+        break;
+    case "comedy" :
+        thisAmount = 30000;
+        if(perf.audience > 20){
+            this.Amount += 10000 + 500 * (perf.audience - 20);
+        }
+        thisAmount += 300 * perf.audience;
+        break;
+    default:
+        throw new Error(`알 수 없는 장르: ${play.type}`);
+}
+```
+이 switch문을 살펴보면 한 번의 공역에 대한 요금을 계산하고 있다.
+
+이러한 사실은 코드를 분석해서 얻은 정보다.
+
+워드 커닝햄이 말하길, 이런 식으로(코드를 분석해서 얻은 정보를 얻는 방식) 파악한 정보는 **휘발성이 높기로 악명 높은 저장 장치인 내 머릿속에 기록되므로, 잊지 않으려면 재빨리 코드에 반영**해야 한다.
+
+그렇게 해야 다음번에 코드를 볼 때, 다시 분석하지 않아도 코드 스스로가 자신이 하는일이 무엇인지 이야기해줄 것이다.
+
+switch문 코드 조각을 별도 함수로 추출하는 방식으로 반영할 것이다.
+
+추출한 함수에는 그 코드가 하는 일을 설명하는 이름을 지어준다.
+
+amountFor(aPerformance)정도면 적당해 보인다.
+
+이렇게 코드 조각을 함수로 추출할 때 실수를 최소화해주는 절차를 따로 기록해두고 나중에 참조하기 쉽도록 **함수 추출하기**란 이름을 붙였다.
+
+다음 별도 함수로 추출했을 때 유효범위를 벗어나는 변수, 즉 새 함수에서는 곧바로 사용할 수 없는 변수가 있는지 확인한다.
+
+예시에서는 perf, play, thisAmount가 여기 속한다.
+
+perf와 play는 추출한 새 함수에서도 값을 변경하지 않기 때문에 매개변수로 전달하면 된다.
+
+하지만 thisAmount는 함수 안에서 값이 바뀌는데 이러한 변수는 조심해서 다뤄야 한다.
+
+이번 예시에서는 함수 안에서 값이 바뀌는 변수가 하나뿐이므로 이 값을 반환하도록 작성했다.
+
+```js
+function amountFor(perf, play){
+    let thisAmount = 0; // 변수를 초기화하는 코드
+    switch(play.type){
+        ...
+    }
+    return thisAmount;
+}
+```
+
+이제 thisAmount 값을 채울 때 방금 추출한 amountFor() 함수로 호출한다.
+
+```js
+function statement(invoice, plays){
+    let totalAmount = 0;
+    let volumeCredits = 0;
+    let result = `청구 내역 (고객명 : ${invoice.customer})\n`;
+    const format = new Intl.NumberFormat(
+        "en-us",
+        {
+            style : "currency", 
+            currency: "USD", 
+            minimumFractionDigits : 2
+        }).format;
+    
+    for(let perf of invoice.performances){
+        const play = plays[perf.playID];        
+        let thisAmount = amountFor(perf, play); // 반환값으로 초기화한다.
+```
+이렇게 수정하고 나면 곧바로 컴파일하고 테스트해서 실수한 게 없는지 확인한다.
+
+아무리 간단한 수정이라도 리팩터링 후에는 항상 테스트하는 습관을 들이는 것이 바람직하다.
+
+사람은 실수하기 마련이다.
+
+한 가지를 수정할 때마다 테스트하면, 오류가 생기더라도 변경 폭이 작기 때문에 문제를 찾고 해결하기가 훨씬 쉽다.
+
+이처럼 조금싞 변경하고 매번 테스트하는 것은 리팩터링 절차의 핵심이다.
+
+조금씩 수정하여 피드백 주기를 짧게 가져가는 습관이 재앙을 피하는 길이다.
+
+> 리팩터링은 프로그램 수정을 작은 단계로 나눠 진행한다. 그래서 중간에 실수하더라도 버그를 쉽게 찾을 수 있다.
+
+수정한 사항을 테스트해보니 문제가 없다.
+
+그래서 다음 단계로 변경 사항을 로컬 버전 관리 시스템에 커밋한다.
+
+하나의 리팩터링을 문제없이 끝낼 때마다 커밋한다.
+
+이러한 자잘한 변경들이 어느정도 의미 있는 단위로 뭉쳐지면 공유 저장소로 푸시한다.
+
+**함수 추출하기**는 흔히 IDE에서 자동으로 수행해준다.
+
+지훤하는 단축키가 있다면 사용하자.
+
+하지만 자바스크립트용 자동 리팩터링 도구가 없기 때문에 수작업으로 진행한다.
+
+추출된 함수 코드를 자세히 들여다 보면서 지금보다 명확하게 표현할 수 있는 간단한 방법은 없는지 검토한다.
+
+가장 먼저 변수의 이름을 더 명확하게 바꿔보자.
+
+thisAmount를 result로 변경할 수 있다.
+```js
+function amountFor(perf, play){
+    let reulst = 0; // 변수명을 바쭤주자.
+    switch(play.type){
+        ...
+    }
+    return reulst;
+}
+```
+이번에도 마찬가지로 컴파일하고, 테스트하고, 커밋한다. 다음은 첫 번째 인수인 perf를 aPerformance로 리팩터링 해보자.
+
+```js
+function amountFor(aPerformance, play){ // 더 명확한 매개면수 명으로 변경한다.
+    let reulst = 0;
+    switch(play.type){
+        ...
+    }
+    return reulst;
+}
+```
+
+자바스크립트와 같은 동적 타입 언어를 사용할 때는 타입이 드러나게 작성하면 도움된다.
+
+저자는 매개변수 이름에 접두어로 타입 이름을 적는데, 지금처럼 매개변수의 역할이 뚜력하지 않을 때는 **부정 관사(a/an)**를 붙인다.
+
+방식은 켄트 백에게 배웠는데 쓰면 쓸수록 정말 유용한 것 같다.
+
+*Smalltalk Best Practice Patterns(Addison-Wesley, 1997)*
+
+> 컴퓨터가 이해하는 코드는 바보도 작성할 수 있다. 사람이 이해하도록 작성하는 프로그래머가 진정한 실력자다.
+
+이렇게 이름을 바꿀만한 가치가 있을까? 물론이다.
+
+좋은 코드라면 하는 일이 명확히 드러나야 하며, 이때 변수 이름은 커다란 역할을 한다.
+
+그러니 명확성을 높이기 위한 이름 바꾸기에는 조금도 망설이지 말기 바란다.
+
+### 1-4-1. play 변수 제거하기
+저자는 긴 함수를 잘게 쪼갤 때마다 play 같은 변수를 최대한 제거한다.
+
+이런 임시 변수들 때문에 로컬 범위에 존재하는 이름이 늘어나서 추출 작업이 복잡해지기 때문이다.
+
+리를 해결해주는 리팩터링으로는 **임시 변수를 질의 함수로 바꾸기**가 있다.
+
+먼저 대입문(=)의 우변을 함수로 추출한다.
+
+```js
+function playFor(aPerformance){
+    return plays[aPerformance.playID];
+}
+
+function statement(invoice, plays){
+    let totalAmount = 0;
+    let volumeCredits = 0;
+    let result = `청구 내역 (고객명 : ${invoice.customer})\n`;
+    const format = new Intl.NumberFormat(
+        "en-us",
+        {
+            style : "currency", 
+            currency: "USD", 
+            minimumFractionDigits : 2
+        }).format;
+    
+    for(let perf of invoice.performances){
+        const play = playeFor(perf); // 우변을 함수로 추출한다.
+        let thisAmount = amountFor(perf, play);
+        ...
+```
+하나를 리팩터링했다.
+
+컴파일 - 테스트 - 커밋한 다음 **변수 인라인하기**를 적용한다.
+
+```js
+function statement(invoice, plays){
+    let totalAmount = 0;
+    let volumeCredits = 0;
+    let result = `청구 내역 (고객명 : ${invoice.customer})\n`;
+    const format = new Intl.NumberFormat(
+        "en-us",
+        {
+            style : "currency", 
+            currency: "USD", 
+            minimumFractionDigits : 2
+        }).format;
+    
+    for(let perf of invoice.performances){
+        // const play = playeFor(perf); -> 인라인된 변수는 제거한다.
+        let thisAmount = amountFor(perf, play);
+
+        ...
+        
+        // 희극 관객 5명마다 추가 포인트를 제공한다.
+        if("comedy" === playFor(perf).type) // -> 변수 인라인
+            volumeCredits += Math.floor(perf.audience / 5);
+
+        // 청구 내역을 출력한다.
+        result += ` ${playFor(perf).name}: ${format(thisAmount/100)} (${perf.audience}석)\n`; // -> 변수 인라인
+        totalAmount += thisAmount;
+    }
+    result += `총액: ${format(totalAmount/100)}\n`;
+    result += `적립 포인트: ${volumeCredits}점\n`;
+    return result;
+}
+```
+다시 컴파일 - 테스트 - 커밋한다.
+
+변수를 인라인한 덕분에 amountFor()에 **함수 선언 바꾸기**를 적용해서 play 매개변수를 제거할 수 있게 되었다.
+
+이 작업은 두 단계로 진행한다.
+
+먼저 새로 만든 playFor()를 사용하도록 amountFor()를 수정한다.
+
+```js
+function amountFor(aPerformance, play){
+    let reulst = 0;
+    switch(playFor(aPerformance).type){
+        ...
+        
+        default:
+            throw new Error(`알 수 없는 장르: ${playFor(aPerformance).type}`);
+    }
+    return reulst;
+}
+```
+컴파일 - 테스트 - 커밋하고 play 매개변수를 삭제한다.
+
+```js
+function amountFor(aPerformance){ // play 매개변수를 제거한다.
+    let reulst = 0;
+    switch(playFor(aPerformance).type){
+        ...
+        
+        default:
+            throw new Error(`알 수 없는 장르: ${playFor(aPerformance).type}`);
+    }
+    return reulst;
+}
+
+function statement(invoice, plays){
+    let totalAmount = 0;
+    let volumeCredits = 0;
+    let result = `청구 내역 (고객명 : ${invoice.customer})\n`;
+    const format = new Intl.NumberFormat(
+        "en-us",
+        {
+            style : "currency", 
+            currency: "USD", 
+            minimumFractionDigits : 2
+        }).format;
+    
+    for(let perf of invoice.performances){
+        let thisAmount = amountFor(perf); // play 매개변수를 제거한다.
+
+        ...
+        
+        // 희극 관객 5명마다 추가 포인트를 제공한다.
+        if("comedy" === playFor(perf).type)
+            volumeCredits += Math.floor(perf.audience / 5);
+
+        // 청구 내역을 출력한다.
+        result += ` ${playFor(perf).name}: ${format(thisAmount/100)} (${perf.audience}석)\n`;
+        totalAmount += thisAmount;
+    }
+    result += `총액: ${format(totalAmount/100)}\n`;
+    result += `적립 포인트: ${volumeCredits}점\n`;
+    return result;
+}
+```
+다시 컴파일 - 테스트 - 커밋한다.
+
+지금까지 수행한 리팩터링에서 주목할 점이 몇 가지 있다.
+
+이전 모드는 루프를 한 번 돌때마다 공연을 조회했는데 반해 리팩터링한 코드에서는 세 번이나 조회한다.
+
+나중에 리팩터링과 성능 관계를 자세히 설명하겠지만, 지금 확인한 바로는 변경해도 성능에 큰 영향은 없다.
+
+설사 심각하게 느려지더라도 제대로 리팩터링 된 코드베이스는 그렇지 않은 코드보다 성능을 개선하기가 훨씬 수월하다.
+
+지역 변수를 제거해서 얻는 가장 큰 장점은 추출 작업이 훨씬 쉬워진다는 것이다.
+
+유효범위를 신경 써야 할 대상이 중더를기 때문이다.
+
+실제로 추출 작업 전에는 거의 항상 지역 변수부터 제거한다.
+
+amountFor()에 전달할 인수를 모두 처리했으니, 이 함수를 호출하는 코드로 돌아가보자.
+
+amountFor()는 임시 변수인 thisAmount에 값을 설정하는 데, 값이 바뀌지 않는다.
+
+따라서 **변수 인라인하기**를 적용한다.
+
+```js
+function statement(invoice, plays){
+    let totalAmount = 0;
+    let volumeCredits = 0;
+    let result = `청구 내역 (고객명 : ${invoice.customer})\n`;
+    const format = new Intl.NumberFormat(
+        "en-us",
+        {
+            style : "currency", 
+            currency: "USD", 
+            minimumFractionDigits : 2
+        }).format;
+    
+    for(let perf of invoice.performances){
+        const play = playeFor(perf);
+        ...
+        // 청구 내역을 출력한다.     thisAmount 변수를 인라인한다.
+        result += ` ${playFor(perf).name}: ${format(amountFor(perf)/100)} (${perf.audience}석)\n`;
+        totalAmount += amountFor(perf);
+    }
+    result += `총액: ${format(totalAmount/100)}\n`;
+    result += `적립 포인트: ${volumeCredits}점\n`;
+    return result;
+}
+```
+
+### 1-4-2. 적립 포인트 계산 코드 추출하기
+지금까지 statement() 함수를 리팩터링한 결과는 다음과 같다.
+
+```js
+function statement(invoice, plays){
+    let totalAmount = 0;
+    let volumeCredits = 0;
+    let result = `청구 내역(고객명: ${invoice.customer})\n`;
+    const format = new Intl.NumberFormat(
+        "en-us",
+        {
+            style : "currency", 
+            currency: "USD", 
+            minimumFractionDigits : 2
+        }).format;
+
+    for(let perf of invoice.performances){
+        
+        // 포인트를 적립한다.
+        volumeCredits += Math.max(perf.audience - 30, 0);
+        // 희극 관객 5명마다 추가 포인트를 제공한다.
+        if("comedy" === playFor(perf).type)
+            volumeCredits += Math.floor(perf.audience / 5);
+
+        // 청구 내역을 출력한다.
+        result += ` ${playFor(perf).name}: ${format(amountFor(perf)/100)} (${perf.audience}석)\n`;
+        totalAmount += amountFor(perf);
+    }
+    result += `총액: ${format(totalAmount/100)}\n`;
+    result += `적립 포인트: ${volumeCredits}점\n`;
+    return result;
+}
+```
