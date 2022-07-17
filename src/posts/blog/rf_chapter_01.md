@@ -597,3 +597,45 @@ function statement(invoice, plays){
     return result;
 }
 ```
+이제 처리해야 할 변수 perf와 volumeCredits 두 개 남아 있다.
+
+pref는 전달만 간단히하면 되지만 volumeCredits은 반복문을 돌 때마다 값을 누적해야 하기 때문에 살짝 까다롭다.
+
+최선의 방법은 추출한 함수에서 volumeCredits의 복제본을 초기화한 뒤 계산 결과를 반환토록 하는 것이다.
+
+누적하는 기능을 추출하자.
+
+```js
+function volumeCreditsFor(perf) { // 새로 추출한 함수
+    let volumeCredits = 0;
+    volumeCredits += Math.max(perf.audience - 30, 0);
+    if("comedy" === playFor(perf).type)
+            volumeCredits += Math.floor(perf.audience / 5);
+    return volumeCredits;
+}
+
+function statement(invoice, plays){
+    ...
+    let volumeCredits = 0;
+    ...
+
+    for(let perf of invoice.performances){
+        volumeCredits += volumeCreditsFor(perf); // 추출한 함수를 이용해 값을 누적한다.
+        ...
+    }
+}
+```
+다시 컴파일-테스트-커밋을 한 다음 새로 추출한 함수에서 쓰이는 변수들 이름을 적절히 바꾼다.
+
+```js
+function volumeCreditsFor(perf) { // 새로 추출한 함수
+    let result = 0;
+    result += Math.max(perf.audience - 30, 0);
+    if("comedy" === playFor(perf).type)
+            result += Math.floor(perf.audience / 5);
+    return result;
+}
+```
+변수 이름을 바꿨으니 컴파일-테스트-커밋을 한다.
+
+### 1-4-2. format 변수 제거하기
