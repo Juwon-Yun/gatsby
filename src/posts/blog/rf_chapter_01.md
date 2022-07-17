@@ -826,3 +826,150 @@ function statement(invoice, plays){
 특히 리팩터링 중간에 테스트가 실패하고 원인을 바로 찾지 못하면 가장 최근 커밋으로 돌아가서 테스트에 실패한 단계를 더 작게 나눠 다시 시도한다.
 
 이렇게 하면 문제를 해결할 수 있다.
+
+다음으로 totalAmount도 똑같은 절차로 제거한다. 
+
+반복문을 쪼개고, 변수 초기화 문장을 앞으로 옮긴 다음, 함수를 추출한다.
+
+추출할 함수의 이름으로는 totalAmount가 가장 좋지만 이미 같은 이름의 변수가 있어서 쓸 수 없다.
+
+그래서 아무 이름인 appleSauce를 붙여준다.
+
+```js
+function appleSauce(){
+    let totalAmount = 0;
+    for(let perf of invoice.performances){
+        totalAmount += amountFor(perf);
+    }
+    return totalAmount;
+}
+
+function statement(invoice, plays){
+    ...
+    let totalAmount = appleSauce(); // 함수 추출 & 임시 이름 부여
+    ...
+}
+```
+변수를 인라인 한 후에 함수명을 totalAmount로 바꾸었다.
+
+컴파일 - 테스트 - 로컬 저장소 커밋하고 추출한 totalAmount 함수 내에서 쓰인 변수명도 코딩 스타일에 맞게 변경한다.
+
+### 1-5. 중간 점검: 난무하는 중첩 함수
+코드 구조가 한결 깔끔해져서 결과적으로 각 계산 과정은 물론 전체 흐름을 이해하기가 훨씬 쉬워졌다.
+
+
+```js
+function statement(invoice, plays){
+    let result = `청구 내역(고객명: ${invoice.customer})\n`;
+    for(let perf of invoice.performances){
+        // 청구 내역을 출력한다.
+        result += ` ${playFor(perf).name}: ${usd(amountFor(perf))} (${perf.audience}석)\n`;
+    }
+    result += `총액: ${usd(totalAmount())}\n`; // 변수 인라인 후 함수 이름을 바꾸었다.
+    result += `적립 포인트: ${totalVolumeCredits()}점\n`;
+    return result;
+
+    function totalAmount(){
+        let result = 0;
+        for(let perf of invoice.performances){
+            result += amountFor(perf);
+        }
+        return result;
+    }
+    // 여기서부터 중첩 함수 시작
+    function totalVolumeCredits(){
+        let result = 0;
+        for(let perf of invoice.performances){
+            result += volumeCreditsFor(perf);
+        }
+        return result;
+    }
+
+    function usd(aNumber){
+        return new Intl.NumberFormat("en-us",
+            {
+                style : "currency", 
+                currency: "USD", 
+                minimumFractionDigits : 2
+            }).format(aNumber/100); // 단위 변환 로직도 이 함수 안으로 이동
+    }
+
+    function volumeCreditsFor(aPerformance) {
+        let result = 0;
+        result += Math.max(aPerformance.audience - 30, 0);
+        if("comedy" === playFor(aPerformance).type)
+                result += Math.floor(aPerformance.audience / 5);
+        return result;
+    }
+
+    function playFor(aPerformance){
+        return plays[aPerformance.playID];
+    }
+
+    function amountFor(aPerformance){
+        let result = 0;
+        switch(playFor(aPerformance).type){
+            case "tragedy" :
+                result = 40000;
+                if(aPerformance.audience > 30){
+                    this.Amount += 1000 * (aPerformance.audience - 30);
+                }
+                break;
+            case "comedy" :
+                result = 30000;
+                if(aPerformance.audience > 20){
+                    this.Amount += 10000 + 500 * (aPerformance.audience - 20);
+                }
+                result += 300 * aPerformance.audience;
+                break;
+            default:
+                throw new Error(`알 수 없는 장르: ${playFor(aPerformance).type}`);
+        }
+        return result;
+    } // amountFor() 끝
+} // statement() 끝
+```
+
+### 1-6. 계산 단계와 포맷팅 단계 분리하기
+지금까지는 프로그램의 논리적인 요소를 파악하기 쉽도록 코드의 구조를 보강하는 데 주안점을 두고 리팩터링했다.
+
+리팩터링 초기 단계에서 흔히 수행하는 일이다.
+
+복잡하게 얽힌 덩어리를 잘게 쪼개는 작업은 이름을 잘 짓는 일만큼 중요하다.
+
+골격은 충분히 개선됐으니 이제 원하던 기능 변경, 즉 statement()의 HTML 버전을 만드는 작업을 살펴보자.
+
+다양한 해결책 중 저자가 선호하는 방식은 **단계 쪼개기**다.
+
+statement() 로직을 두 단계로 나누는 것이다.
+
+첫 단계에서 statement()에 필요한 데이터를 처리하고 두 번째 단계에서는 앞서 처리한 결과를 텍스트나 HTML로 표현하도록 하자.
+
+다시 말해 첫 번째 단게에서는 두 번째 단계로 전달할 중간 데이터 구조를 생성하는 것이다.
+
+단계를 쪼개려면 먼저 두 번째 단계가 될 코드들을 **함수 추출하기**로 뽑아내야 한다.
+
+```js
+function statement(invoice, plays){
+    return renderPlainText(invoice, plays); // 본문 전체를 별도 함수로 추출한다.
+}
+
+function renderPlainText(invoice, plays){
+    let result = `청구 내역(고객명: ${invoice.customer})\n`;
+    for(let perf of invoice.performances){
+        // 청구 내역을 출력한다.
+        result += ` ${playFor(perf).name}: ${usd(amountFor(perf))} (${perf.audience}석)\n`;
+    }
+    result += `총액: ${usd(totalAmount())}\n`;
+    result += `적립 포인트: ${totalVolumeCredits()}점\n`;
+    return result;
+
+    function totalAmount(){...}
+    function totalVolumeCredits(){...}
+    function usd(aNumber){...}
+    function volumeCreditsFor(aPerformance) {...}
+    function playFor(aPerformance){...}
+    function amountFor(aPerformance){...}
+}
+```
+
