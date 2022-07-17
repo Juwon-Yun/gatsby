@@ -260,7 +260,7 @@ switch(play.type){
         throw new Error(`알 수 없는 장르: ${play.type}`);
 }
 ```
-이 switch문을 살펴보면 한 번의 공역에 대한 요금을 계산하고 있다.
+이 switch문을 살펴보면 한 번의 공연에 대한 요금을 계산하고 있다.
 
 이러한 사실은 코드를 분석해서 얻은 정보다.
 
@@ -323,7 +323,7 @@ function statement(invoice, plays){
 
 한 가지를 수정할 때마다 테스트하면, 오류가 생기더라도 변경 폭이 작기 때문에 문제를 찾고 해결하기가 훨씬 쉽다.
 
-이처럼 조금싞 변경하고 매번 테스트하는 것은 리팩터링 절차의 핵심이다.
+이처럼 조금씩 변경하고 매번 테스트하는 것은 리팩터링 절차의 핵심이다.
 
 조금씩 수정하여 피드백 주기를 짧게 가져가는 습관이 재앙을 피하는 길이다.
 
@@ -390,7 +390,7 @@ function amountFor(aPerformance, play){ // 더 명확한 매개면수 명으로 
 
 이런 임시 변수들 때문에 로컬 범위에 존재하는 이름이 늘어나서 추출 작업이 복잡해지기 때문이다.
 
-리를 해결해주는 리팩터링으로는 **임시 변수를 질의 함수로 바꾸기**가 있다.
+이를 해결해주는 리팩터링으로는 **임시 변수를 질의 함수로 바꾸기**가 있다.
 
 먼저 대입문(=)의 우변을 함수로 추출한다.
 
@@ -639,3 +639,85 @@ function volumeCreditsFor(perf) { // 새로 추출한 함수
 변수 이름을 바꿨으니 컴파일-테스트-커밋을 한다.
 
 ### 1-4-2. format 변수 제거하기
+앞에서 설명했듯이 임시 변수는 나중에 문제를 일으킬 수 있다.
+
+임시 변수는 자신이 속한 루틴에서만 의미가 있어서 루틴이 길고 복잡해지기 쉽다.
+
+따라서 다음으로 할 리팩터링은 이런 변수들을 제거하는 것이다.
+
+그중에서 format이 가장 만만해 보인다.
+
+format은 임시 변수에 함수를 대입한 형태인데
+
+저자는 함수를 직접 선언해 사용하도록 바꾸는 편이다.
+
+```js
+function format(aNumber){
+    return new Intl.NumberFormat("en-us",
+        {
+            style : "currency", 
+            currency: "USD", 
+            minimumFractionDigits : 2
+        }).format(aNumber);
+}
+```
+
+그런데 함수명이 마음에 걸린다.
+
+"format"은 함수가 하는 일을 충분히 설명해주지 못한다.
+
+템플릿 문자열 안에서 사용될 이름이라서 "formatAsUSD"라고 하기에는 또 너무 장황하다.
+
+이 함수의 핵심은 화폐 단위 맞추기다.
+
+그래서 다음과 같이 **함수 선언 바꾸기**를 적용했다.
+
+```js
+function usd(aNumber){
+    return new Intl.NumberFormat("en-us",
+        {
+            style : "currency", 
+            currency: "USD", 
+            minimumFractionDigits : 2
+        }).format(aNumber/100); // 단위 변환 로직도 이 함수 안으로 이동
+}
+
+function statement(invoice, plays){
+    ...
+        result += ` ${playFor(perf).name}: ${usd(amountFor(perf))} (${perf.audience}석)\n`;
+    ...
+}
+
+```
+
+이름짓기는 중요하면서도 쉽지 않은 작업이다.
+
+긴 함수를 작게 쪼개는 리팩터링은 이름을 잘 지어야만 효과가 있다.
+
+이름이 좋으면 함수 본문을 읽지 않고도 무슨 일을 하는지 알 수 있다.
+
+당연히 단번에 좋은 이름을 짓기는 쉽지 않다.
+
+처음에는 당장 떠오르는 최선의 이름을 사용하다가, 나중에 더 좋은 이름이 떠오를 때 바꾸는 식이 좋다.
+
+흔히 코드를 두 번 이상 읽고 나서야 가장 적합한 이름이 떠오르곤 한다.
+
+### 1-4-3. volumeCredits 변수 제거하기
+이 변수는 반복문을 한 바퀴 돌 때마다 값을 누적하기 때문에 리팩터링하기가 더 까다롭다.
+
+따라서 **반복문 쪼개기**로 volumeCredits 값이 누적되는 부분을 따로 빼낸다.
+
+```js
+for(let perf of invoice.performances){
+
+    // 청구 내역을 출력한다.
+    result += ` ${playFor(perf).name}: ${format(amountFor(perf)/100)} (${perf.audience}석)\n`;
+    totalAmount += amountFor(perf);
+}
+
+for(let perf of invoice.performances){
+    volumeCredits += volumeCreditsFor(perf); // 값 누적 로직을 별도의 for문으로 분리한다.
+}
+```
+
+이어서 **문장 슬라이드하기**를 적용해서 volumeCredits 변수를 선언하는 문장을 반복문 바로 앞으로 옮긴다.
