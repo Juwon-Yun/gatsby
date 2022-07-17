@@ -740,3 +740,89 @@ for(let perf of invoice.performances){
 ```
 
 이어서 **문장 슬라이드하기**를 적용해서 volumeCredits 변수를 선언하는 문장을 반복문 바로 앞으로 옮긴다.
+
+
+```js
+    ...
+let volumeCredits = 0; // 변수 선언(초기화)을 반복문 앞으로 이동한다.
+
+for(let perf of invoice.performances){
+    volumeCredits += volumeCreditsFor(perf);
+}
+    ...
+```
+
+volumeCredits 값 갱신과 관련된 문장들을 한곳에 모아두면 **임시 변수를 질의 함수로 바꾸기**가 수월해진다.
+
+이번에도 volumeCredits 값 계산 코드를 **함수로 추출**하는 작업부터 한다.
+
+```js
+function totalVolumeCredits(){
+    let volumeCredits = 0;
+
+    for(let perf of invoice.performances){
+       volumeCredits += volumeCreditsFor(perf);
+    }
+    return volumeCredits;
+}
+```
+함수 추출이 끝났다면 다음은 volumeCredits **변수를 인라인**할 차례다.
+
+```js
+function statement(invoice, plays){
+    let totalAmount = 0;
+    let result = `청구 내역(고객명: ${invoice.customer})\n`;
+    for(let perf of invoice.performances){
+
+        // 청구 내역을 출력한다.
+        result += ` ${playFor(perf).name}: ${usd(amountFor(perf))} (${perf.audience}석)\n`;
+        totalAmount += amountFor(perf);
+    }
+    result += `총액: ${usd(totalAmount)}\n`;
+    result += `적립 포인트: ${totalVolumeCredits()}점\n`; // 변수 인라인
+    return result;
+}
+```
+여기서 잠시 방금 한 일에 대해 생각해보자. 무엇보다도 반복문을 쪼개서 성능이 느려지지 않을까 걱정할 수 있다.
+
+이처럼 반복문이 중복되는 것을 꺼리는 이들이 많지만, 이 정도 붕복은 성능에 미치는 영향이 미미할 때가 많다.
+
+경험 많은 프로그래머조차 코드의 실제 성능을 정확히 예측하지 못한다.
+
+똑똑한 컴파일러들은 최신 캐싱 기법 등으로 무장하고 있어서 우리의 직관을 초월하는 결과를 내어주기 때문이다.
+
+때로는 리펙터링이 성능에 상당한 영향을 주기도 한다.
+
+저자는 이런 경우라도 개의치 않고 리팩터링한다.
+
+잘 다듬어진 코드이어야 성능 개선 작업도 훨씬 수월하기 때문이다.
+
+리팩터링 과정에서 성능이 크게 떨어진다면 리팩터링 후 시간을 내어 성능을 개선한다.
+
+이 과정에서 리팩터링된 코드를 예전으로 되돌리는 경우도 있지만 대체로 리팩터링 덕분에 성능 개선을 더 효과적으로 수행할 수 있다.
+
+결과적으로 더 깔끔하면서 더 빠른 코드를 얻게 된다.
+
+리팩터링으로 인한 성능 문제에 대한 저자의 조언은 **특별한 경우가 아니라면 일단 무시하라**는 것이다.
+
+리택터링 때문에 성능이 떨어진다면, 하던 리팩터링을 마무리하고 나서 성능을 개선하자.
+
+이전에 volumeCredits 변수를 제거하는 작업의 단계를 아주 잘게 나눴다는 점에도 주목하자.
+
+각 단계마다 컴파일-테스트-로컬 저장소에 커밋했다.
+
+```
+1. 반복문 쪼개기로 변수 값을 누적시키는 부분을 분리한다.
+
+2. 문장 슬라이드하기로 변수 초기화 문장을 값 누적 코드 바로 앞으로 옮겼다.
+
+3. 함수 추출하기로 적립 포인트 계산 부분을 별도 함수로 추출한다.
+
+4. 변수 인라인하기로 volumeCredits 변수를 제거한다.
+```
+
+항상 단계를 잘게 나누는 것은 아니지만, 상황이 복잡해지면 단게를 더 작게 나누는 일을 가장 먼저 한다.
+
+특히 리팩터링 중간에 테스트가 실패하고 원인을 바로 찾지 못하면 가장 최근 커밋으로 돌아가서 테스트에 실패한 단계를 더 작게 나눠 다시 시도한다.
+
+이렇게 하면 문제를 해결할 수 있다.
