@@ -9,7 +9,7 @@ alt: "리팩터링"
 ![refa](https://user-images.githubusercontent.com/85836879/172093645-3f2f7f9f-b9bc-4723-88f6-dd81dfddd498.jpeg)
 
 ## 리팩터링 책을 선택한 이유
-앞선 클린코드 책을 읽으며 마지막에 로버트 C 마틴이 언급하는 코드의 냄새와 냄새맡기 장인이라는 마틴 파울러를 보고 마침 깊은 수준까지 알고싶은 언어인 자바스크립트로 개정된 책이 있다는 걸 알고 이책이다! 싶어서 선택하였다. 이 책을 읽으며 마틴 파울러와 로버트 C 마틴이 언급하는 코드 냄새를 알아보고 내 코드에 적용하고 싶어서도 한 몫한 것 같다.
+앞선 클린코드 책을 읽으며 마지막에 로버트 C 마틴이 언급하는 코드의 냄새와 냄새맡기 장인이라는 마틴 파울러를 보고 마침 깊게 알고싶은 언어인 자바스크립트로 개정된 책이 있다는 걸 알고 이책이다! 싶어서 선택하였다. 이 책을 읽으며 마틴 파울러와 로버트 C 마틴이 언급하는 코드 냄새를 알아보고 내 코드에 적용하고 싶어서도 한 몫한 것 같다.
 
 ---
 ## 이 책을 읽어야 하는 사람
@@ -35,9 +35,6 @@ alt: "리팩터링"
 리팩터링 2판은 예시코드가 자바스크립트로 되어있어 자바 개발을 하거나 준비하는 개발자는 1판을 추천한다.
 
 ### 1장 리팩터링: 첫 번째 예시
-
----
-
 저자는 리팩터링의 역사와 여러 원칙을 하나씩 나열하며 설명하는건 지루하고 졸린 과정이라고 한다.
 
 저자가 선보이는 일반화된 원칙이 아닌 실제 적용하는 방법을 파악하고 리팩터링 과정을 따라오면서 어떻게 수행하는지 감 잡는 방법을 전해준다.
@@ -364,28 +361,28 @@ function statement(invoice, plays){
 thisAmount를 result로 변경할 수 있다.
 ```js
 function amountFor(perf, play){
-    let reulst = 0; // 변수명을 바쭤주자.
+    let result = 0; // 변수명을 바쭤주자.
     switch(play.type){
         ...
     }
-    return reulst;
+    return result;
 }
 ```
 이번에도 마찬가지로 컴파일하고, 테스트하고, 커밋한다. 다음은 첫 번째 인수인 perf를 aPerformance로 리팩터링 해보자.
 
 ```js
 function amountFor(aPerformance, play){ // 더 명확한 매개면수 명으로 변경한다.
-    let reulst = 0;
+    let result = 0;
     switch(play.type){
         ...
     }
-    return reulst;
+    return result;
 }
 ```
 
 자바스크립트와 같은 동적 타입 언어를 사용할 때는 타입이 드러나게 작성하면 도움된다.
 
-저자는 매개변수 이름에 접두어로 타입 이름을 적는데, 지금처럼 매개변수의 역할이 뚜력하지 않을 때는 **부정 관사(a/an)**를 붙인다.
+저자는 매개변수 이름에 접두어로 타입 이름을 적는데, 지금처럼 매개변수의 역할이 뚜력하지 않을 때는 부정 관사(a/an)를 붙인다.
 
 방식은 켄트 백에게 배웠는데 쓰면 쓸수록 정말 유용한 것 같다.
 
@@ -479,28 +476,28 @@ function statement(invoice, plays){
 
 ```js
 function amountFor(aPerformance, play){
-    let reulst = 0;
+    let result = 0;
     switch(playFor(aPerformance).type){
         ...
         
         default:
             throw new Error(`알 수 없는 장르: ${playFor(aPerformance).type}`);
     }
-    return reulst;
+    return result;
 }
 ```
 컴파일 - 테스트 - 커밋하고 play 매개변수를 삭제한다.
 
 ```js
 function amountFor(aPerformance){ // play 매개변수를 제거한다.
-    let reulst = 0;
+    let result = 0;
     switch(playFor(aPerformance).type){
         ...
         
         default:
             throw new Error(`알 수 없는 장르: ${playFor(aPerformance).type}`);
     }
-    return reulst;
+    return result;
 }
 
 function statement(invoice, plays){
@@ -732,7 +729,6 @@ function statement(invoice, plays){
 
 ```js
 for(let perf of invoice.performances){
-
     // 청구 내역을 출력한다.
     result += ` ${playFor(perf).name}: ${format(amountFor(perf)/100)} (${perf.audience}석)\n`;
     totalAmount += amountFor(perf);
