@@ -180,12 +180,6 @@ Othello: $500.00 (40석)
 
 ---
 
-이 프로그램의 설계를 보고난 소감은 어떤가? 
-
-프로그램이 짧아서 애써 이해해야 할 구조도 없다.
-
-하지만 이런 코드가 수백 줄짜리 프로그램의 일부라면 간단한 인라인 함수 하나라도 이해하기가 쉽지 않다.
-
 프로그램이 잘 작동하는 상황에서 그저 코드가 '지저분하다'는 이유로 불평하는 것은 프로그램의 구조를 너무 미적인 기준으로만 판단하는 건 아닐까?
 
 설계가 나쁜 시스템은 수정하기 어렵다.
@@ -197,24 +191,6 @@ Othello: $500.00 (40석)
 프로그램의 구조가 빈약하다면 대체로 구조부터 바로잡은 뒤에 기능을 수정하는 편이 작헙하기 수월하다.
 
 > 프로그램이 새로운 기능을 추가하기에 편한 구조가 아니라면, 먼저 기능을 추가하기 쉬운 형태로 리팩터링하고 나서 원하는 기능을 추가한다.
-
-가장 먼저 청구 내역을 HTML로 출력하는 기능이 필요하다.
-
-청구 결과에 문자열을 추가하는 문장 각각을 조건문으로 감싸야한다.
-
-그러면 statement() 함수의 복잡도가 크게 증가한다.
-
-청구서 작성 로직을 변경할 때마다 기존 함수와 HTML 버전 함수 모두를 수정하고, 항시 일관되게 수정했는지도 확인해야 한다.
-
-로직을 변경할 일이 절대 없다면 이렇게 복사해서 붙이는 방식도 산과없지만 오래 사용할 프로그램이라면 중복 코드는 골칫거리가 된다.
-
-나중에 연극 장르와 공연료 정책이 달라질 때마다 statement() 함수를 수정해야 한다.
-
-만약 statement()를 복사해서 별도의 htmlStatement()를 만든다면 두 함수에 일관되게 반영되도록 보장해야 한다.
-
-게다가 정책이 복잡해질수록 수정할 부분을 찾기 어려워지고 수정 과정에서 실수할 가능성도 커진다.
-
-리팩터링이 필요한 이유는 바로 이러한 변경 때문이다.
 
 잘 작동하고 나중에 변경할 일이 절대 없다면 코드를 현재 상태로 놔둬도 아무런 문제가 없다.
 
@@ -252,26 +228,7 @@ Othello: $500.00 (40석)
 
 statement()처럼 긴 함수를 리팩터링할 때 중간 즈음 switch문이 가장 먼저 눈에 띌 것이다.
 
-```js
-switch(play.type){
-    case "tragedy" :
-        thisAmount = 40000;
-        if(perf.audience > 30){
-            this.Amount += 1000 * (perf.audience - 30);
-        }
-        break;
-    case "comedy" :
-        thisAmount = 30000;
-        if(perf.audience > 20){
-            this.Amount += 10000 + 500 * (perf.audience - 20);
-        }
-        thisAmount += 300 * perf.audience;
-        break;
-    default:
-        throw new Error(`알 수 없는 장르: ${play.type}`);
-}
-```
-이 switch문을 살펴보면 한 번의 공연에 대한 요금을 계산하고 있다.
+switch문을 살펴보면 한 번의 공연에 대한 요금을 계산하고 있다.
 
 이러한 사실은 코드를 분석해서 얻은 정보다.
 
@@ -282,8 +239,6 @@ switch(play.type){
 switch문 코드 조각을 별도 함수로 추출하는 방식으로 반영할 것이다.
 
 추출한 함수에는 그 코드가 하는 일을 설명하는 이름을 지어준다.
-
-amountFor(aPerformance)정도면 적당해 보인다.
 
 이렇게 코드 조각을 함수로 추출할 때 실수를 최소화해주는 절차를 따로 기록해두고 나중에 참조하기 쉽도록 **함수 추출하기**란 이름을 붙였다.
 
@@ -330,8 +285,6 @@ function statement(invoice, plays){
 
 아무리 간단한 수정이라도 리팩터링 후에는 항상 테스트하는 습관을 들이는 것이 바람직하다.
 
-사람은 실수하기 마련이다.
-
 한 가지를 수정할 때마다 테스트하면, 오류가 생기더라도 변경 폭이 작기 때문에 문제를 찾고 해결하기가 훨씬 쉽다.
 
 이처럼 조금씩 변경하고 매번 테스트하는 것은 리팩터링 절차의 핵심이다.
@@ -350,35 +303,11 @@ function statement(invoice, plays){
 
 **함수 추출하기**는 흔히 IDE에서 자동으로 수행해준다.
 
-지훤하는 단축키가 있다면 사용하자.
-
 하지만 자바스크립트용 자동 리팩터링 도구가 없기 때문에 수작업으로 진행한다.
 
 추출된 함수 코드를 자세히 들여다 보면서 지금보다 명확하게 표현할 수 있는 간단한 방법은 없는지 검토한다.
 
 가장 먼저 변수의 이름을 더 명확하게 바꿔보자.
-
-thisAmount를 result로 변경할 수 있다.
-```js
-function amountFor(perf, play){
-    let result = 0; // 변수명을 바쭤주자.
-    switch(play.type){
-        ...
-    }
-    return result;
-}
-```
-이번에도 마찬가지로 컴파일하고, 테스트하고, 커밋한다. 다음은 첫 번째 인수인 perf를 aPerformance로 리팩터링 해보자.
-
-```js
-function amountFor(aPerformance, play){ // 더 명확한 매개면수 명으로 변경한다.
-    let result = 0;
-    switch(play.type){
-        ...
-    }
-    return result;
-}
-```
 
 자바스크립트와 같은 동적 타입 언어를 사용할 때는 타입이 드러나게 작성하면 도움된다.
 
@@ -406,131 +335,9 @@ function amountFor(aPerformance, play){ // 더 명확한 매개면수 명으로 
 
 이를 해결해주는 리팩터링으로는 **임시 변수를 질의 함수로 바꾸기**가 있다.
 
-먼저 대입문(=)의 우변을 함수로 추출한다.
-
-```js
-function playFor(aPerformance){
-    return plays[aPerformance.playID];
-}
-
-function statement(invoice, plays){
-    let totalAmount = 0;
-    let volumeCredits = 0;
-    let result = `청구 내역 (고객명 : ${invoice.customer})\n`;
-    const format = new Intl.NumberFormat(
-        "en-us",
-        {
-            style : "currency", 
-            currency: "USD", 
-            minimumFractionDigits : 2
-        }).format;
-    
-    for(let perf of invoice.performances){
-        const play = playeFor(perf); // 우변을 함수로 추출한다.
-        let thisAmount = amountFor(perf, play);
-        ...
-```
-하나를 리팩터링했다.
-
 컴파일 - 테스트 - 커밋한 다음 **변수 인라인하기**를 적용한다.
 
-```js
-function statement(invoice, plays){
-    let totalAmount = 0;
-    let volumeCredits = 0;
-    let result = `청구 내역 (고객명 : ${invoice.customer})\n`;
-    const format = new Intl.NumberFormat(
-        "en-us",
-        {
-            style : "currency", 
-            currency: "USD", 
-            minimumFractionDigits : 2
-        }).format;
-    
-    for(let perf of invoice.performances){
-        // const play = playeFor(perf); -> 인라인된 변수는 제거한다.
-        let thisAmount = amountFor(perf, play);
-
-        ...
-        
-        // 희극 관객 5명마다 추가 포인트를 제공한다.
-        if("comedy" === playFor(perf).type) // -> 변수 인라인
-            volumeCredits += Math.floor(perf.audience / 5);
-
-        // 청구 내역을 출력한다.
-        result += ` ${playFor(perf).name}: ${format(thisAmount/100)} (${perf.audience}석)\n`; // -> 변수 인라인
-        totalAmount += thisAmount;
-    }
-    result += `총액: ${format(totalAmount/100)}\n`;
-    result += `적립 포인트: ${volumeCredits}점\n`;
-    return result;
-}
-```
-다시 컴파일 - 테스트 - 커밋한다.
-
 변수를 인라인한 덕분에 amountFor()에 **함수 선언 바꾸기**를 적용해서 play 매개변수를 제거할 수 있게 되었다.
-
-이 작업은 두 단계로 진행한다.
-
-먼저 새로 만든 playFor()를 사용하도록 amountFor()를 수정한다.
-
-```js
-function amountFor(aPerformance, play){
-    let result = 0;
-    switch(playFor(aPerformance).type){
-        ...
-        
-        default:
-            throw new Error(`알 수 없는 장르: ${playFor(aPerformance).type}`);
-    }
-    return result;
-}
-```
-컴파일 - 테스트 - 커밋하고 play 매개변수를 삭제한다.
-
-```js
-function amountFor(aPerformance){ // play 매개변수를 제거한다.
-    let result = 0;
-    switch(playFor(aPerformance).type){
-        ...
-        
-        default:
-            throw new Error(`알 수 없는 장르: ${playFor(aPerformance).type}`);
-    }
-    return result;
-}
-
-function statement(invoice, plays){
-    let totalAmount = 0;
-    let volumeCredits = 0;
-    let result = `청구 내역 (고객명 : ${invoice.customer})\n`;
-    const format = new Intl.NumberFormat(
-        "en-us",
-        {
-            style : "currency", 
-            currency: "USD", 
-            minimumFractionDigits : 2
-        }).format;
-    
-    for(let perf of invoice.performances){
-        let thisAmount = amountFor(perf); // play 매개변수를 제거한다.
-
-        ...
-        
-        // 희극 관객 5명마다 추가 포인트를 제공한다.
-        if("comedy" === playFor(perf).type)
-            volumeCredits += Math.floor(perf.audience / 5);
-
-        // 청구 내역을 출력한다.
-        result += ` ${playFor(perf).name}: ${format(thisAmount/100)} (${perf.audience}석)\n`;
-        totalAmount += thisAmount;
-    }
-    result += `총액: ${format(totalAmount/100)}\n`;
-    result += `적립 포인트: ${volumeCredits}점\n`;
-    return result;
-}
-```
-다시 컴파일 - 테스트 - 커밋한다.
 
 지금까지 수행한 리팩터링에서 주목할 점이 몇 가지 있다.
 
@@ -542,13 +349,9 @@ function statement(invoice, plays){
 
 지역 변수를 제거해서 얻는 가장 큰 장점은 추출 작업이 훨씬 쉬워진다는 것이다.
 
-유효범위를 신경 써야 할 대상이 중더를기 때문이다.
+유효 범위를 신경 써야 할 대상이 줄어를기 때문이다.
 
 실제로 추출 작업 전에는 거의 항상 지역 변수부터 제거한다.
-
-amountFor()에 전달할 인수를 모두 처리했으니, 이 함수를 호출하는 코드로 돌아가보자.
-
-amountFor()는 임시 변수인 thisAmount에 값을 설정하는 데, 값이 바뀌지 않는다.
 
 따라서 **변수 인라인하기**를 적용한다.
 
@@ -614,9 +417,7 @@ function statement(invoice, plays){
     return result;
 }
 ```
-이제 처리해야 할 변수 perf와 volumeCredits 두 개 남아 있다.
-
-pref는 전달만 간단히하면 되지만 volumeCredits은 반복문을 돌 때마다 값을 누적해야 하기 때문에 살짝 까다롭다.
+volumeCredits은 반복문을 돌 때마다 값을 누적해야 하기 때문에 살짝 까다롭다.
 
 최선의 방법은 추출한 함수에서 volumeCredits의 복제본을 초기화한 뒤 계산 결과를 반환토록 하는 것이다.
 
@@ -662,8 +463,6 @@ function volumeCreditsFor(perf) { // 새로 추출한 함수
 
 따라서 다음으로 할 리팩터링은 이런 변수들을 제거하는 것이다.
 
-그중에서 format이 가장 만만해 보인다.
-
 format은 임시 변수에 함수를 대입한 형태인데
 
 저자는 함수를 직접 선언해 사용하도록 바꾸는 편이다.
@@ -678,9 +477,6 @@ function format(aNumber){
         }).format(aNumber);
 }
 ```
-
-그런데 함수명이 마음에 걸린다.
-
 "format"은 함수가 하는 일을 충분히 설명해주지 못한다.
 
 템플릿 문자열 안에서 사용될 이름이라서 "formatAsUSD"라고 하기에는 또 너무 장황하다.
@@ -745,7 +541,6 @@ for(let perf of invoice.performances){
 ```js
     ...
 let volumeCredits = 0; // 변수 선언(초기화)을 반복문 앞으로 이동한다.
-
 for(let perf of invoice.performances){
     volumeCredits += volumeCreditsFor(perf);
 }
@@ -807,8 +602,6 @@ function statement(invoice, plays){
 
 리택터링 때문에 성능이 떨어진다면, 하던 리팩터링을 마무리하고 나서 성능을 개선하자.
 
-이전에 volumeCredits 변수를 제거하는 작업의 단계를 아주 잘게 나눴다는 점에도 주목하자.
-
 각 단계마다 컴파일-테스트-로컬 저장소에 커밋했다.
 
 ```
@@ -826,8 +619,6 @@ function statement(invoice, plays){
 특히 리팩터링 중간에 테스트가 실패하고 원인을 바로 찾지 못하면 가장 최근 커밋으로 돌아가서 테스트에 실패한 단계를 더 작게 나눠 다시 시도한다.
 
 이렇게 하면 문제를 해결할 수 있다.
-
-다음으로 totalAmount도 똑같은 절차로 제거한다. 
 
 반복문을 쪼개고, 변수 초기화 문장을 앞으로 옮긴 다음, 함수를 추출한다.
 
