@@ -191,6 +191,16 @@ const pwaPlugins = [
   "gatsby-plugin-offline",
 ]
 
+const analytics = [
+  {
+    resolve : "gatsby-plugin-gtag",
+    options : {
+      trackingId: `G-DXMHPWT7S9`,
+      head: true,
+    }
+  }
+]
+
 module.exports = {
   siteMetadata,
   plugins: [
@@ -200,5 +210,6 @@ module.exports = {
     ...markdownPlugins,
     ...searchPlugins,
     ...pwaPlugins,
+    ...analytics,
   ],
 }
