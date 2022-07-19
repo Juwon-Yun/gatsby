@@ -3,7 +3,7 @@ title: "Refactoring 1장"
 category: "Etc"
 date: "2022-06-06 12:54:00 +09:00"
 desc: "리팩터링: 첫 번째 예시"
-thumbnail: "./images/refactoring/refactoring_book.jpg"
+thumbnail: "./images/refactoring/refactoring_2nd_logo.jpg"
 alt: "리팩터링"
 ---
 ![refa](https://user-images.githubusercontent.com/85836879/172093645-3f2f7f9f-b9bc-4723-88f6-dd81dfddd498.jpeg)

@@ -3,7 +3,7 @@ title: "Vue.Js란? "
 category: "Vue"
 date: "2022-01-07 18:44:00 +09:00"
 desc: "Vue의 특징은 무엇일까"
-thumbnail: "./images/vue/vue_thumbnail.jpg"
+thumbnail: "./images/vue/vue_thumbnail_02.jpg"
 alt: "vue"
 ---
 

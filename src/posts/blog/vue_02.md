@@ -3,7 +3,7 @@ title: "Vue만의 문법 "
 category: "Vue"
 date: "2022-01-07 21:42:00 +09:00"
 desc: "디렉티브란 무엇일까"
-thumbnail: "./images/vue/vue_thumbnail.jpg"
+thumbnail: "./images/vue/vue_thumbnail_02.jpg"
 alt: "vue"
 ---
 
