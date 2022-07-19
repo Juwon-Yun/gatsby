@@ -132,21 +132,21 @@ class AB extends P with A, B {}
 class BA extends P with B, A {}
 
 void main(){
-  String res = '';
+  String message = '';
 
   AB ab = AB();
-  res = ab.getMessage();
-  print(res); // B
+  message = ab.getMessage();
+  print(message); // B
 
   BA ba = BA();
-  res = ba.getMessage();
+  message = ba.getMessage();
 
-  print(res); // A
+  print(message); // A
 }
 
 ```
 
-mixin을 사용함에 있어서 선언도니 순서가 중요합니다.
+mixin을 사용함에 있어서 선언된 순서가 중요합니다.
 
 ### 선형화
 mixin은 mixin을 구현하는 클래스 위에 놓습니다.
