@@ -2,6 +2,7 @@ const React = require("react")
 
 exports.onRenderBody = ({ setPreBodyComponents }) => {
   setPreBodyComponents([
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DXMHPWT7S9"></script>,
     React.createElement("script", {
       dangerouslySetInnerHTML: {
         __html: `
@@ -37,6 +38,12 @@ exports.onRenderBody = ({ setPreBodyComponents }) => {
             })
 
             setTheme(preferredTheme || (darkQuery.matches ? 'dark' : 'light'))
+
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+          
+            gtag('config', 'G-DXMHPWT7S9');
           })()
         `,
       },
