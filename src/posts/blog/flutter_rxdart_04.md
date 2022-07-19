@@ -43,7 +43,9 @@ Stream과 Observable은 같은 방식으로 구현하지만 표준 Rx에 익숙�
 ## 변형 함수 (Transformer)
 Rx 라이브러리는 배압-변형(backpressured)함수와 일반-변형(non-backpressured)함수, 두 가지 변형 함수를 제공합니다.
 
-배압의 유무는 Observable 클래스의 포함 유무 차이로 많은 함수가 Observable 클래스를 기반으로 구현되어 있습니다.
+배압의 유무는 Rx 메서드 내에서 Observable 클래스의 포함 여부로 나뉘게 됩니다.
+
+많은 함수가 Observable 클래스를 기반으로 구현되어 있습니다.
 
 ### ConcatWith
 Stream에서 모든 항목을 방출한 다음 지정된 Stream의 모든 항목을 차례대로 내보내는 Stream을 반환합니다.
@@ -87,7 +89,7 @@ class StreamUtil{
 
 test('Stream을 방출할 때 첫 번째 항목으로 지정된 값을 추가해야 한다.', () async {
     // given
-    final temp = StreamUtil.getIterableStream(length: 5, startWith: 1);
+    final temp = StreamUtil.getIterableStream(length: 5, start: 1);
 
     // when
     final stream = temp.startWith(0);
@@ -106,9 +108,15 @@ Stream이 값을 방출할 때 방출되는 값 앞에 List 타입을 추가합�
 <summary> StartWithMany </summary>
 
 ```js
+class StreamUtil{
+    Stream<int> getIterableStream({required int length, int? start}) =>
+        Stream.fromIterable(
+            List.generate(length, (index) => index + (start ??= 0)));
+}
+
 test('Stream을 방출할 때 첫 번째 항목으로 List 값을 추가해야 한다.', () async {
     // given
-    final temp = StreamUtil.getIterableStream(length: 5, startWith: 1);
+    final temp = StreamUtil.getIterableStream(length: 5, start: 1);
 
     // when
     final stream = temp.startWithMany([-1, 0]);
@@ -127,6 +135,12 @@ Stream이 값을 방출한 후에 방출된 항목 뒤에 값을 추가합니다
 <summary> EndWith </summary>
 
 ```js
+class StreamUtil{
+    Stream<int> getIterableStream({required int length, int? start}) =>
+        Stream.fromIterable(
+            List.generate(length, (index) => index + (start ??= 0)));
+}
+
 test('Stream을 방출할 때 마지막 항목으로 지정된 값을 추가해야 한다.', () async {
     // given
     final temp = StreamUtil.getIterableStream(length: 5, start: 1);
@@ -148,6 +162,12 @@ Stream이 값을 방출한 후에 방출된 항목 뒤에 List 타입을 추가�
 <summary> EndWithMany </summary>
 
 ```js
+class StreamUtil{
+    Stream<int> getIterableStream({required int length, int? start}) =>
+        Stream.fromIterable(
+            List.generate(length, (index) => index + (start ??= 0)));
+}
+
 test('Stream을 방출할 때 마지막 항목으로 List 값을 추가해야 한다.', () async {
     // given
     final temp = StreamUtil.getIterableStream(length: 5, start: 1);
