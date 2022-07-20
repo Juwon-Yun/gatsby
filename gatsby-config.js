@@ -188,7 +188,7 @@ const pwaPlugins = [
       },
     },
   },
-  "gatsby-plugin-offline",
+  // "gatsby-plugin-offline",
 ]
 
 const analytics = [
@@ -199,6 +199,17 @@ const analytics = [
       head: true,
     }
   }
+]
+
+const offlinePlugins = [
+  {
+    resolve: `gatsby-plugin-offline`,
+    options: {
+      workboxConfig: {
+        importWorkboxFrom: `cdn`,
+      },
+    },
+  },
 ]
 
 module.exports = {
