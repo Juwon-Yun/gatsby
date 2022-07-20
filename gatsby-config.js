@@ -188,7 +188,40 @@ const pwaPlugins = [
       },
     },
   },
-  // "gatsby-plugin-offline",
+  {
+    resolve : "gatsby-plugin-offline",
+    options:{
+      importWorkboxFrom: `local`,
+      globDirectory: rootDir,
+      globPatterns,
+      modifyURLPrefix: {
+        "/": `${pathPrefix}/`,
+      },
+      cacheId: `gatsby-plugin-offline`,
+      dontCacheBustURLsMatching: /(\.js$|\.css$|static\/)/,
+      runtimeCaching: [
+        {
+          urlPattern: /(\.js$|\.css$|static\/)/,
+          handler: `CacheFirst`,
+        },
+        {
+          urlPattern: /^https?:.*\/page-data\/.*\.json/,
+          handler: `StaleWhileRevalidate`,
+        },
+        {
+          urlPattern:
+            /^https?:.*\.(png|jpg|jpeg|webp|svg|gif|tiff|js|woff|woff2|json|css)$/,
+          handler: `StaleWhileRevalidate`,
+        },
+        {
+          urlPattern: /^https?:\/\/fonts\.googleapis\.com\/css/,
+          handler: `StaleWhileRevalidate`,
+        },
+      ],
+      skipWaiting: true,
+      clientsClaim: true,
+    }
+  },
 ]
 
 const analytics = [
@@ -199,17 +232,6 @@ const analytics = [
       head: true,
     }
   }
-]
-
-const offlinePlugins = [
-  {
-    resolve: `gatsby-plugin-offline`,
-    options: {
-      workboxConfig: {
-        importWorkboxFrom: `cdn`,
-      },
-    },
-  },
 ]
 
 module.exports = {
