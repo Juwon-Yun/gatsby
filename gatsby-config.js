@@ -222,5 +222,6 @@ module.exports = {
     ...searchPlugins,
     ...pwaPlugins,
     ...analytics,
+    ...offlinePlugins,
   ],
 }
