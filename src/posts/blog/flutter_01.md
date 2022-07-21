@@ -10,7 +10,6 @@ alt: "flutter"
 
 ![flutter dart](https://user-images.githubusercontent.com/85836879/170853141-e5a9ce19-3c5b-4888-baf6-9a2e1a2e27b3.png)
 
-# 🎯
 ## Dart
 
 다트는 2011년 10월 GOTO 콘퍼런스에서 구글이 공개한 객체지향 프로그래밍 언어입니다.
@@ -27,13 +26,13 @@ Dart의 유연한 컴파일링 덕에 대상 플랫폼 및 목적에 따라 다�
 
 ---
 
-### Dart Native
+## Dart Native
 
 모바일, 데스크톱, 서버, 임베디드를 대상으로 하는 프로그램의 경우에 사용합니다.
 
 Native에는 순수 Dart 인터프리터와 JIT( Just-In-Time ), AOT( Ahead-Of-Time ) 컴파일러가 모두 포함되어 있습니다.
 
-### Dart Web
+## Dart Web
 
 웹을 대상으로 하는 프로그램의 경우 Dart Web을 이용합니다.
 
@@ -41,7 +40,7 @@ Native에는 순수 Dart 인터프리터와 JIT( Just-In-Time ), AOT( Ahead-Of-T
 
 ---
 
-### Develop WorkFlow( JIT + Dart VM )
+## Develop WorkFlow( JIT + Dart VM )
 
 Dart 앱을 프로덕션 환경에 배포할 준비가 되면 ( 앱 스토어에 게시할 때 ) Dart AOT 컴파일러를 사용하여 네이티브 ARM 또는 X64 코드 머신 코드로 앱을 사전에 컴파일할 수 있다.
 
@@ -49,7 +48,7 @@ AOT 컴파일된 애플리케이션은 즉시 시작하고 원할하게 실행�
 
 AOT로 컴파일 된 코드는 Dart 타입 시스템을 실행하고 빠른 객체 할당 및 가비지 콜렉터를 사용하여 메모리를 관리하는 효율적인 Dart 런타임에서 실행됩니다.
 
-### Compile to Native ( AOT + Runtime )
+## Compile to Native ( AOT + Runtime )
 
 Dart Native는 모바일, 데스크톱 및 서버 애플리케이션용 네이티브 ARM 또는 X64 시스템 코드로 컴파일된 Dart 코드를 실행할 수 있게 한다.
 
@@ -57,33 +56,31 @@ Dart Native는 모바일, 데스크톱 및 서버 애플리케이션용 네이�
 
 ---
 
-### Dart의 특징 
+## Dart의 특징 
 
-### 모든 것들을 전부 Object로 취급합니다.
+## 모든 것을 Object로 취급합니다.
 
 Variable안에 넣을 수 있는 것은 전부 Object로 취급하며 Function, number, null 전부 Object로 취급합니다.
 
 변수에 넣을 수 있는 모든 것은 객체이며, 모든 객체는 클래스의 인스턴스로 취급합니다.
-#
-### List <int>, List <dynamic> 같은 제너릭 type을 지원합니다.
+
+## List <int>, List <dynamic> 같은 제너릭 type을 지원합니다.
 
 다음과 같은 형식이 가능합니다. ( 전부 Object이기 때문 )
 ```java
-List<dynamic> list = [0, 1, "2", false, true]
+List<dynamic> list = [0, 1, "2", false, true, { key : "value"}]
 ```
-#
-### Typed 언어지만 자유도를 제공합니다.
+## Typed 언어지만 자유도를 제공합니다.
 
 기본은 typed 언어지만 Var, dynamic으로 선언하면 동적 type으로 사용 가능합니다.
 
 Var로 선언된 변수는 type을 지정하지 않아도 dart에서 알아서 variable의 type이 뭔지 추측을 합니다.
 
 하지만 다른 타입을 재할당 할 수 없습니다.
-#
-### 접근 제한자의 정의가 없으며 \_function()으로 정의됩니다.
+
+## 접근 제한자의 정의가 없으며 \_function()으로 정의됩니다.
 
 private인 \_(언더바)은 class안에서만 접근 가능한 것이 아닌 dart page 단위에서 정의합니다.
-#
 
 ## Flutter
 ---
@@ -108,7 +105,7 @@ Hot Reload 기능을 사용하면 디버깅을 중지하지 않고 소스 수정
 
 Hot Restart 기능까지 사용하면 프로젝트 프로그램을 종료하기 전까지 디버깅을 중지할 필요가 없습니다.
 
-Flutter와 Dart의 역사와 특징에 대해 알아보았습니다.
+## 마치며..
+플러터와 다트의 기술적 특징 이외에도 커뮤니티와 Pub.dev 사이트, 다양한 개발 패턴, 상태관리등이 존재합니다.
 
-![printdart](https://user-images.githubusercontent.com/85836879/170853304-2525e733-7cc2-4992-ad37-f9c000f37fc7.png)
-![dartworld](https://user-images.githubusercontent.com/85836879/170853303-4efb2d27-2abe-4aa7-aebb-870d4083815c.png)
+오준석의 플러터, 에릭 윈드밀의 플러터 인 액션등 다양한 블로그, 미디어, 책에서 다트와 플러터를 자세히 알 수 있습니다.
