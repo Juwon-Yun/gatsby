@@ -192,10 +192,9 @@ const pwaPlugins = [
     resolve : "gatsby-plugin-offline",
     options:{
       importWorkboxFrom: `local`,
-      globDirectory: rootDir,
-      globPatterns,
+      globDirectory: `${__dirname}/src`,
       modifyURLPrefix: {
-        "/": `${pathPrefix}/`,
+        "/": "/",
       },
       cacheId: `gatsby-plugin-offline`,
       dontCacheBustURLsMatching: /(\.js$|\.css$|static\/)/,
@@ -244,6 +243,5 @@ module.exports = {
     ...searchPlugins,
     ...pwaPlugins,
     ...analytics,
-    ...offlinePlugins,
   ],
 }
