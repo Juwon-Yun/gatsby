@@ -4,7 +4,7 @@ category: "Etc"
 date: "2022-04-10 18:57:00 +09:00"
 desc: "객체와 자료구조"
 thumbnail: "./images/clean_code/cleancode_th.jpg"
-alt: "형식 맞추기"
+alt: "객체와 자료구조"
 ---
 
 ![Untitled](https://user-images.githubusercontent.com/85836879/170295027-fdccf73f-465c-4e3f-bbfa-a600ac89c472.png)
