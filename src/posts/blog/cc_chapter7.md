@@ -76,30 +76,29 @@ DeviceHandle handle = getHandle(DEV1);
 
 ```java
 public class DeviceController {
-
-// 오류를 처리하는 알고리즘
-public void sendShutDown() {
-    try {
-        tryToShutDown();
-    } catch (DeviceShutDownError e) {
-        logger.log(e);
+    // 오류를 처리하는 알고리즘
+    public void sendShutDown() {
+        try {
+            tryToShutDown();
+        } catch (DeviceShutDownError e) {
+            logger.log(e);
+        }
     }
-}
 
-// 디바이스를 종료하는 알고리즘
-private void tryToShutDown() {
-    DeviceHandle handle = getHandle(DEV1);
-    DeviceRecord record = retrieveDeviceRecord(handle);
+    // 디바이스를 종료하는 알고리즘
+    private void tryToShutDown() {
+        DeviceHandle handle = getHandle(DEV1);
+        DeviceRecord record = retrieveDeviceRecord(handle);
 
-    pauseDevice(handle);
-    clearDeviceWorkQueue(handle);
-    closeDevice(handle);
-}
+        pauseDevice(handle);
+        clearDeviceWorkQueue(handle);
+        closeDevice(handle);
+    }
 
-private DeviceHandle getHandle(DeviceId id) {
-    ...
-    throw new DeviceShutDownError("Invalid handle for: " + id.toString());
-    ...
+    private DeviceHandle getHandle(DeviceId id) {
+        ...
+        throw new DeviceShutDownError("Invalid handle for: " + id.toString());
+        ...
     }
 }
 ```
