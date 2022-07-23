@@ -20,6 +20,7 @@
     "@hapi/topo": "^6.0.0",
     "dark-theme-github": "github:remorses/dark-github-theme",
     "gatsby": "^4.5.4",
+    "gatsby-plugin-advanced-sitemap": "^2.1.0",
     "gatsby-plugin-feed": "^4.4.0",
     "gatsby-plugin-gtag": "^1.0.13",
     "gatsby-plugin-image": "^2.4.0",

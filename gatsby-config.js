@@ -112,7 +112,7 @@ const markdownPlugins = [
 ]
 
 const searchPlugins = [
-  "gatsby-plugin-sitemap",
+  "gatsby-plugin-advanced-sitemap",
   "gatsby-plugin-robots-txt",
   {
     resolve: `gatsby-plugin-feed`,
