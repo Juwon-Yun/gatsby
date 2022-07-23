@@ -117,7 +117,7 @@ const searchPlugins = [
     resolve: `gatsby-plugin-robots-txt`,
     options: {
       host: 'https://dev-juwon.netlify.app',
-      sitemap: 'https://dev-juwon.netlify.app//sitemap-pages.xml',
+      sitemap: 'https://dev-juwon.netlify.app/sitemap-pages.xml',
       policy: [{userAgent: '*', allow: '/'}]
     }
   },
