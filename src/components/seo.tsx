@@ -22,7 +22,12 @@ const SEO: React.FC<SEOProps> = ({ title, desc = "", image }) => {
   const description = desc || site.description
   const ogImageUrl =
     site.siteUrl ?? "" + (image || (defaultOpenGraphImage as string))
-  const googleContent = ["google-site-verification","b_TVIvamvnRinc4ExC5PfbMcjvAZiW6byJPFdTYDdj4"]
+  const metaTag = [
+    "google-site-verification",
+    "b_TVIvamvnRinc4ExC5PfbMcjvAZiW6byJPFdTYDdj4",
+    "naver-site-verification",
+    "ef87ff0d9b052927d14a7bda804d8e27a41bda6b"
+  ]
 
   return (
     <Helmet
@@ -76,8 +81,12 @@ const SEO: React.FC<SEOProps> = ({ title, desc = "", image }) => {
             content: ogImageUrl,
           },
           {
-            name: googleContent[0],
-            content: googleContent[1],
+            name: metaTag[0],
+            content: metaTag[1],
+          },
+          {
+            name: metaTag[2],
+            content: metaTag[3],
           },
         ] as Meta
       }
