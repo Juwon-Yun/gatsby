@@ -113,7 +113,14 @@ const markdownPlugins = [
 
 const searchPlugins = [
   "gatsby-plugin-advanced-sitemap",
-  "gatsby-plugin-robots-txt",
+  {
+    resolve: `gatsby-plugin-robots-txt`,
+    options: {
+      host: 'https://dev-juwon.netlify.app',
+      sitemap: 'https://dev-juwon.netlify.app//sitemap-pages.xml',
+      policy: [{userAgent: '*', allow: '/'}]
+    }
+  },
   {
     resolve: `gatsby-plugin-feed`,
     options: {
