@@ -7,7 +7,7 @@ thumbnail: "./images/refactoring/refactoring_2nd_logo.jpg"
 alt: "리팩터링"
 ---
 
-![image](https://user-images.githubusercontent.com/85836879/180409395-6bf40c1f-b1f6-422d-8c1f-b0387b48b886.png)
+![image](https://user-images.githubusercontent.com/85836879/180636234-6b481be7-3fe3-413d-baa0-21bb7d44f5f3.png)
 
 ## 2장 리팩터링 원칙
 
