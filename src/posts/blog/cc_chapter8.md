@@ -1,10 +1,10 @@
 ---
-title: "Clean Code 7장"
+title: "Clean Code 8장"
 category: "Etc"
-date: "2022-04-10 19:17:00 +09:00"
-desc: "오류 처리"
+date: "2022-04-14 23:42:00 +09:00"
+desc: "경계"
 thumbnail: "./images/clean_code/cleancode_th.jpg"
-alt: "오류 처리"
+alt: "경계"
 ---
 
 ![Untitled](https://user-images.githubusercontent.com/85836879/170295027-fdccf73f-465c-4e3f-bbfa-a600ac89c472.png)
