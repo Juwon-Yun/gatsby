@@ -1,5 +1,5 @@
 ---
-title: "Clean Code 13장"
+title: "Clean Code 14장"
 category: "Etc"
 date: "2022-05-11 00:55:00 +09:00"
 desc: "점진적인 개선"
