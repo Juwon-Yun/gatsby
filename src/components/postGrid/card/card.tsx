@@ -61,7 +61,7 @@ const Text = styled.div`
 
 const Title = styled.h3`
   margin-top: var(--sizing-xs);
-  font-size: var(--text-lg);
+  font-size: var(--text-title);
   font-weight: var(--font-weight-bold);
   line-height: 1.3;
 

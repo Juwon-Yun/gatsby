@@ -7,7 +7,8 @@ const GlobalStyle = createGlobalStyle`
   :root {
     font-size: 100%;
 
-    --width: 980px;
+    // --width: 980px;
+    --width: 1180px;
     --min-width: 320px;
     --post-width: 650px;
     --nav-height: 54px;
