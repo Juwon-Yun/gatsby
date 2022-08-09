@@ -7,7 +7,6 @@ thumbnail: "./images/flutter/flutter_logo.jpg"
 alt: "flutter"
 ---
 
-
 ![flutter dart](https://user-images.githubusercontent.com/85836879/170853141-e5a9ce19-3c5b-4888-baf6-9a2e1a2e27b3.png)
 
 ## Dart
