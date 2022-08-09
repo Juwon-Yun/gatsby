@@ -1,7 +1,7 @@
 ---
 title: "Clean Code 15장"
 category: "Etc"
-date: "2022-05-11 00:55:00 +09:00"
+date: "2022-05-12 23:32:00 +09:00"
 desc: "JUnit 들여다보기"
 thumbnail: "./images/clean_code/cleancode_th.jpg"
 alt: "JUnit 들여다보기"
