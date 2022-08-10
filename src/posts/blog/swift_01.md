@@ -45,6 +45,20 @@ Swift는 다음과 같이 코드의 표현력을 높이기 위한 다양한 기�
 
 어느정도 하위 언어와 호환성도 보장되어 있어, 코드 내부에 C언어 또는 Objective-C 코드를 섞어 프로그래밍할 수 있게 되어 있습니다.
 
+## Objective-C와의 관계
+많은 사람들이 Objective-C를 묻혀질 언어로만 생각하고 있지만, 의외로 그렇지 않습니다.
 
+Swift 프로젝트에서 Objective-C는 아무런 제약 없이 사용 가능합니다.
+
+Swift의 컴파일러와 Objective-C의 컴파일러 백엔드는 둘다 LLVM으로 동일하며, 어떤 언어를 사용해서 코드를 작성하더라도 같은 형태의 중간언어로 번역되어 컴파일 됩니다.
+
+실제로 Swift에서 기존 Objective-C로 작성되어 있는 패키지를 사용하기 위해서라도 Objective-C는 현역으로 사용됩니다.
+
+프로젝트 내부에서 대부분의 코드가 Swift로 작성되지만, Objective-C 기반으로 작성되어 있는 기존 코드가 상당수이기 때문에, Swift가 정착된 후에도 한동안 Objective-C의 사용은 계속될 것으로 보입니다.
+
+Apple 계열의 많은 패키지가 Swift로 재작성되거나 Swift만으로 작성되고 있으며 Objective-C로 작성된 패키지라도 해도 Xcode 등의 IDE가 Swift에서 바로 사용할 수 있도록 적절히 처리해주기 때문에, Objective-C로 만들어진 패키지를 직접 수정할 일만 없다면 Objective-C를 전혀 몰라도 Swift를 작성하는데 아무런 문제가 없습니다.
+
+굳이 새로운 프로젝트를 Objective-C로 진행하는 경우는 거의 없으므로 Swift를 주력 언어로 사용한다면 Objective-C는 코드 리딩 정도만 할 줄 알면 충분합니다.
+(Swift와 Objective-C는 Cocoa Framework 기반으로 코드 리딩을 위해 별도의 공부까진 필요하지 않습니다.)
 
 
