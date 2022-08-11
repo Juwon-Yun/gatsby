@@ -8,9 +8,7 @@ alt: "flutter"
 ---
 
 ## 들어가며... 
-소프트웨어 개발에서의 비동기 개념은 빼놓을 수 없는 중요한 주제입니다.
-
-Dart에서 사용하는 비동기 객체인 Future와 Stream을 알아보고 소개하는 글이에요.
+Dart 언어에서 사용하는 비동기 객체인 Future와 Stream에 대해서 다뤄보겠습니다.
 
 Future와 Stream의 주된 사용은 비동기 로직으로 로컬, 네트워크등의 데이터를 가져와 반응형으로 UI를 렌더링할 때 사용됩니다.
 
@@ -37,7 +35,7 @@ Future T 타입의 future는 T 타입을 반환합니다.
 ## async와 await
 비동기 함수를 사용하기 위한 방법입니다.
 
-JavsScript ES7 문법에 있는 async와 await 문법과 유사합니다.
+JavsScript의 ECMA7 문법인 async와 await 문법과 유사합니다.
 
 async function을 정의하기 위해서는 function의 함수절 이전에 async를 사용합니다.
 
@@ -113,12 +111,14 @@ main() async {
 }
 ```
 
+---
+
 ## 두가지 타입의 Stream
 
 ### 단일 구독 스트림
 구독자가 하나만 존재하는 Stream입니다.
 
-가장 일반적인 종류의 Stream으로 이벤트는 올바른 순서로 전달되어야합니다. 
+가장 일반적인 종류의 Stream으로 이벤트는 올바른 순서로 전달되어야 합니다. 
 
 단일 구독 Stream은 파일을 읽거나 요청을 할 때 데이터를 얻을 수 있는 종류의 Stream입니다.
 
@@ -128,7 +128,7 @@ main() async {
 
 구독 후에 이벤트를 받기 시작하면 데이터를 가져와 제공합니다. 
 
-### 방송 스트림 ( BroadCast Stream )
+### 방송 스트림 (BroadCast Stream)
 구독자가 두개 이상인 Stream입니다.
 
 언제든지 Stream을 구독할 수 있으며 또한 구독하는 동안 발생하는 이벤트를 얻을 수 있고 한개 이상의 구독자가 동시에 구독할 수 있습니다.
@@ -136,6 +136,6 @@ main() async {
 단일 구독 Stream과는 다르게 구독을 닫은 이후에 다시 구독할 수 있습니다.
 
 ## 마치며...
-Stream의 단일 구독과 다중 구독(BroadCast Stream)이 이해하기 어렵다면 WebSocket의 ws 서버로 취급한다면 이해하는데 도움될 것 같아요.
+Stream의 단일 구독과 다중 구독(BroadCast Stream)이 이해하기 어렵다면 WebSocket의 ws 서버로 취급한다면 이해하는데 도움될 것 같습니다.
 
 <a href="https://dart.dev/tutorials/language/streams" target="_blank">Dart Stream 공식문서 방문하기</a>
