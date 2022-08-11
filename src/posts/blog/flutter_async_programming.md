@@ -35,7 +35,7 @@ Future T 타입의 future는 T 타입을 반환합니다.
 ## async와 await
 비동기 함수를 사용하기 위한 방법입니다.
 
-JavsScript의 ECMA7 문법인 async와 await 문법과 유사합니다.
+JavsScript ES7의 async와 await 문법과 유사합니다.
 
 async function을 정의하기 위해서는 function의 함수절 이전에 async를 사용합니다.
 
