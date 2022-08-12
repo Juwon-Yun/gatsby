@@ -104,3 +104,16 @@ let subText = text[text.index(text.startIndex, offsetBy: 4)..<text.index(text.st
 ## Swift 개발 환경
 Swift를 공식적으로 지원하는 통합 개발 환경으로 Xcode가 있으며 JetBrains의 AppCode와 CLion(C, C++, Objective-C, Objective-C++)이 있습니다.
 
+## Swift의 미래
+애플이 적극적으로 밀어주는 언어라서 구글처럼 잘 안된다 싶으면 바로 접어버리는 것과는 달리 애플은 한번 밀기 시작하면 20년은 꾸준히 밀어준 역사가 있어서, Swift가 앞으로도 쭉 쓰일 것입니다.
+
+2018년 7월을 시작으로 등장한지 4년이 채 안되고, 주로 iOS 개발에만 사용하고 있지만 2021년 1월 기준으로 Swiftsms Objective-C를 제치고 iOS의 미래는 Swift라는 걸 보여주고 있습니다.
+
+경쟁사인 구글에서는 Java API 저작권을 오라클과의 분쟁 후 패소한 뒤로 다트와 플러터를 밀며 구글의 차세대 OS인 퓨시아에서도 Swift 코드가 일부 구동될 수 있도록 준비 중입니다.
+
+또한, 성능적인 면에서 Swift는 Java와 C#의 장점을 가지고 있으면서도 LLVM 기반의 C/C++/Objective-C처럼 기계어로 번역된다는 점에서 성능상 우위에 있습니다.
+
+## 마치며..
+구글의 차세대 OS인 퓨시아 기반의 다트와 플러터, 그리고 애플의 iOS, macOS, iPadOS, watchOS 생태계에서의 Swift가 기대됩니다.
+
+다트와 스위프트 언어를 사용하는 개발자라면 소프트웨어 개발자로서 살아남기 좋을 것 같습니다. 
