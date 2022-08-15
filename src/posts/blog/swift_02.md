@@ -21,7 +21,6 @@ SwiftUI는 Swift의 성능을 바탕으로 모둔 Apple 플랫폼에서 사용�
 
 <br>
 <a href="https://developer.apple.com/kr/xcode/swiftui/" target="_blank">Xcode SwiftUI 방문하기</a>
-<br>
 
 ## SwiftUI의 장점 1 - 선언적 구문
 SwiftUI는 선언적 구문을 사용하므로 사용자 인터페이스의 기능을 명시하기만 하면 됩니다.
