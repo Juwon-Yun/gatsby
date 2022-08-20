@@ -65,3 +65,27 @@ Xcode에는 SwiftUI를 사용하여 드래그 앤 드롭만큼 간단하게 인�
 코드를 입력하는 동시에 미리보기로 바로 볼 수 있고 라이트 모드 및 다크 모드와 같이 다양한 구성에서 UI를 확인할 수도 있습니다.
 
 Xcode는 변경 사항을 즉시 재컴파일하고 실행 중인 앱 버전에 삽입하므로 상시 확인 및 편집이 가능합니다.
+
+
+## SwiftUI의 단점
+iOS 13버전과 Xcode 11 이후의 버전만 지원하며 기존 UIKit의 전부를 대체하지는 못합니다.
+
+또한, 낮은 버전에 대해 지원하지 않기 때문에 Deployment Target이 한정되어 있습니다.
+
+버그가 많으며 다른 라이브러리들이 SwiftUI를 지원하지 않을 수 있습니다.
+
+## SwiftUI와 UIkit
+UIKit는 이벤트 중심의 프레임워크이며 SwiftUI는 상태 중심의 프레임워크입니다.
+
+SwiftUI는 UIkit의 대체제가 아니며, SwiftUI의 많은 기능들이 UIkit 위에서 작동합니다.
+
+UIkit 위에서 작동하기 때문에 코드가 내부적으로 UIkit에 있는 컴포넌트의 코드로 변환해 컴파일 한다는 것 입니다.
+
+새로운 프로젝트에 기존의 UIKit과 AppKit만을 사용한다면 다음에 누군가가 지불할 기술 부채가 될 수 있습니다.
+
+
+## UIKit
+
+<br>
+<a href="https://developer.apple.com/tutorials/app-dev-training#uikit-essentials" target="_blank">  iOS App Dev 방문하기</a>
+
