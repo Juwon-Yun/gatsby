@@ -106,6 +106,13 @@ const markdownPlugins = [
             linkImagesToOriginal: false,
           },
         },
+        {
+          resolve: "gatsby-remark-autolink-headers",
+          options: {
+            offsetY: "300",
+            elements: ["h1","h2","h3","h4"],
+          }
+        }
       ],
     },
   },
@@ -207,6 +214,7 @@ const analytics = [
     }
   }
 ]
+
 
 module.exports = {
   siteMetadata,
