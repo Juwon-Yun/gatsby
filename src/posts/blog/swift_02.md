@@ -85,7 +85,39 @@ UIkit 위에서 작동하기 때문에 코드가 내부적으로 UIkit에 있는
 
 
 ## UIKit
+UIKit 프레임워크는 iOS, tvOS 앱에 필요한 인프라를 제공합니다. 
+
+인터페이스를 구현하기 위한 창 및 보기 아키텍처, Multi-Touch 및 기타 유형의 입력을 앱에 제공하기 위한 이벤트 처리 인프라, 사용자, 시스템 및 앱 간의 상호 작용을 관리하는 데 필요한 기본 실행 루프를 제공합니다. 
+
+프레임워크에서 제공하는 다른 기능으로는 애니메이션, 문서, 그리기 및 인쇄, 텍스트 관리 및 표시, 검색, 접근성, 앱 확장 및 리소스 관리가 있습니다.
+
+UIKit은 시스템과 앱의 상호 작용을 관리하고 앱의 데이터 및 리소스를 관리할 수 있는 클래스를 제공합니다.
+
+```swift
+import UIkit
+
+class ViewController : UIViewController {
+
+    override func viewDidLoad(){
+        super.viewDidLoad()
+        // Do any additional setup after loading the view.
+    }
+}
+```
+
+Xcode 기반으로 앱을 빌드하며, UI의 요소가 모두 Object로 기능합니다.
+
+대부분의 상업용 앱들은 UIkit에 의존하며 이에 맞게 제공하는 기능이 다양하고 커스텀이 가능하기 때문에 많은 사용자 경험을 제공할 수 있게 됩니다.
+
+AppDelegate는 앱의 전반적인 생명주기를 다루고 있습니다.
+
+```swift
+func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions : [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    // Override point for customization after application launch.
+
+    return true
+}
+```
 
 <br>
 <a href="https://developer.apple.com/tutorials/app-dev-training#uikit-essentials" target="_blank">  iOS App Dev 방문하기</a>
-
