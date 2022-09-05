@@ -1,6 +1,6 @@
 ---
 title: "샌드박스 테스트"
-category: "etc"
+category: "Etc"
 date: "2022-08-29 20:55:00 +09:00"
 desc: "SandBox Test"
 thumbnail: "./images/note/sandboxTest_logo.jpg"

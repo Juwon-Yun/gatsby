@@ -29,7 +29,7 @@ const About = () => {
       <Container
         dangerouslySetInnerHTML={{ __html: markdown ?? "" }}
         rhythm={rhythm}
-      ></Container>
+      />
     </Layout>
   )
 }
