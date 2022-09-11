@@ -124,3 +124,19 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions lau
 <a href="https://developer.apple.com/tutorials/app-dev-training#uikit-essentials" target="_blank">  iOS App Dev 방문하기</a>
 
 ### SwiftUI에서 UIKit 사용하기
+구조체 문법의 SwiftUI와 클래스 문법의 UIKit는 함께 사용될 수 있습니다.
+
+SwiftUI에서 UIKit를 사용하려면 먼저 SwiftUI의 UIViewRepresentable타입의 구조체를 작성해야합니다.
+
+```swift
+struct UIKitToSwiftUI: UIViewRepresentable {
+  func makeUIView(context: Context) -> UILabel {
+    let label = UILabel()
+    label.textColor = .blue
+    return label
+  }
+
+  func updateUIView(_ uiView: UILabel, context: Context) {
+  }
+}
+```
