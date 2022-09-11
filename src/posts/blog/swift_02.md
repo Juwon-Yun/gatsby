@@ -128,7 +128,7 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions lau
 
 SwiftUI에서 UIKit를 사용하려면 먼저 SwiftUI의 UIViewRepresentable 타입의 구조체를 작성해야합니다.
 
-UIViewRepresentable 객체는 makeUIView, updateUIView 함수가 필수로 작성되어야 합니다.
+UIViewRepresentable 타입은 makeUIView, updateUIView 함수가 필수로 작성되어야 합니다.
 
 ```swift
 struct UIKitToSwiftUI: UIViewRepresentable {
@@ -143,7 +143,7 @@ struct UIKitToSwiftUI: UIViewRepresentable {
 }
 ```
 
-또한 UIKit의 View가 아닌 Controller 일 때 UIViewControllerRepresentable 타입을 사용합니다.
+또한 하나의 UIKit View가 아닌 Controller 일 때 UIViewControllerRepresentable 타입을 사용합니다.
 
 ```swift
 struct UIKitControllerToSwiftUI: UIViewControllerRepresentable { 
