@@ -7,7 +7,7 @@ thumbnail: "./images/react/react_logo.jpg"
 alt: "react"
 ---
 
-useMemo Hook과 useCallback Hook은 메모이제이션( memoization )기법을 활용하는 React Hook입니다.
+useMemo Hook과 useCallback Hook은 메모이제이션 기법을 활용하는 React Hook입니다.
 
 ### Memoization
 어떠한 연산의 수행한 결과값을 메모리 내에 저장하여 동일한 입력이 들어오는 경우 기존에 메모리에 저장된 연산 결과를 그대로 반환해주는 프로그래밍 기법입니다.
@@ -31,9 +31,7 @@ useMemo 함수는 메모이제이션된 값을 반환하는 Hook입니다.
 
 ![usememo](https://user-images.githubusercontent.com/85836879/172298188-4ce75e8b-f7ef-4247-b620-e86cf6cb269c.png)
 
-useMemo가 적용되지 않은 예시입니다.
-
-부모 컴포넌트
+useMemo가 적용되지 않은 부모 컴포넌트.
 
 ```jsx
 import react, { useState, useMemo, useCallback } from "react";
@@ -76,7 +74,7 @@ export default function App() {
 }
 ```
 
-하위 컴포넌트
+useMemo가 적용되지 않은 부모 컴포넌트에 속한 자식 컴포넌트.
 
 ```jsx
 import react from "react";
@@ -155,7 +153,7 @@ useMemo를 적용한 결과
 
 ![usememo_res](https://user-images.githubusercontent.com/85836879/172306276-3fd1b2cd-d6f4-41c9-992d-5b001480207d.gif)
 
-onChange로 props에 입력 받은 값만 재랜더링 되는 결과를 볼 수 있습니다.
+onChange로 props에 입력받은 값만 재랜더링되는 결과를 볼 수 있습니다.
 
 ### useCallback
 useCallback 함수는 메모이제이션된 콜백 함수를 반환하는 Hook입니다.
@@ -165,11 +163,11 @@ React 공식 홈페이지의 useCallback Hook 문법
 
 반환하는 콜백함수의 반환값이 0인 경우와 1인 경우가 있다고 가정했을 때
 
-0을 반환하는 함수와 1을 반환하는 함수는 서로 다른 참조값( 주소값 )을 갖습니다.
+0을 반환하는 함수와 1을 반환하는 함수는 서로 다른 참조값을 갖습니다.
 
 이를 통해 메모리에 메모이제이션함으로써 반환값이 같은 경우 연산하지 않고 해당 함수의 주소값을 참조해 반환합니다.
 
-onChangeAge 함수에만 useCallback Hook을 감싼 예제입니다.
+아래 onChangeAge 함수에만 useCallback Hook을 사용하였습니다.
 
 ```jsx
 import react, { useState, useMemo, useCallback } from "react";
@@ -226,7 +224,3 @@ onChangeAge만 useCallback을 사용한 결과
 ![useCallback](https://user-images.githubusercontent.com/85836879/172306406-a935c276-4cac-4548-9480-59c132ec8ce7.gif)
 
 onChangeAge의 함수만 변경되는 결과를 확인할 수 있습니다.
-
-useMemo와 useCallback은 React 성능 최적화에 필수인 hook인 만큼 사용하기에는 많은 코드 경험을 요구하는 것 같습니다. 
-
-이 포스팅으로 React 공부에 도움이 되셨으면 좋겠네요.
