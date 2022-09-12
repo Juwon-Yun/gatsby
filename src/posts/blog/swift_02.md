@@ -126,9 +126,9 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions lau
 ### SwiftUI에서 UIKit 사용하기
 구조체 문법의 SwiftUI와 클래스 문법의 UIKit는 함께 사용될 수 있습니다.
 
-SwiftUI에서 UIKit를 사용하려면 먼저 SwiftUI의 UIViewRepresentable 타입의 구조체를 작성해야합니다.
+SwiftUI에서 UIKit View를 사용하려면 SwiftUI의 UIViewRepresentable를 상속받는 구조체를 구현해야합니다.
 
-UIViewRepresentable 타입은 makeUIView, updateUIView 함수가 필수로 작성되어야 합니다.
+UIViewRepresentable은 makeUIView, updateUIView 함수가 필수로 작성되어야 합니다.
 
 ```swift
 struct UIKitToSwiftUI: UIViewRepresentable {
@@ -143,7 +143,7 @@ struct UIKitToSwiftUI: UIViewRepresentable {
 }
 ```
 
-또한 하나의 UIKit View가 아닌 Controller 일 때 UIViewControllerRepresentable 타입을 사용합니다.
+또한, 하나의 UIKit View가 아닌 Controller일 때 UIViewControllerRepresentable을 상속받아 사용할 수 있습니다.
 
 ```swift
 struct UIKitControllerToSwiftUI: UIViewControllerRepresentable { 
@@ -156,4 +156,7 @@ struct UIKitControllerToSwiftUI: UIViewControllerRepresentable {
     } 
 }
 ```
+
+UIViewControllerRepresentable 를 상속 받는 객체는
+makeUIViewController, updateUIViewController 메소드를 작성해야합니다. 
 
