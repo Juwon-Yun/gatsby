@@ -147,7 +147,9 @@ struct UIKitToSwiftUI: UIViewRepresentable {
 }
 ```
 
-또한, 하나의 UIKit View가 아닌 Controller일 때 UIViewControllerRepresentable을 상속받아 사용할 수 있습니다.
+또한, 하나의 UIKit View가 아닌 UIViewController를 SwiftUI에서 구현하기 위해서는 UIViewControllerRepresentable protocol을 따르는 구조체를 구현해 사용할 수 있습니다.
+
+UIViewControllerRepresentable를 구현하기 위해서는 makeUIViewController, updateUIViewController 메소드를 필수로 구현해야 합니다.
 
 ```swift
 struct UIKitControllerToSwiftUI: UIViewControllerRepresentable { 
@@ -161,6 +163,28 @@ struct UIKitControllerToSwiftUI: UIViewControllerRepresentable {
 }
 ```
 
-UIViewControllerRepresentable 를 상속 받는 객체는
-makeUIViewController, updateUIViewController 메소드를 작성해야합니다. 
+그럻다면, 기존에 UIView 또는 UIViewController에서 SwiftUI View로  사용할 떄에는 UIViewRepresentable protocol을 따르는 구조체를 매번 구현해야 할까요?
 
+@Binding할 프로퍼티가 없는 경우에는 UIKitClass에서 extension 키워드를 사용해 구현할 수 있습니다.
+
+```swift
+final class Label: UILabel {}
+ 
+extension Label: UIViewRepresentable {
+    func makeUIView(context: Context) -> UILabel {
+        return self
+    }
+ 
+    func updateUIView(_ uiView: UILabel, context: Context){
+        
+    }
+}
+ 
+struct ContentView: View {
+    var body: some View {
+        VStack {
+            Label()
+        }
+    }
+}
+```
