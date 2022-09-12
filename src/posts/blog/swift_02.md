@@ -176,7 +176,7 @@ extension Label: UIViewRepresentable {
     }
  
     func updateUIView(_ uiView: UILabel, context: Context){
-        
+
     }
 }
  
@@ -188,3 +188,30 @@ struct ContentView: View {
     }
 }
 ```
+
+### UIKit에서 SwiftUI 사용하기
+
+반대로 UIKit에서 UIHostingController protocol을 통해 SwiftUI를 사옹할 수 있습니다.
+
+별도의 필수적인 메소드를 구현해야할 필요는 없습니다.
+
+```swift
+struct MainView: View {
+    var body: some View {
+        Text("UIKit!")
+    }
+}
+ 
+class ViewController: UIViewController {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+ 
+        let controller = UIHostingController(rootView: MainView())
+        controller.view.frame = view.bounds
+ 
+        addChild(controller)
+        view.addSubview(controller.view)
+    }
+}
+```
+
