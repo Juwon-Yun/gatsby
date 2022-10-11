@@ -42,7 +42,7 @@ Ubuntu를 만드는 회사 Canonial에서 Yaru Design Language를 Pub.dev를 통
 ### 4\. Material Design Language 3
 
 파스텔 톤과 같은 디자인으로 구성된 새로운 버전의 Material Design을 지원합니다.
-([https://m3.material.io/](https://m3.material.io/))
+[Meterial3 디자인 구경하기](https://m3.material.io/)
 #
 ### 5\. Firebase
 
@@ -50,7 +50,7 @@ Ubuntu를 만드는 회사 Canonial에서 Yaru Design Language를 Pub.dev를 통
 #
 이번 Flutter 3.0버전에서는 Firebase에서 공식적으로 Flutter를 지원합니다.
 #
-[(https://firebase.google.com/docs/flutter/setup?hl=ko&platform=ios)](https://firebase.google.com/docs/flutter/setup?hl=ko&platform=ios)
+[FlutterFire 방문하기](https://firebase.google.com/docs/flutter/setup?hl=ko&platform=ios)
 
 복잡했던 기존의 Firebase 설정을 이번에 추가된 Firebase CLI 명령어를 통해 쉽게 설정할 수 있게 되었습니다.
 
@@ -74,7 +74,7 @@ $flutterfire configure --project=projectName-code
 
 Flutter 3.0 버전에서 Game 개발에 도움되는 도구들이 추가되었습니다.
 #
-([https://flutter.dev/games](https://flutter.dev/games))
+[Flutter Game Tools 방문하기](https://flutter.dev/games)
 #
 ### Dart 변경점
 
@@ -92,19 +92,19 @@ argument 순서에 자유도가 생겼습니다.
 
 ```java
 final factoriable = List<int>.generate(
-10,
-(int i){
-	if (i == 0){
-    	return 1;
-    } else {
-    	var result = 1;
-        for(var r = 2; r <= i; r++){
-        	result *= r;
+    10,
+    (int i){
+        if (i == 0){
+            return 1;
+        } else {
+            var result = 1;
+            for(var r = 2; r <= i; r++){
+                result *= r;
+            }
+            return result;
         }
-        return result;
-    }
-},
-growable : true,
+    },
+    growable : true,
 );
 ```
 
@@ -112,19 +112,19 @@ growable과 같은 namedParameter의 순서가 강제되었던 것들이 바뀌�
 
 ```java
 final factoriable = List<int>.generate(
-10,
-growable : true,
-(int i){
-	if (i == 0){
-    	return 1;
-    } else {
-    	var result = 1;
-        for(var r = 2; r <= i; r++){
-        	result *= r;
+    10,
+    growable : true,
+    (int i){
+        if (i == 0){
+            return 1;
+        } else {
+            var result = 1;
+            for(var r = 2; r <= i; r++){
+                result *= r;
+            }
+            return result;
         }
-        return result;
-    }
-},
+    },
 );
 ```
 
@@ -133,4 +133,4 @@ growable : true,
 Flutter의 기존의 장점인 6개의 플랫폼에 이번 3.0 버전 릴리즈를 통해 더 빠른 속도로 다양한 기능들을 구현할 수 있게 되었습니다.
 #
 다른 변경사항들은 Flutter 공식 홈페이지를 통해 볼 수 있습니다.
-( [https://docs.flutter.dev/development/tools/sdk/release-notes/release-notes-3.0.0](https://docs.flutter.dev/development/tools/sdk/release-notes/release-notes-3.0.0) )
+[Flutter 3.0 릴리즈 공식 문서 방문하기](https://docs.flutter.dev/development/tools/sdk/release-notes/release-notes-3.0.0)
