@@ -1,8 +1,8 @@
-## dev_Juwon with Gatsby Starter Apple
+## Built with Gatsby
 
-## 🍎 Demo
+## Page
 
-**View [Demo Page](https://dev-juwon.netlify.app/)**
+**View [Page](https://dev-juwon.netlify.app/)**
 
 ## ✨ Features
 
@@ -16,7 +16,9 @@
 - Categories support
 - Infinite Scroll with Intersection Observer
 - RSS Feed
-- SEO
+- SEO 
 - Offline support
 - Prettier & ESLint
-
+  
+### origin gatsby starter apple theme
+https://github.com/sungik-choi/gatsby-starter-apple.git

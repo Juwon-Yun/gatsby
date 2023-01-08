@@ -20,7 +20,7 @@
     "@hapi/topo": "^6.0.0",
     "gatsby-plugin-gtag": "^1.0.13",
     "gatsby-remark-autolink-headers": "^5.21.0",
-    "gatsby-plugin-advanced-sitemap": "github:Juwon-Yun/fork_gatsby-advanced-sitemap",
+    "gatsby-plugin-advanced-sitemap": "^2.1.0",
     "joi": "^17.6.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
