@@ -217,6 +217,7 @@ const analytics = [
 
 
 module.exports = {
+  graphqlTypegen: true,
   siteMetadata,
   plugins: [
     ...corePlugins,
