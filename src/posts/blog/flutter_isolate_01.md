@@ -37,7 +37,7 @@ Dart 언어의 Future와 Stream 객체는 향후 제공될 값을 나타냅니�
 
 await 와 async 그리고 Future 사용에 대해 자세히 알아보려면 [Codelab](https://dart.dev/codelabs/async-await)을 방문하세요!
 
-#### Isolate가 어떻게 동작하는지
+### Isolate가 어떻게 동작하는지
 대부분의 최신 장치에서는 멀티 코어 CPU가 있지만, 모든 코어를 활용하기 위해 개발자는 가끔 동시에 실행되는 공유 메모리 스레드를 사용합니다.
 
 하지만 공유 상태 동시성은 예외가 발생하기 쉽고, 복잡한 코드로 이어질 수 있습니다.
@@ -52,5 +52,18 @@ Isolate를 사용하면 다트 코드가 사용가능 한 경우 추가 코어�
 
 Isolate는 쓰레드 또는 프로세스와 비슷하지만 각각의 Isolate에는 고유한 메모리와 이벤트 루프를 실행하는 단일 스레드가 존재합니다. 
 
-#### 메인 Isolate
+### 메인 Isolate
 
+![image](https://user-images.githubusercontent.com/85836879/212456603-6d95a6da-32ef-4ef3-889f-c22e9552d2cf.png)
+
+일반적인 다트 앱은 Isolate에 고려할 필요가 없는 경우가 많습니다.
+
+위 그림처럼 앱의 기본적인 메인 Isolate에서 모든 코드를 실행합니다.
+
+단일 스레드 앱도 async-await를 사용해 비동기 작업이 완료될 때까지 기다렸다가 다음 코드 줄을 계속 진행하면 원활하게 실행할 수 있습니다.
+
+제대로 작동하는 앱은 빠르게 시작해 가능한 빨리 이벤트 루프에 도달합니다. 그런 다음 앱은 필요에 따라서 비동기 작업을 사용해 대기 중인 각각의 이벤트에 즉시 응답합니다.
+
+### Isolate의 생명주기
+
+![image](https://user-images.githubusercontent.com/85836879/212456804-1e474097-eac8-46f8-986f-25581978bf4e.png)
