@@ -29,9 +29,9 @@ Flutter는 단일 스레드 기반 프레임워크입니다.
 
 Dart 언어의 Future와 Stream 객체는 향후 제공될 값을 나타냅니다.
 
-예를 들어, 값을 제공하겠다는 약속은 Future<T>로 사용하며, 연속된 값을 제공하겠다는 약속은 Stream<T> 입니다.
+예를 들어,나중에 값을 제공하겠다는 약속은 Future<T>로 사용하며, 연속된 값을 제공하겠다는 약속은 Stream<T> 입니다.
 
-그림에서 볼 수 있듯이 readAsString()은 다트 VM 또는 운영 체제에서 다트 이외에(Non-Dart) 것을 실행하는 동안 일시 중지 됩니다.
+그림에서 볼 수 있듯이 readAsString()은 다트 VM 또는 운영 체제에서 다트 이외에(Non-Dart) 것을 실행하는 동안 일시중지 됩니다.
 
 값을 반환하면 readAsString() 코드가 실행이 재개됩니다. 
 
@@ -67,3 +67,8 @@ Isolate는 쓰레드 또는 프로세스와 비슷하지만 각각의 Isolate에
 ### Isolate의 생명주기
 
 ![image](https://user-images.githubusercontent.com/85836879/212456804-1e474097-eac8-46f8-986f-25581978bf4e.png)
+
+위 그림에서 볼 수 있듯이 모든 Isolate는 main() 함수처럼 일부 Dart 코드를 실행하여 시작됩니다.
+
+예를 들어 Dart 코드는 사용자 입력 또는 파일 I/O에 응답하기 위해 일부 이벤트 리스너를 등록할 수 있습니다. Isolate의 초기 함수가 반환되면 Isolate는 이벤트를 처리해야하는 경우에 유지되며, 이벤트를 처리한 후에는 격리가 종료됩니다.
+
