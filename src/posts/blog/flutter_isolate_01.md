@@ -72,3 +72,6 @@ Isolate는 쓰레드 또는 프로세스와 비슷하지만 각각의 Isolate에
 
 예를 들어 Dart 코드는 사용자 입력 또는 파일 I/O에 응답하기 위해 일부 이벤트 리스너를 등록할 수 있습니다. Isolate의 초기 함수가 반환되면 Isolate는 이벤트를 처리해야하는 경우에 유지되며, 이벤트를 처리한 후에는 격리가 종료됩니다.
 
+### 이벤트 다루기
+
+![image](https://user-images.githubusercontent.com/85836879/212457092-0f229e20-431f-4754-b70a-3740eff0902e.png)
